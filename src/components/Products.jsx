@@ -7,7 +7,7 @@ export default function Products({ products }) {
         <section className="w-11/12 md:w-3/4 mx-auto">
             <h2 className="text-3xl font-bold text-textMain mb-6">Products</h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-5">
                 {products.length > 0 ? (
                     products.slice(0, 8).map((product) => (
                         <Link
@@ -43,10 +43,10 @@ export default function Products({ products }) {
 
                                 {/* Price + Add to Cart at the bottom */}
                                 <div className="flex items-center justify-between mt-auto">
-                                    <span className="text-xl font-bold text-primary mt-2">
+                                    <span className="text-xl font-bold text-primary mt-4">
                                         ${product.price?.toFixed(2) ?? "N/A"}
                                     </span>
-                                    <button className="mt-2 border border-primary hover:bg-primary text-textMain text-sm px-4 py-2 rounded-full font-semibold transition-colors">
+                                    <button className="mt-4 border border-primary hover:bg-primary text-textMain text-sm px-2 py-1 rounded-full font-semibold transition-colors">
                                         Add to Cart
                                     </button>
                                 </div>
