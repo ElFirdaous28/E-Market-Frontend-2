@@ -7,8 +7,6 @@ const Products = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const { categories } = useCategories();
-    console.log(categories);
-
 
     const [filters, setFilters] = useState({
         title: "",
@@ -89,7 +87,7 @@ const Products = () => {
 
     return (
         <>
-            <div className="w-11/12 md:w-3/4 flex flex-col md:flex-row items-start mt-20 gap-20">
+            <div className="w-11/12 md:w-11/12 flex flex-col md:flex-row items-start mt-20 gap-10">
                 {/* Search and filter aside */}
                 <aside className="w-full lg:w-1/4 xl:w-1/5">
                     <div className="bg-brand-surface p-6 rounded-lg border border-primary space-y-6">
