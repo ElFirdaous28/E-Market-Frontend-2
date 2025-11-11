@@ -41,13 +41,13 @@ export const Home = () => {
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
             <Link
               to="/products"
-              className="bg-primary text-textMain w-full px-6 py-3 rounded-full font-semibold hover:bg-primary/55 transition-colors shadow-lg"
+              className="bg-primary text-textMain px-6 py-3 rounded-full font-semibold hover:bg-primary/55 transition-colors shadow-lg"
             >
               Shop Now
             </Link>
             <Link
               to="/register"
-              className="text-textMuted border border-primary rounded-full w-full px-6 py-3 hover:bg-primary hover:text-textMain transition-colors"
+              className="text-textMuted border border-primary rounded-full px-6 py-3 hover:bg-primary hover:text-textMain transition-colors"
             >
               Sign Up
             </Link>

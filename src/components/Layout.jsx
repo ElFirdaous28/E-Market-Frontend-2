@@ -1,21 +1,32 @@
 import { Outlet } from "react-router-dom";
 import Footer from "./Footer";
 import Header from "./Header";
+import Sidebar from "./Sidebar";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function Layout() {
+    const { user } = useAuth();
+
     return (
-        <div className="min-h-screen flex flex-col w-full">
-            {/* Header */}
-            <Header />
+        <div className="min-h-screen flex">
+            {/* Sidebar */}
+            <Sidebar />
 
-            {/* Main content */}
-            <main className="w-full flex-1 flex items-center justify-center flex-col gap-20 p-4 pt-24">
-                {/* This will render the current page */}
-                <Outlet />
-            </main>
+            {/* Right side: Header + Main */}
+            <div
+                className="flex flex-col flex-1 md:ml-38"
+            >
+                {/* Header */}
+                <Header />
 
-            {/* Footer */}
-            <Footer />
+                {/* Main content */}
+                <main className="p-6 mt-20 overflow-y-auto">
+                    <Outlet />
+                </main>
+
+                {/* Footer */}
+                {!user && <Footer />}
+            </div>
         </div>
     );
-};
+}
