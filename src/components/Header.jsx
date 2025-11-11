@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, ShoppingCart, Sun, User } from 'lucide-react';
+import { Search, ShoppingCart, User, Menu, X } from 'lucide-react';
 import { Logo } from './Logo';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -7,21 +7,34 @@ import LogoutButton from './LogoutButton';
 import DarkToggel from './darkToggel';
 
 export default function Header() {
-    const location = useLocation();
-    const { user, logout } = useAuth();
+    const [menuOpen, setMenuOpen] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const { user } = useAuth();
+    const location = useLocation();
 
     const navItems = [
         { name: "Home", path: "/" },
         { name: "Products", path: "/products" },
     ];
 
-    return (
-        <header className="flex justify-center bg-background border-b border-border shadow-md shadow-black/40 fixed top-0 left-0 w-full z-50">
-            <nav className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
-                <Logo />
 
-                <div className="hidden md:block w-full max-w-md">
+    return (
+        <header className="bg-background border-b border-border shadow-md fixed top-0 left-0 w-full z-50">
+            <nav className="container mx-auto px-2 md:px-4 lg:px-8 flex items-center justify-between h-20">
+
+                {/* Logo */}
+                <Logo className={"md:text-sm"} />
+
+                {/* Mobile menu toggle */}
+                <button
+                    className="md:hidden text-textMain"
+                    onClick={() => setMenuOpen(!menuOpen)}
+                >
+                    {menuOpen ? <X size={24} /> : <Menu size={24} />}
+                </button>
+
+                {/* Desktop Search */}
+                <div className="hidden lg:block w-full max-w-md mx-6">
                     <div className="relative">
                         <Search className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-textMuted" />
                         <input
@@ -32,30 +45,26 @@ export default function Header() {
                     </div>
                 </div>
 
-                {/* Navigation */}
-                <div className="flex items-center space-x-6">
-                    {navItems.map((item) => (
+                {/* Right section */}
+                <div className="hidden md:flex items-center space-x-6">
+                    {navItems.map(item => (
                         <Link
                             key={item.path}
                             to={item.path}
                             className={`transition-colors ${location.pathname === item.path
-                                ? "text-textMain"
-                                : " text-textMuted hover:text-textM "
+                                    ? "text-textMain"
+                                    : "text-textMuted hover:text-textMain"
                                 }`}
                         >
                             {item.name}
                         </Link>
                     ))}
 
-                    <a href="#" className="text-textMuted hover:text-textMain transition-colors">
-                        <DarkToggel />
-                    </a>
+                    <DarkToggel />
 
-                    <a href="#" className="text-textMuted hover:text-textMain transition-colors relative">
+                    <a href="#" className="relative text-textMuted hover:text-textMain">
                         <ShoppingCart className="w-6 h-6" />
-                        <span className="absolute -top-2 -right-2 bg-primary text-textMain text-xs w-4 h-4 rounded-full flex items-center justify-center">
-                            3
-                        </span>
+                        <span className="absolute -top-2 -right-2 bg-primary text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">3</span>
                     </a>
                 </div>
 
@@ -107,6 +116,31 @@ export default function Header() {
                     )}
                 </div>
             </nav>
+
+            {/* Mobile Menu */}
+            {menuOpen && (
+                <div className="md:hidden bg-background border-t border-border shadow-md">
+                    <div className="flex flex-col space-y-3 p-4">
+                        {navItems.map((item) => (
+                            <Link
+                                key={item.path}
+                                to={item.path}
+                                onClick={() => setMenuOpen(false)}
+                                className={`${location.pathname === item.path
+                                        ? "text-textMain"
+                                        : "text-textMuted hover:text-textMain"
+                                    }`}
+                            >
+                                {item.name}
+                            </Link>
+                        ))}
+                        <DarkToggel />
+                        <a href="#" className="flex items-center space-x-2">
+                            <ShoppingCart className="w-5 h-5" /> <span>Cart</span>
+                        </a>
+                    </div>
+                </div>
+            )}
         </header>
     );
 }
