@@ -1,16 +1,18 @@
 import { Image } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Products({ products }) {
 
     return (
-        <section className="w-3/4 mx-auto">
+        <section className="w-11/12 md:w-3/4 mx-auto">
             <h2 className="text-3xl font-bold text-textMain mb-6">Products</h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
                 {products.length > 0 ? (
                     products.slice(0, 8).map((product) => (
-                        <div
+                        <Link
                             key={product._id}
+                            to={`/products/${product._id}`}
                             className="bg-surface rounded-lg overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 border border-primary flex flex-col"
                         >
                             {/* Product Image */}
@@ -49,7 +51,7 @@ export default function Products({ products }) {
                                     </button>
                                 </div>
                             </div>
-                        </div>
+                        </Link>
                     ))
                 ) : (
                     <p className="text-textMuted col-span-full text-center">

@@ -6,7 +6,7 @@ export default function Footer() {
         <footer className="mt-20 border-t border-border shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.4)]">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
 
                     <div className="col-span-2 lg:col-span-2">
                         <Logo />

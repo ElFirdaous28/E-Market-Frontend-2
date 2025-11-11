@@ -9,7 +9,7 @@ export default function Layout() {
             <Header />
 
             {/* Main content */}
-            <main className="w-full flex-1 flex items-center justify-center flex-col gap-20 p-4">
+            <main className="w-full flex-1 flex items-center justify-center flex-col gap-20 p-4 pt-24">
                 {/* This will render the current page */}
                 <Outlet />
             </main>
