@@ -6,6 +6,7 @@ import ProtectedRoute from "./ProtectedRoute"
 import UserRoutes from "./UserRoutes"
 import GuestRoute from "./GuestRoute"
 import Layout from "../components/Layout"
+import Test from "../pages/test"
 
 const AppRoutes = () => {
     return (
@@ -14,6 +15,7 @@ const AppRoutes = () => {
                 <Route element={<GuestRoute />}>
                     {AuthRoutes()}
                 </Route>
+                <Route path="/test" element={<Test />}></Route>
                 <Route path="/" element={<Layout />}>
 
                     <Route index element={<Home />}></Route>
