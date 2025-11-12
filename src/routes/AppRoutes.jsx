@@ -6,7 +6,7 @@ import ProtectedRoute from "./ProtectedRoute"
 import UserRoutes from "./UserRoutes"
 import GuestRoute from "./GuestRoute"
 import Layout from "../components/Layout"
-import Test from "../pages/test"
+import Profile from "../pages/Profile"
 
 const AppRoutes = () => {
     return (
@@ -15,15 +15,13 @@ const AppRoutes = () => {
                 <Route element={<GuestRoute />}>
                     {AuthRoutes()}
                 </Route>
-                <Route path="/test" element={<Test />}></Route>
                 <Route path="/" element={<Layout />}>
 
-                    <Route index element={<Home />}></Route>
-
-                    {/* Protect all user routes */}
-                    <Route element={<ProtectedRoute allowedRoles={['user']} />}>
-                        {UserRoutes()}
+                    <Route index element={<Home />} />
+                    <Route element={<ProtectedRoute  />}>
+                        <Route path="/profile" element={<Profile />} />
                     </Route>
+                    {UserRoutes()}
                 </Route>
                 {/* catche not found routes */}
                 <Route path="*" element={<NotFound />}></Route>
