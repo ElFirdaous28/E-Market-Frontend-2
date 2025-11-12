@@ -6,21 +6,20 @@ import { useAuth } from "../contexts/AuthContext";
 
 export default function Layout() {
     const { user } = useAuth();
-
     return (
         <div className="min-h-screen flex">
             {/* Sidebar */}
-            <Sidebar />
+            {user && <Sidebar />}
 
             {/* Right side: Header + Main */}
             <div
-                className="flex flex-col flex-1 md:ml-38"
+                className={`flex flex-col flex-1 ${user && "md:ml-38"}`}
             >
                 {/* Header */}
                 <Header />
 
                 {/* Main content */}
-                <main className="p-6 mt-20 overflow-y-auto">
+                <main className="p-6 mt-20 w-full">
                     <Outlet />
                 </main>
 
