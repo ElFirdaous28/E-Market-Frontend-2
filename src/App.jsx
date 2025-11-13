@@ -1,7 +1,9 @@
 import AppRoutes from "./routes/AppRoutes";
 import { ToastContainer } from 'react-toastify';
+import { useAuth } from "./hooks/useAuth";
 
 function App() {
+  const { initAuth } = useAuth(); // ✅ triggers the initAuth query on app load
 
   return (<>
     <AppRoutes />

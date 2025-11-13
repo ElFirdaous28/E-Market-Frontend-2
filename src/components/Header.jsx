@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { Search, ShoppingCart, User, Menu, X } from 'lucide-react';
 import { Logo } from './Logo';
 import { Link, useLocation } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import LogoutButton from './LogoutButton';
 import DarkToggel from './darkToggel';
 

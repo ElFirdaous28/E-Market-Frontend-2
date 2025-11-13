@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Eye, EyeOff } from "lucide-react";
 import { Logo } from "../components/Logo";
 import eStoreLogo from "../assets/images/e-store.png";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 import { Link, useNavigate } from "react-router-dom";
 import { loginSchema } from "../validations/loginSchema";
 import { toast } from "react-toastify";
@@ -18,7 +18,7 @@ const Login = () => {
     const {
         register,
         handleSubmit,
-        formState: { errors, isSubmitting },
+        formState: { errors },
     } = useForm({
         resolver: yupResolver(loginSchema),
     });
@@ -26,9 +26,18 @@ const Login = () => {
     const onSubmit = async (data) => {
         try {
             setBackendError("");
-            await login(data.email, data.password);
+            const res = await login.mutateAsync({
+                email: data.email,
+                password: data.password,
+            });
             toast.success("Logged in successfully!");
-            navigate("/products", { replace: true });
+            console.log(res.data.data.user.role);
+            
+            if (res.data.data.user.role === "admin")
+                navigate("dashboard", { replace: true })
+            else {
+                navigate("/products", { replace: true });
+            }
         } catch (err) {
             toast.error("Login failed!");
             if (err.response) {
@@ -120,10 +129,10 @@ const Login = () => {
                         {/* Submit */}
                         <button
                             type="submit"
-                            disabled={isSubmitting}
+                            disabled={login.isPending}
                             className="w-full bg-primary hover:bg-emerald-600 text-textMain font-semibold py-3 rounded-lg transition-colors"
                         >
-                            {isSubmitting ? "Signing in..." : "Sign In"}
+                            {login.isPending ? "Signing in..." : "Sign In"}
                         </button>
 
 

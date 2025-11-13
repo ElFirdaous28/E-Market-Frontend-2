@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Home, Package, ShoppingCart, Users, BarChart3, Settings, ChevronsRight, ChevronsLeft } from "lucide-react";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 
 export default function Sidebar() {
     const [sidebarOpen, setSidebarOpen] = useState(true);
