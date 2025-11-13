@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Eye, EyeOff } from "lucide-react";
 import { Logo } from "../components/Logo";
 import eStoreLogo from "../assets/images/e-store.png";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 import { Link, useNavigate } from "react-router-dom";
 import { registerSchema } from "../validations/registerSchema";
 import { toast } from "react-toastify";
@@ -19,7 +19,7 @@ const Register = () => {
     const {
         register,
         handleSubmit,
-        formState: { errors, isSubmitting },
+        formState: { errors },
         setError,
     } = useForm({
         resolver: yupResolver(registerSchema),
@@ -28,7 +28,12 @@ const Register = () => {
     const onSubmit = async (data) => {
         try {
             setBackendError(""); // reset
-            await registerUser(data.fullName, data.email, data.password);
+            await registerUser.mutateAsync({
+                fullname: data.fullname,
+                email: data.email,
+                password: data.password,
+            });
+
             toast.success("Register successfully!");
             navigate("/products", { replace: true });
         } catch (err) {
@@ -76,13 +81,13 @@ const Register = () => {
                             </label>
                             <input
                                 type="text"
-                                {...register("fullName")}
+                                {...register("fullname")}
                                 placeholder="John Doe"
-                                className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors ${errors.fullName ? "border-red-500" : "border-border focus:border-primary"
+                                className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors ${errors.fullname ? "border-red-500" : "border-border focus:border-primary"
                                     }`}
                             />
-                            {errors.fullName && (
-                                <p className="text-red-500 text-xs mt-1">{errors.fullName.message}</p>
+                            {errors.fullname && (
+                                <p className="text-red-500 text-xs mt-1">{errors.fullname.message}</p>
                             )}
                         </div>
 
@@ -185,10 +190,11 @@ const Register = () => {
                         {/* Submit */}
                         <button
                             type="submit"
-                            disabled={isSubmitting}
+                            disabled={registerUser.isPending}
                             className="w-full bg-primary hover:bg-emerald-600 text-textMain font-semibold py-3 rounded-lg transition-colors"
                         >
-                            {isSubmitting ? "Signing up..." : "Sign Up"}
+                            {registerUser
+                            .isPending ? "Signing up..." : "Sign Up"}
                         </button>
 
                         <div className="text-center text-sm text-textMuted">

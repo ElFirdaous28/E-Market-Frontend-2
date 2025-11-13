@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getCategories } from "../services/categoryService";
+import axios from "../services/axios";
 
 let cache = null;
 
@@ -20,11 +20,8 @@ export const useCategories = ({ forceRefresh = false } = {}) => {
 
         (async () => {
             try {
-                const data = await getCategories();
-                if (!cancelled) {
-                    cache = data;
-                    setCategories(data);
-                }
+                const res = await axios.get("/categories/product-number");
+                setCategories(res.data.data);
             } catch (err) {
                 if (!cancelled) setError(err);
             } finally {
@@ -37,5 +34,5 @@ export const useCategories = ({ forceRefresh = false } = {}) => {
         };
     }, [forceRefresh]);
 
-    return { categories, loading, error, refresh: () => {} };
+    return { categories, loading, error, refresh: () => { } };
 };

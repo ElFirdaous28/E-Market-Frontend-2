@@ -1,4 +1,4 @@
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 import { useMemo } from "react";
 import api from "../services/axios";
 

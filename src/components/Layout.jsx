@@ -2,10 +2,11 @@ import { Outlet } from "react-router-dom";
 import Footer from "./Footer";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 
 export default function Layout() {
     const { user } = useAuth();
+    
     return (
         <div className="min-h-screen flex">
             {/* Sidebar */}

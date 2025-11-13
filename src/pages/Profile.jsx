@@ -1,5 +1,5 @@
 import { Eye, EyeOff, User, X } from "lucide-react";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
 import { useAxios } from "../hooks/useAxios";
 import { toast } from "react-toastify";
