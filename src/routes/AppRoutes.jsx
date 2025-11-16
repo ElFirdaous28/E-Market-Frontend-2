@@ -7,6 +7,7 @@ import UserRoutes from "./UserRoutes"
 import GuestRoute from "./GuestRoute"
 import Layout from "../components/Layout"
 import Profile from "../pages/Profile"
+import Cart from "../pages/Cart"
 
 const AppRoutes = () => {
     return (
@@ -18,7 +19,9 @@ const AppRoutes = () => {
                 <Route path="/" element={<Layout />}>
 
                     <Route index element={<Home />} />
-                    <Route element={<ProtectedRoute  />}>
+                    <Route path="/cart" element={<Cart />} />
+
+                    <Route element={<ProtectedRoute />}>
                         <Route path="/profile" element={<Profile />} />
                     </Route>
                     {UserRoutes()}

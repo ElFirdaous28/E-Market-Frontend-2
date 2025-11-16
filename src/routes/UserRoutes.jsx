@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route } from "react-router-dom";
 import Products from "../pages/Products";
 import { ProductDetails } from "../pages/ProductDetails";
 import ProtectedRoute from "./ProtectedRoute"
