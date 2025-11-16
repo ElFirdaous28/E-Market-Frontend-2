@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Home, Package, ShoppingCart, Users, BarChart3, Settings, ChevronsRight, ChevronsLeft } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
+import { Link } from "react-router-dom";
 
 export default function Sidebar() {
     const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -24,14 +25,23 @@ export default function Sidebar() {
                 <nav className="space-y-2">
 
                     {/* add links based on role */}
-                    <a href="#" className="flex items-center gap-3 px-4 py-3 bg-primary rounded-lg text-white">
-                        <Home className="w-5 h-5" />
-                        {sidebarOpen && <span>Dashboard</span>}
-                    </a>
-                    <a href="#" className="flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-primary hover:text-white rounded-lg">
+                    {/* {user?.role === 'admin' && (
+
+                        <Link to="/dashboard" className="flex items-center gap-3 px-4 py-3 bg-primary rounded-lg text-white">
+                            <Home className="w-5 h-5" />
+                            {sidebarOpen && <span>Dashboard</span>}
+                        </Link>
+                    ) */}
+                            <Link to="/" className="flex items-center gap-3 px-4 py-3 bg-primary rounded-lg text-white">
+                                <Home className="w-5 h-5" />
+                                {sidebarOpen && <span>{user?.role === 'admin'?"Dashboard":"Home"}</span>}
+                            </Link>
+
+                    
+                    <Link to={user?.role === 'admin' ? "/dashboard" : "/"} className="flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-primary hover:text-white rounded-lg">
                         <Package className="w-5 h-5" />
                         {sidebarOpen && <span>Products</span>}
-                    </a>
+                    </Link>
                     <a href="#" className="flex items-center gap-3 px-4 py-3 text-textMuted hover:bg-primary hover:text-white rounded-lg">
                         <ShoppingCart className="w-5 h-5" />
                         {sidebarOpen && <span>Orders</span>}

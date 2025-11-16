@@ -1,12 +1,14 @@
-import { ShoppingCart } from "lucide-react"
-import CategoriesSlider from "../components/CategoriesSlider"
-import Products from "../components/Products"
-import { Link } from "react-router-dom"
+import { ShoppingCart } from "lucide-react";
+import CategoriesSlider from "../components/CategoriesSlider";
+import Products from "../components/Products";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "../services/axios";
+import { useAuth } from "../contexts/AuthContext";
+import { AdminDashboard } from "../pages/AdminDashboard";
 
 export const Home = () => {
-
+  const { user } = useAuth();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -24,19 +26,22 @@ export const Home = () => {
     getProducts();
   }, []);
 
-
   if (loading) return <div>Loading products...</div>;
+
+  // if (user?.role === "admin") {
+  //   return <AdminDashboard />;
+  // }
+
   return (
     <>
-
       <section className="w-full sm:w-11/12 lg:w-3/4 bg-surface rounded-lg overflow-hidden flex flex-col md:flex-row p-6 sm:p-8 md:p-12 lg:p-16 text-center md:text-left items-center md:items-stretch mx-auto">
-        {/* Left content */}
         <div className="w-full md:w-3/5 flex flex-col justify-center items-center md:items-start">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-textMain leading-tight">
             Shop the Best Products Online
           </h1>
           <p className="mt-4 text-base sm:text-lg text-textMuted max-w-md">
-            Discover amazing deals on top-quality products. Fast shipping, secure payments, and excellent customer service.
+            Discover amazing deals on top-quality products. Fast shipping,
+            secure payments, and excellent customer service.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
             <Link
@@ -54,14 +59,12 @@ export const Home = () => {
           </div>
         </div>
 
-        {/* Right image/icon */}
         <div className="w-full md:w-2/5 bg-primary flex items-center justify-center p-8 md:p-12 min-h-[200px] md:min-h-0 rounded-lg mt-8 md:mt-0">
           <ShoppingCart className="w-24 h-24 sm:w-32 sm:h-32 lg:w-48 lg:h-48 text-textMain opacity-90" />
         </div>
       </section>
 
       <CategoriesSlider />
-      {/* products list */}
       <Products products={products} />
 
       <div className="w-3/4 text-primary -mt-10 text-right">
@@ -73,5 +76,5 @@ export const Home = () => {
         </Link>
       </div>
     </>
-  )
-}
+  );
+};
