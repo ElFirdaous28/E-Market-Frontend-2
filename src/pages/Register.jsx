@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Eye, EyeOff } from "lucide-react";
 import { Logo } from "../components/Logo";
 import eStoreLogo from "../assets/images/e-store.png";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 import { Link, useNavigate } from "react-router-dom";
 import { registerSchema } from "../validations/registerSchema";
 import { toast } from "react-toastify";
@@ -16,47 +16,46 @@ const Register = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [backendError, setBackendError] = useState("");
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    setError,
-  } = useForm({
-    resolver: yupResolver(registerSchema),
-  });
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        setError,
+    } = useForm({
+        resolver: yupResolver(registerSchema),
+    });
 
-  const onSubmit = async (data) => {
-    try {
-      setBackendError(""); // reset
-      const res = await registerUser(data.fullName, data.email, data.password);
-      console.log(res);
-      
-      toast.success("Register successfully!");
-      if (user?.role === "admin") {
-        navigate("/dashboard", { replace: true });
-      } else {
-        navigate("/products", { replace: true });
-      }
-    } catch (err) {
-      toast.error("Register failed!");
-      if (err.response) {
-        const res = err.response;
-        // Field-specific backend errors
-        if (res.data?.errors) {
-          Object.entries(res.data.errors).forEach(([field, message]) => {
-            setError(field, { type: "backend", message });
-          });
-        } else if (res.data?.message) {
-          setBackendError(res.data.message);
-        } else {
-          setBackendError("Something went wrong");
+    const onSubmit = async (data) => {
+        try {
+            setBackendError(""); // reset
+            await registerUser.mutateAsync({
+                fullname: data.fullname,
+                email: data.email,
+                password: data.password,
+            });
+
+            toast.success("Register successfully!");
+            navigate("/products", { replace: true });
+        } catch (err) {
+            toast.error("Register failed!");
+            if (err.response) {
+                const res = err.response;
+                // Field-specific backend errors
+                if (res.data?.errors) {
+                    Object.entries(res.data.errors).forEach(([field, message]) => {
+                        setError(field, { type: "backend", message });
+                    });
+                } else if (res.data?.message) {
+                    setBackendError(res.data.message);
+                } else {
+                    setBackendError("Something went wrong");
+                }
+            } else {
+                setBackendError("Network error or server not reachable");
+            }
+            console.error(err);
         }
-      } else {
-        setBackendError("Network error or server not reachable");
-      }
-      console.error(err);
-    }
-  };
+    };
 
   return (
     <div className="flex flex-col md:flex-row gap-40 items-center">
@@ -76,31 +75,23 @@ const Register = () => {
             Start Shopping :)
           </h1>
 
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="space-y-6 w-full lg:px-10"
-          >
-            {/* Full Name */}
-            <div>
-              <label className="block text-textMain text-sm font-medium mb-2">
-                Full Name
-              </label>
-              <input
-                type="text"
-                {...register("fullName")}
-                placeholder="John Doe"
-                className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors ${
-                  errors.fullName
-                    ? "border-red-500"
-                    : "border-border focus:border-primary"
-                }`}
-              />
-              {errors.fullName && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.fullName.message}
-                </p>
-              )}
-            </div>
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 w-full lg:px-10">
+                        {/* Full Name */}
+                        <div>
+                            <label className="block text-textMain text-sm font-medium mb-2">
+                                Full Name
+                            </label>
+                            <input
+                                type="text"
+                                {...register("fullname")}
+                                placeholder="John Doe"
+                                className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors ${errors.fullname ? "border-red-500" : "border-border focus:border-primary"
+                                    }`}
+                            />
+                            {errors.fullname && (
+                                <p className="text-red-500 text-xs mt-1">{errors.fullname.message}</p>
+                            )}
+                        </div>
 
             {/* Email */}
             <div>
@@ -219,14 +210,15 @@ const Register = () => {
               )}
             </div>
 
-            {/* Submit */}
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full bg-primary hover:bg-emerald-600 text-textMain font-semibold py-3 rounded-lg transition-colors"
-            >
-              {isSubmitting ? "Signing up..." : "Sign Up"}
-            </button>
+                        {/* Submit */}
+                        <button
+                            type="submit"
+                            disabled={registerUser.isPending}
+                            className="w-full bg-primary hover:bg-emerald-600 text-textMain font-semibold py-3 rounded-lg transition-colors"
+                        >
+                            {registerUser
+                            .isPending ? "Signing up..." : "Sign Up"}
+                        </button>
 
             <div className="text-center text-sm text-textMuted">
               Already have an account?{" "}

@@ -1,7 +1,15 @@
 import { Image } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useCart } from "../hooks/useCart";
 
 export default function Products({ products }) {
+    const { addToCart } = useCart();
+
+    // Add product to cart
+    const handleAddToCart = (e, productId) => {
+        e.preventDefault(); // Prevent the Link navigation
+        addToCart.mutate({ productId, quantity: 1 }); // Default 1 for now
+    };
 
     return (
         <section className="w-11/12 md:w-3/4 mx-auto">
@@ -9,19 +17,19 @@ export default function Products({ products }) {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-5">
                 {products.length > 0 ? (
-                    products.slice(0, 8).map((product) => (
+                    products.map((product) => (
                         <Link
                             key={product._id}
                             to={`/products/${product._id}`}
                             className="bg-surface rounded-lg overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 border border-primary flex flex-col"
                         >
                             {/* Product Image */}
-                            <div className="bg-border aspect-square flex items-center justify-center">
+                            <div className="bg-border aspect-square flex items-center justify-center overflow-hidden">
                                 {product.primaryImage ? (
                                     <img
                                         src={`${import.meta.env.VITE_API_URL}${product.primaryImage}`}
                                         alt={product.title}
-                                        className="object-cover w-4/5 h-4/5"
+                                        className="w-full h-full object-cover"
                                     />
                                 ) : (
                                     <Image className="w-16 h-16 text-gray-500" />
@@ -46,7 +54,9 @@ export default function Products({ products }) {
                                     <span className="text-xl font-bold text-primary mt-4">
                                         ${product.price?.toFixed(2) ?? "N/A"}
                                     </span>
-                                    <button className="mt-4 border border-primary hover:bg-primary text-textMain text-sm px-2 py-1 rounded-full font-semibold transition-colors">
+                                    <button
+                                        onClick={(e) => handleAddToCart(e, product._id)}
+                                        className="mt-4 border border-primary hover:bg-primary text-textMain text-sm px-2 py-1 rounded-full font-semibold transition-colors">
                                         Add to Cart
                                     </button>
                                 </div>

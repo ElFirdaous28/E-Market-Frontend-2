@@ -7,7 +7,8 @@ import UserRoutes from "./UserRoutes"
 import AdminRoutes from "./AdminRoutes"
 import GuestRoute from "./GuestRoute"
 import Layout from "../components/Layout"
-import Test from "../pages/test"
+import Profile from "../pages/Profile"
+import Cart from "../pages/Cart"
 import { UserManagement } from "../pages/UserManagement"
 
 const AppRoutes = () => {
@@ -17,15 +18,15 @@ const AppRoutes = () => {
                 <Route element={<GuestRoute />}>
                     {AuthRoutes()}
                 </Route>
-                <Route path="/test" element={<Test />}></Route>
                 <Route path="/" element={<Layout />}>
 
             
-                    <Route index element={<Home />}></Route>    
-                    {/* Protect all user routes */}
-                    <Route element={<ProtectedRoute allowedRoles={['user']} />}>
-                        {UserRoutes()}
+                    <Route index element={<Home />} />
+                    <Route path="/cart" element={<Cart />} />    
+                    <Route element={<ProtectedRoute />}>
+                        <Route path="/profile" element={<Profile />} />
                     </Route>
+                    {UserRoutes()}
 
                     {/* Protect all admin routes */}
                     <Route element={<ProtectedRoute allowedRoles={['admin']} />}>

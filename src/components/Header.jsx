@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Search, ShoppingCart, User, Menu, X } from 'lucide-react';
 import { Logo } from './Logo';
 import { Link, useLocation } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import LogoutButton from './LogoutButton';
 import DarkToggel from './darkToggel';
 
@@ -11,6 +11,7 @@ export default function Header() {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const { user } = useAuth();
     const location = useLocation();
+    const dropdownRef = useRef(null);
 
     const navItems = [
         { name: "Home", path: "/" },
@@ -70,21 +71,17 @@ export default function Header() {
 
                 {/* User Section */}
                 <div
+                    onMouseLeave={() => setDropdownOpen(false)}
+                    ref={dropdownRef}
                     className="relative"
-                    tabIndex={0} // allows onBlur to work
-                    onBlur={() => setDropdownOpen(false)} // close dropdown when focus leaves
                 >
                     {user ? (
                         <div
                             className="flex items-center space-x-2 cursor-pointer"
-                            onClick={() => setDropdownOpen((prev) => !prev)}
+                            onClick={() => setDropdownOpen((p) => !p)}
                         >
                             {user.avatar ? (
-                                <img
-                                    src={user.avatar || '/default-avatar.png'}
-                                    alt="Avatar"
-                                    className="w-10 h-10 rounded-full object-cover"
-                                />
+                                <img src={`${import.meta.env.VITE_API_URL}${user.avatar}`} alt="Avatar" className="w-10 h-10 rounded-full" />
                             ) : (
                                 <User className="w-10 h-10 bg-surface rounded-full p-2" />
                             )}
@@ -94,23 +91,21 @@ export default function Header() {
                             </div>
                         </div>
                     ) : (
-                        <Link
-                            to="/login"
-                            className="px-4 py-2 bg-primary text-white rounded-md text-sm font-medium hover:bg-primary/80"
-                        >
-                            Sign In
-                        </Link>
+                        <Link to="/login" className="px-4 py-2 bg-primary text-white rounded-md">Sign In</Link>
                     )}
 
-                    {/* Dropdown menu */}
                     {dropdownOpen && user && (
-                        <div className="absolute right-0 mt-2 w-40 bg-surface rounded-md shadow-lg overflow-hidden pl-3 z-20">
+                        <div className="absolute right-0 top-10 w-40 bg-surface rounded-md shadow-lg overflow-hidden pl-3 z-20">
+                            {/* Normal Link - will navigate */}
                             <Link
                                 to="/profile"
                                 className="w-full block px-4 py-2 text-textMuted hover:bg-border"
+                                // optional: close after navigation in case SPA keeps dropdown open
+                                onClick={() => setDropdownOpen(false)}
                             >
                                 Profile
                             </Link>
+
                             <LogoutButton />
                         </div>
                     )}
