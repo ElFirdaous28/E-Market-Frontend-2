@@ -28,11 +28,12 @@ export const Home = () => {
 
   if (loading) return <div>Loading products...</div>;
 
-  // if (user?.role === "admin") {
-  //   return <AdminDashboard />;
-  // }
+  if (user?.role === "admin") {
+    return <AdminDashboard />;
+  }
 
-  return (
+ else{
+   return (
     <>
       <section className="w-full sm:w-11/12 lg:w-3/4 bg-surface rounded-lg overflow-hidden flex flex-col md:flex-row p-6 sm:p-8 md:p-12 lg:p-16 text-center md:text-left items-center md:items-stretch mx-auto">
         <div className="w-full md:w-3/5 flex flex-col justify-center items-center md:items-start">
@@ -77,4 +78,5 @@ export const Home = () => {
       </div>
     </>
   );
+ }
 };
