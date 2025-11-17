@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Eye, EyeOff } from "lucide-react";
 import { Logo } from "../components/Logo";
 import eStoreLogo from "../assets/images/e-store.png";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 import { Link, useNavigate } from "react-router-dom";
 import { loginSchema } from "../validations/loginSchema";
 import { toast } from "react-toastify";
@@ -15,30 +15,33 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [backendError, setBackendError] = useState("");
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm({
-    resolver: yupResolver(loginSchema),
-  });
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
+        resolver: yupResolver(loginSchema),
+    });
 
-  const onSubmit = async (data) => {
-    try {
-      setBackendError("");
-      const res = await login(data.email, data.password);
-      console.log(res);
-      toast.success("Logged in successfully!");
-      
-      if (user?.role === "admin") {
-        navigate("/dashboard", { replace: true });
-      } else {
-        navigate("/products", { replace: true });
-      }
-    } catch (err) {
-      toast.error("Login failed!");
-      if (err.response) {
-        const res = err.response;
+    const onSubmit = async (data) => {
+        try {
+            setBackendError("");
+            const res = await login.mutateAsync({
+                email: data.email,
+                password: data.password,
+            });
+            toast.success("Logged in successfully!");
+            console.log(res.data.data.user.role);
+            
+            if (res.data.data.user.role === "admin")
+                navigate("dashboard", { replace: true })
+            else {
+                navigate("/products", { replace: true });
+            }
+        } catch (err) {
+            toast.error("Login failed!");
+            if (err.response) {
+                const res = err.response;
 
         if (res.data?.errors) {
           Object.entries(res.data.errors).forEach(([field, message]) => {
@@ -130,17 +133,18 @@ const Login = () => {
               )}
             </div>
 
-            {backendError && (
-              <p className="text-red-500 text-sm -mt-7">{backendError}</p>
-            )}
-            {/* Submit */}
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full bg-primary hover:bg-emerald-600 text-textMain font-semibold py-3 rounded-lg transition-colors"
-            >
-              {isSubmitting ? "Signing in..." : "Sign In"}
-            </button>
+                        {backendError && (
+                            <p className="text-red-500 text-sm -mt-7">{backendError}</p>
+                        )}
+                        {/* Submit */}
+                        <button
+                            type="submit"
+                            disabled={login.isPending}
+                            className="w-full bg-primary hover:bg-emerald-600 text-textMain font-semibold py-3 rounded-lg transition-colors"
+                        >
+                            {login.isPending ? "Signing in..." : "Sign In"}
+                        </button>
+
 
             {/* Sign up */}
             <div className="text-center text-sm text-textMuted">
