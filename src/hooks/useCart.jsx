@@ -1,17 +1,18 @@
 import { useDispatch } from "react-redux";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAxios } from "../hooks/useAxios";
-import { setCart, clearCart } from "../store/cartSlice";
+import { setCart, clearCart, setSummary } from "../store/cartSlice";
 import { useAuth } from "../hooks/useAuth";
 import { toast } from "react-toastify";
 
-export const useCart = () => {
+export const useCart = ({ couponCodes = [] } = {}) => {
     const axios = useAxios();
     const dispatch = useDispatch();
     const queryClient = useQueryClient();
     const { user } = useAuth();
 
     const queryKey = ["cart", user?._id ?? "guest"];
+    const summaryKey = [...queryKey, "summary", ...couponCodes];
     const basePath = user ? "/cart" : "/guest-cart";
 
     // --- Fetch cart ---
@@ -32,15 +33,18 @@ export const useCart = () => {
         },
     });
 
+    const invalidateAll = () => {
+        queryClient.invalidateQueries(queryKey);
+        queryClient.invalidateQueries(summaryKey);
+    };
+
     // --- Add to cart ---
     const addToCart = useMutation({
         mutationFn: ({ productId, quantity }) =>
             axios.post(basePath, { productId, quantity }),
         onSuccess: (res) => {
-            queryClient.invalidateQueries(queryKey);
+            invalidateAll();
             toast.success(res.data.message || "Product added to cart!");
-            console.log(res.data);
-            
         },
         onError: (err) => {
             console.error("Add to cart error:", err);
@@ -53,7 +57,7 @@ export const useCart = () => {
         mutationFn: ({ productId, quantity }) =>
             axios.put(basePath, { productId, quantity }),
         onSuccess: (res) => {
-            queryClient.invalidateQueries(queryKey);
+            invalidateAll();
             toast.success(res.data.message || "Quantity updated!");
         },
         onError: (err) => {
@@ -67,7 +71,7 @@ export const useCart = () => {
         mutationFn: ({ productId }) =>
             axios.delete(basePath, { data: { productId } }),
         onSuccess: (res) => {
-            queryClient.invalidateQueries(queryKey);
+            invalidateAll();
             toast.success(res.data.message || "Item removed from cart!");
         },
         onError: (err) => {
@@ -81,7 +85,7 @@ export const useCart = () => {
         mutationFn: () => axios.delete(`${basePath}/clear`),
         onSuccess: (res) => {
             dispatch(clearCart());
-            queryClient.invalidateQueries(queryKey);
+            invalidateAll();
             toast.success(res.data.message || "Cart cleared!");
         },
         onError: (err) => {
@@ -90,13 +94,39 @@ export const useCart = () => {
         },
     });
 
+    // --- Fetch summary ---
+    const fetchSummary = async () => {
+        const res = await axios.post(`${basePath}/summary`, {
+            couponCodes,
+        });
+        return res.data.data.summary;
+    };
+
+    const summaryQuery = useQuery({
+        queryKey: summaryKey,
+        queryFn: fetchSummary,
+        enabled: !!cartQuery.data && couponCodes.length >= 0,
+        onSuccess: (summary) => {
+            dispatch(setSummary(summary));
+        },
+        onError: (err) => {
+            console.error("Summary fetch error:", err);
+            toast.error("Failed to fetch summary");
+        },
+    });
+
+    const cartLength = cartQuery.data?.items?.reduce((total, item) => total + item.quantity, 0) || 0;
+
     return {
         cart: cartQuery.data,
+        summary: summaryQuery.data,
+        isSummaryLoading: summaryQuery.isLoading,
         isLoading: cartQuery.isLoading,
         isError: cartQuery.isError,
         addToCart,
         updateQuantity,
         removeItem,
         clearCart: clear,
+        cartLength,
     };
 };

@@ -5,6 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import LogoutButton from './LogoutButton';
 import DarkToggel from './darkToggel';
+import { useCart } from '../hooks/useCart';
 
 export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -12,7 +13,8 @@ export default function Header() {
     const { user } = useAuth();
     const location = useLocation();
     const dropdownRef = useRef(null);
-
+    const {cartLength} =useCart();
+    
     const navItems = [
         { name: "Home", path: "/" },
         { name: "Products", path: "/products" },
@@ -65,7 +67,7 @@ export default function Header() {
 
                     <a href="#" className="relative text-textMuted hover:text-textMain">
                         <ShoppingCart className="w-6 h-6" />
-                        <span className="absolute -top-2 -right-2 bg-primary text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">3</span>
+                        <span className="absolute -top-2 -right-2 bg-primary text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">{cartLength}</span>
                     </a>
                 </div>
 
