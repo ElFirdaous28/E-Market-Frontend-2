@@ -3,7 +3,7 @@ import { Users, Trash2, Edit2, Check, X } from 'lucide-react';
 import { useAxios } from '../hooks/useAxios';
 import { useAuth } from '../hooks/useAuth';
 
-export const UserManagement = () => {
+export const ProductManagement = () => {
  const axios = useAxios();
 const { accessToken } = useAuth();
 
@@ -30,7 +30,7 @@ useEffect(() => {
   const [editingId, setEditingId] = useState(null);
   const [editRole, setEditRole] = useState('');
 
-  const roles = ['admin', 'seller', 'user'];
+  const category = ['elec', 'home', 'fashion'];
 
 
   const handleEdit = (user) => {
@@ -64,23 +64,23 @@ useEffect(() => {
       console.log("error deleting this user",err);
     }
   };
-  if(loading){
+//   if(loading){
 
-    return(
-      <h1>loading..</h1>
-    )
-  }
- else{
+//     return(
+//       <h1>loading..</h1>
+//     )
+//   }
+//  else{
    return (
     <main className="flex-1 p-4 md:p-6 overflow-auto w-full">
       {/* Header */}
       <div className="mb-4 md:mb-6 max-w-full">
-        <h1 className="text-xl md:text-2xl font-bold text-white mb-1">Users Management</h1>
-        <p className="text-sm md:text-base text-gray-400">Manage user roles and permissions</p>
+        <h1 className="text-xl md:text-2xl font-bold text-white mb-1">Products Management</h1>
+        <p className="text-sm md:text-base text-gray-400">Manage Products</p>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6 w-full">
+      {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6 w-full">
         <div className="bg-gray-800  border border-gray-700 rounded-lg p-4 md:p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="w-10 h-10 md:w-12 md:h-12 bg-emerald-500 bg-opacity-20 rounded-lg flex items-center justify-center">
@@ -108,24 +108,25 @@ useEffect(() => {
           <h3 className="text-gray-400 text-xs md:text-sm mb-1">Seller</h3>
           <p className="text-xl md:text-2xl font-bold text-white">{users.filter(u => u.role === 'seller').length}</p>
         </div>
-      </div>
+      </div> */}
 
       {/* Users Table */}
       <div className="bg-gray-800 border border-gray-700 rounded-lg w-full">
         <div className="p-4 md:p-6 border-b border-gray-700">
-          <h2 className="text-base md:text-lg font-semibold text-white">All Users</h2>
+          <h2 className="text-base md:text-lg font-semibold text-white">All Products</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[600px]">
             <thead>
               <tr className="border-b border-gray-700">
-                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">Name</th>
-                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">Email</th>
-                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">Role</th>
+                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">Title</th>
+                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">Description</th>
+                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">Price</th>
+                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">Stock</th>
                 <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">Actions</th>
               </tr>
             </thead>
-            <tbody>
+            {/* <tbody>
               {users.map((user) => (
                 <tr key={user._id} className="border-b border-gray-700 hover:bg-gray-750 transition-colors">
                   <td className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-white font-medium">
@@ -199,11 +200,11 @@ useEffect(() => {
                   </td>
                 </tr>
               ))}
-            </tbody>
+            </tbody> */}
           </table>
         </div>
       </div>
     </main>
   );
- }
+//  }
 }

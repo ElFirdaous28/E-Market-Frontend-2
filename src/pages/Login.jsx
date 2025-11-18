@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 
 const Login = () => {
   const { user, login } = useAuth();
+ 
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [backendError, setBackendError] = useState("");
@@ -34,7 +35,7 @@ const Login = () => {
             console.log(res.data.data.user.role);
             
             if (res.data.data.user.role === "admin")
-                navigate("dashboard", { replace: true })
+                navigate("/", { replace: true })
             else {
                 navigate("/products", { replace: true });
             }
