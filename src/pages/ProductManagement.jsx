@@ -7,24 +7,23 @@ export const ProductManagement = () => {
  const axios = useAxios();
 const { accessToken } = useAuth();
 
-  const [users, setUsers] = useState([]);
+  const [products, setProducts] = useState([]);
 // fetch all users :
 const [loading, setLoading] = useState(true);
 
-useEffect(() => {
-  const fetchUsers = async () => {
-    try {
-      const res = await axios.get("/users");
-      setUsers(res.data.data.users);
-      console.log(res);
-    } catch (err) {
-      console.error("Failed to fetch users:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-  fetchUsers();
-}, []);
+ useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const res = await axios.get("/products");
+        setProducts(res.data.data || []);
+      } catch (error) {
+        console.error("Failed to fetch products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getProducts();
+  }, []);
 
 
   const [editingId, setEditingId] = useState(null);
@@ -57,9 +56,9 @@ useEffect(() => {
   };
 
   const handleDelete = async(id) => {
-    setUsers(users.filter(user => user._id !== id));
+    setProducts(products.filter(product => product._id !== id));
     try{
-     await axios.delete(`users/${id}/soft`);
+     await axios.delete(`products/${id}`);
     }catch(err){
       console.log("error deleting this user",err);
     }
@@ -123,20 +122,24 @@ useEffect(() => {
                 <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">Description</th>
                 <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">Price</th>
                 <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">Stock</th>
+                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">categories</th>
                 <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">Actions</th>
               </tr>
             </thead>
-            {/* <tbody>
-              {users.map((user) => (
-                <tr key={user._id} className="border-b border-gray-700 hover:bg-gray-750 transition-colors">
+            <tbody>
+              {products.map((product) => (
+                <tr key={product._id} className="border-b border-gray-700 hover:bg-gray-750 transition-colors">
                   <td className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-white font-medium">
-                    {user.fullname}
+                    {product.title}
                   </td>
                   <td className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-400">
-                    {user.email}
+                    {product.description}
                   </td>
-                  <td className="px-4 md:px-6 py-3 md:py-4">
-                    {editingId === user._id ? (
+                  <td className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-400">
+                        {product.price}
+                  </td>
+                  {/* <td className="px-4 md:px-6 py-3 md:py-4">
+                    {editingId === product._id ? (
                       <select
                         value={editRole}
                         onChange={(e) => setEditRole(e.target.value)}
@@ -148,23 +151,38 @@ useEffect(() => {
                       </select>
                     ) : (
                       <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        user.role === 'admin' 
+                        product.role === 'admin' 
                           ? 'bg-purple-500 bg-opacity-20 text-white' 
-                          : user.role === 'seller'
+                          : product.role === 'seller'
                           ? 'bg-blue-500 bg-opacity-20 text-white'
                           : 'bg-gray-500 bg-opacity-20 text-white'
                       }`}>
-                        {user.role}
+                        {product.price}
                       
                       </span>
                     )}
-                  </td>
+                  </td> */}
+                    <td className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-400">
+                        {product.stock}
+                    </td>
+                    <td className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-400">
+                        {product.categories.length >0 ?
+                        (
+                            product.categories.map((cat) => (
+                            <span>{cat.name}</span>
+                        ))
+                        ):
+                         (
+                            <span>null</span>
+                        )
+                        }
+                    </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
-                      {editingId === user._id ? (
+                      {editingId === product._id ? (
                         <>
                           <button
-                            onClick={() => handleSave(user._id)}
+                            onClick={() => handleSave(product._id)}
                             className="p-2 bg-emerald-500 hover:bg-emerald-600 rounded transition-colors"
                             title="Save"
                           >
@@ -181,14 +199,14 @@ useEffect(() => {
                       ) : (
                         <>
                           <button
-                            onClick={() => handleEdit(user)}
+                            onClick={() => handleEdit(product)}
                             className="p-2 bg-blue-500 hover:bg-blue-600 rounded transition-colors"
                             title="Edit Role"
                           >
                             <Edit2 className="w-4 h-4" />
                           </button>
                           <button
-                            onClick={() => handleDelete(user._id)}
+                            onClick={() => handleDelete(product._id)}
                             className="p-2 bg-red-500 hover:bg-red-600 rounded transition-colors"
                             title="Delete User"
                           >
@@ -200,7 +218,7 @@ useEffect(() => {
                   </td>
                 </tr>
               ))}
-            </tbody> */}
+            </tbody>
           </table>
         </div>
       </div>
