@@ -9,7 +9,7 @@ export default function Layout() {
     const { user } = useAuth();
 
     return (
-        <div className="min-h-screen flex">
+        <div className="min-h-screen w-full flex">
             {/* Sidebar */}
             {user && (user.role === 'seller' ? <SellerSidebar /> : <Sidebar />)}
 
