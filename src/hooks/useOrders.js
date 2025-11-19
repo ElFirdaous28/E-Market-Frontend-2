@@ -20,7 +20,7 @@ export const useOrders = () => {
 
     // --- FETCH USER ORDERS
     const userOrdersQuery = useQuery({
-        queryKey: ["user-orders"],        // IMPORTANT: this must match invalidateQueries
+        queryKey: ["user-orders"],          // IMPORTANT: this must match invalidateQueries
         queryFn: async () => {
             const res = await axios.get(`/orders/${user._id}`);
             return res.data.data;
@@ -58,11 +58,21 @@ export const useOrders = () => {
             toast.error("Failed to delete order");
         }
     });
-
+   
+    // --- FETCH THE RECENT 10 ORDERS :
+    const recentOrdersQuery = useMutation({
+    queryKey: ["recent-orders"],
+    queryFn: async () => {
+        const res = await axios.get("/orders/getlatestorder");
+        return res.data.data;
+    },
+    enabled:false,
+    });
     return {
         // data
         allOrders: allOrdersQuery.data,
         userOrders: userOrdersQuery.data,
+        recentOrders: recentOrdersQuery.data,
 
         // loading
         isLoading: allOrdersQuery.isLoading || userOrdersQuery.isLoading,

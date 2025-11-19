@@ -1,3 +1,4 @@
+import axios from "axios";
 import {
 Search,
 Bell,
@@ -9,9 +10,19 @@ Settings,
 Menu,
 ShoppingCart,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 export const AdminDashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+const [orders, setOrders] = useState([])
+
+useEffect(() => {
+  const fetchOrders = async() => {
+  const res = await axios.get("/orders");
+  setOrders(res.data);
+  console.log("orders",orders);
+  }
+  fetchOrders();
+},[]);
 
 
   const stats = [

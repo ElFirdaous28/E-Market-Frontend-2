@@ -9,7 +9,6 @@ import GuestRoute from "./GuestRoute"
 import Layout from "../components/Layout"
 import Profile from "../pages/Profile"
 import Cart from "../pages/Cart"
-import { UserManagement } from "../pages/UserManagement"
 
 const AppRoutes = () => {
     return (

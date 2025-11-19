@@ -1,15 +1,16 @@
 import { Route } from "react-router-dom";
-import { UserManagement } from "../pages/UserManagement";
 import { Home } from "../pages/Home";
-import { ProductManagement } from "../pages/ProductManagement";
+import { UserManagement } from "../pages/Admin_pages/UserManagement";
+import { ProductManagement } from "../pages/Admin_pages/ProductManagement";
 
 
 export default function AdminRoutes() {
     return (
         <>
             {/* <Route path="/dashboard" element={<Home />} /> */}
-            <Route path="/usermanage" element={<UserManagement />} />
-            <Route path="/productmanage" element={<ProductManagement />} />
+            <Route path="/admin/usermanage" element={<UserManagement />} />
+            
+            <Route path="/admin/productmanage" element={<ProductManagement />} />
 
         </>
     )
