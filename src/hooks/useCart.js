@@ -1,8 +1,8 @@
 import { useDispatch } from "react-redux";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAxios } from "../hooks/useAxios";
+import { useAxios } from "./useAxios";
 import { setCart, clearCart, setSummary } from "../store/cartSlice";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "./useAuth";
 import { toast } from "react-toastify";
 
 export const useCart = ({ couponCodes = [] } = {}) => {

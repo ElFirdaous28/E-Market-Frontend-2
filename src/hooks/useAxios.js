@@ -1,4 +1,4 @@
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "./useAuth";
 import { useMemo } from "react";
 import api from "../services/axios";
 import { v4 as uuid } from "uuid";
