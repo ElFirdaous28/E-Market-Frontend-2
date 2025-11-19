@@ -5,6 +5,7 @@ import { Home } from "../pages/Home"
 import ProtectedRoute from "./ProtectedRoute"
 import UserRoutes from "./UserRoutes"
 import AdminRoutes from "./AdminRoutes"
+import SellerRoutes from "./SellerRoutes"
 import GuestRoute from "./GuestRoute"
 import Layout from "../components/Layout"
 import Profile from "../pages/Profile"
@@ -20,13 +21,18 @@ const AppRoutes = () => {
                 </Route>
                 <Route path="/" element={<Layout />}>
 
-            
+
                     <Route index element={<Home />} />
-                    <Route path="/cart" element={<Cart />} />    
+                    <Route path="/cart" element={<Cart />} />
                     <Route element={<ProtectedRoute />}>
                         <Route path="/profile" element={<Profile />} />
                     </Route>
                     {UserRoutes()}
+
+                    {/* Seller protected routes */}
+                    <Route element={<ProtectedRoute allowedRoles={['seller']} />}>
+                        {SellerRoutes()}
+                    </Route>
 
                     {/* Protect all admin routes */}
                     <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
