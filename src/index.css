@@ -4,35 +4,35 @@
 
 /* Define base CSS variables that change based on theme */
 :root {
-    --color-primary: #01B765;
-    --color-background: #FFFFFF;
-    --color-surface: #F8F9FB;
-    --color-textMain: #181A1E;
-    --color-textMuted: #5F6168;
-    --color-border: #E5E7EB;
+  --color-primary: #01B765;
+  --color-background: #FFFFFF;
+  --color-surface: #F8F9FB;
+  --color-textMain: #181A1E;
+  --color-textMuted: #5F6168;
+  --color-border: #E5E7EB;
 }
 
 /* Override variables in dark mode */
 :root.dark {
-    --color-background: #181A1E;
-    --color-surface: #1F2125;
-    --color-textMain: #FFFFFF;
-    --color-textMuted: #B4B7BE;
-    --color-border: #2A2D32;
+  --color-background: #181A1E;
+  --color-surface: #1F2125;
+  --color-textMain: #FFFFFF;
+  --color-textMuted: #B4B7BE;
+  --color-border: #2A2D32;
 }
 
-/* Register these variables as Tailwind colors */
+/* Register variables as Tailwind colors */
 @theme {
-    --color-primary: var(--color-primary);
-    --color-background: var(--color-background);
-    --color-surface: var(--color-surface);
-    --color-textMain: var(--color-textMain);
-    --color-textMuted: var(--color-textMuted);
-    --color-border: var(--color-border);
+  --color-primary: var(--color-primary);
+  --color-background: var(--color-background);
+  --color-surface: var(--color-surface);
+  --color-textMain: var(--color-textMain);
+  --color-textMuted: var(--color-textMuted);
+  --color-border: var(--color-border);
 }
 
-/* 👇 Add this below your Tailwind imports */
 @layer base {
+
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus {
@@ -40,4 +40,13 @@
     -webkit-text-fill-color: var(--color-textMain) !important;
     transition: background-color 9999s ease-in-out 0s !important;
   }
+}
+
+.hide-scrollbar {
+  scrollbar-width: none !important;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none !important;
+  background-color: red !important;
 }

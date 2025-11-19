@@ -20,7 +20,7 @@ export default function Layout() {
                 <Header />
 
                 {/* Main content */}
-                <main className="p-6 mt-20 w-full">
+                <main className="p-6 mt-20 w-full flex flex-col flex-1 items-center justify-center gap-20">
                     <Outlet />
                 </main>
 

@@ -4,8 +4,8 @@ import Products from "../components/Products";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "../services/axios";
-import { AdminDashboard } from "../pages/AdminDashboard";
 import { useAuth } from "../hooks/useAuth";
+import { AdminDashboard } from "../pages/AdminDashboard";
 
 export const Home = () => {
   const { user } = useAuth();
