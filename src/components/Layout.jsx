@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import Footer from "./Footer";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
+import SellerSidebar from "./SellerSidebar";
 import { useAuth } from "../hooks/useAuth";
 
 export default function Layout() {
@@ -10,11 +11,11 @@ export default function Layout() {
     return (
         <div className="min-h-screen flex">
             {/* Sidebar */}
-            {user && <Sidebar />}
+            {user && (user.role === 'seller' ? <SellerSidebar /> : <Sidebar />)}
 
             {/* Right side: Header + Main */}
             <div
-                className={`flex flex-col flex-1 ${user && "md:ml-38"}`}
+                className={`flex flex-col flex-1 ${user ? (user.role === 'seller' ? 'md:ml-64' : 'md:ml-38') : ''}`}
             >
                 {/* Header */}
                 <Header />
