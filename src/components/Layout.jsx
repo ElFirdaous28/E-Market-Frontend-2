@@ -7,7 +7,7 @@ import { useAuth } from "../hooks/useAuth";
 
 export default function Layout() {
     const { user } = useAuth();
-    
+
     return (
         <div className="min-h-screen flex">
             {/* Sidebar */}
