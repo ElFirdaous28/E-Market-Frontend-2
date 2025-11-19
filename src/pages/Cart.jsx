@@ -2,12 +2,19 @@ import { Image, Trash2, X } from "lucide-react";
 import { useCart } from "../hooks/useCart";
 import { useState } from "react";
 import { useCoupons } from "../hooks/useCoupons";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import { useOrders } from "../hooks/useOrders";
 
 export default function Cart() {
     const { validateCoupon } = useCoupons();
     const [couponCode, setCouponCode] = useState("");
     const [appliedCoupons, setAppliedCoupons] = useState([]);
     const [couponError, setCouponError] = useState("");
+
+    const { user } = useAuth();
+    const navigate = useNavigate();
+    const { createOrder } = useOrders();
 
     const {
         cart,
@@ -42,6 +49,23 @@ export default function Cart() {
 
     const handleRemoveCoupon = (index) => {
         setAppliedCoupons(prev => prev.filter((_, i) => i !== index));
+    };
+
+    const handleCheckout = () => {
+        if (!user) {
+            navigate("/login");
+            return;
+        }
+
+
+        createOrder.mutate({ coupons: appliedCoupons.map(c => c.code) }, {
+            onSuccess: () => {
+                navigate('/orders');
+            },
+            onError: (err) => {
+                console.error(err);
+            }
+        });
     };
 
     if (isLoading) return <div>Loading cart...</div>;
@@ -170,7 +194,7 @@ export default function Cart() {
                             {couponError && (
                                 <p className="text-sm text-red-700 mt-1">{couponError}</p>
                             )}
-                            
+
                             {/* applied coupons */}
                             {appliedCoupons.length > 0 && (
                                 <div className="mt-6 space-y-2">
@@ -220,7 +244,9 @@ export default function Cart() {
                             </span>
                         </div>
 
-                        <button className="w-full px-6 py-4 bg-primary text-textMain rounded-lg hover:bg-opacity-90 transition font-semibold mb-3">
+                        <button
+                            onClick={handleCheckout}
+                            className="w-full px-6 py-4 bg-primary text-textMain rounded-lg hover:bg-opacity-90 transition font-semibold mb-3">
                             Checkout
                         </button>
                     </div>
