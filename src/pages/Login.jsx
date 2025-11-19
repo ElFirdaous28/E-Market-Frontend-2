@@ -34,9 +34,11 @@ const Login = () => {
             toast.success("Logged in successfully!");
             console.log(res.data.data.user.role);
             
-            if (res.data.data.user.role === "admin")
-                navigate("/", { replace: true })
-            else {
+            if (res.data.data.user.role === "admin"){ 
+              navigate("/", { replace: true })
+            }else if(res.data.user.role === "seller" ) {
+              navigate("/seller")
+            }else {
                 navigate("/products", { replace: true });
             }
         } catch (err) {
