@@ -10,84 +10,56 @@ import {
   ShoppingCart,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-
+import axios from "../../services/axios";
 import { useOrders } from "../../hooks/useOrders";
+// import axios from "axios";
+import { useAdminStatistics } from "../../hooks/useAdminstatistics";
 export const AdminDashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [orders, setOrders] = useState([]);
   const { recentOrders } = useOrders();
-
-  console.log("🔪🔪", recentOrders);
-
-  // useEffect(() => {
-  //   const fetchOrders = async () => {
-  //     try {
-  //       const res = await axios.get("http://localhost:3000/api/orders/getlatestorder");
-  //       setOrders(res.data.data);
-  //       console.log("orders", res.data.data);
-  //     } catch (err) {
-  //       console.log("error fetching orders", err);
-  //     }
-  //   };
-  //   fetchOrders();
-  // }, []);
+  // const { topProducts } = useAdminStatistics();
+  // console.log("🔪🔪 top product :", topProducts);
+ const [ topproducts, setTopproducts] = useState([])
+  useEffect(() => {
+    const fetchTopProduct= async () => {
+      try {
+        const res = await axios.get("/products/topproducts");
+        setTopproducts(res.data.data);
+        console.log("top products", res.data.data);
+      } catch (err) {
+        console.log("error fetching orders", err);
+      }
+    };
+    fetchTopProduct();
+  }, []);
+ const [ satatics, setStatics] = useState({})
+  useEffect(() => {
+    const fetchTopProduct= async () => {
+      try {
+        const res = await axios.get("/orders/getStatics");
+        setStatics(res.data.data);
+        console.log("get Statics", res.data.data);
+      } catch (err) {
+        console.log("error fetching orders", err);
+      }
+    };
+    fetchTopProduct();
+  }, []);
 
   const stats = [
     {
       label: "Total Sales",
-      value: "$45,231",
-      change: "+20.1%",
+      value: satatics.totalSales,
       icon: ShoppingCart,
     },
-    { label: "Total Orders", value: "1,234", change: "+15.3%", icon: Package },
-    { label: "Total Users", value: "8,549", change: "+8.2%", icon: Users },
-    { label: "Revenue", value: "$89,342", change: "+12.5%", icon: BarChart3 },
+    { label: "Total Orders", value: satatics.totalOrders, icon: Package },
+    { label: "Total Users", value: satatics.totalUsers, icon: Users },
+    { label: "Revenue", value: satatics.totalRevenue, icon: BarChart3 },
   ];
 
-  // const recentOrders = [
-  //   {
-  //     id: "#12345",
-  //     customer: "John Doe",
-  //     product: "Wireless Headphones",
-  //     amount: "$89.99",
-  //     status: "Completed",
-  //   },
-  //   {
-  //     id: "#12346",
-  //     customer: "Jane Smith",
-  //     product: "Smart Watch",
-  //     amount: "$199.99",
-  //     status: "Pending",
-  //   },
-  //   {
-  //     id: "#12347",
-  //     customer: "Mike Johnson",
-  //     product: "Laptop Stand",
-  //     amount: "$49.99",
-  //     status: "Processing",
-  //   },
-  //   {
-  //     id: "#12348",
-  //     customer: "Sarah Wilson",
-  //     product: "USB Cable",
-  //     amount: "$12.99",
-  //     status: "Completed",
-  //   },
-  //   {
-  //     id: "#12349",
-  //     customer: "Tom Brown",
-  //     product: "Mouse Pad",
-  //     amount: "$15.99",
-  //     status: "Shipped",
-  //   },
-  // ];
 
-  const topProducts = [
-    { name: "Wireless Headphones", sales: 1234, revenue: "$89,234" },
-    { name: "Smart Watch", sales: 987, revenue: "$75,321" },
-    { name: "Laptop Stand", sales: 756, revenue: "$45,678" },
-    { name: "USB Cable", sales: 543, revenue: "$12,890" },
-  ];
+
   return (
     <main className="flex-1 p-6 overflow-auto">
       <div className="mb-6">
@@ -112,9 +84,9 @@ export const AdminDashboard = () => {
                 <div className="w-12 h-12 bg-emerald-500 bg-opacity-20 rounded-lg flex items-center justify-center">
                   <Icon className="w-6 h-6 text-white-500" />
                 </div>
-                <span className="text-emerald-500 text-sm font-medium">
+                {/* <span className="text-emerald-500 text-sm font-medium">
                   {stat.change}
-                </span>
+                </span> */}
               </div>
               <h3 className="text-gray-400 text-sm mb-1">{stat.label}</h3>
               <p className="text-2xl font-bold text-white">{stat.value}</p>
@@ -197,17 +169,17 @@ export const AdminDashboard = () => {
             <h2 className="text-lg font-semibold text-white">Top Products</h2>
           </div>
           <div className="p-6 space-y-4">
-            {topProducts.map((product, index) => (
+            {topproducts?.map((product, index) => (
               <div key={index} className="flex items-center justify-between">
                 <div className="flex-1">
                   <h4 className="text-sm font-medium text-white mb-1">
-                    {product.name}
+                    {product.title}
                   </h4>
-                  <p className="text-xs text-gray-400">{product.sales} sales</p>
+                  <p className="text-xs text-gray-400">{product.totalSold} sales</p>
                 </div>
                 <div className="text-right">
                   <p className="text-sm font-semibold text-emerald-500">
-                    {product.revenue}
+                    {product.totalRevenue}
                   </p>
                 </div>
               </div>

@@ -9,7 +9,6 @@ import GuestRoute from "./GuestRoute";
 import Layout from "../components/Layout";
 import Profile from "../pages/Profile";
 import Cart from "../pages/Cart";
-import Test from "../pages/Test";
 
 const AppRoutes = () => {
   return (
@@ -19,7 +18,6 @@ const AppRoutes = () => {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/test" element={<Test />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/profile" element={<Profile />} />
           </Route>
