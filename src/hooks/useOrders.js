@@ -4,84 +4,85 @@ import { toast } from "react-toastify";
 import { useAuth } from "./useAuth";
 
 export const useOrders = () => {
-    const axios = useAxios();
-    const queryClient = useQueryClient();
-    const { user } = useAuth();
+  const axios = useAxios();
+  const queryClient = useQueryClient();
+  const { user } = useAuth();
 
-    // --- FETCH ALL ORDERS (admin)
-    const allOrdersQuery = useQuery({
-        queryKey: ["orders"],
-        queryFn: async () => {
-            const res = await axios.get("/orders");
-            return res.data.data;
-        },
-        enabled: false, // only load when admin calls it
-    });
-
-    // --- FETCH USER ORDERS
-    const userOrdersQuery = useQuery({
-        queryKey: ["user-orders"],          // IMPORTANT: this must match invalidateQueries
-        queryFn: async () => {
-            const res = await axios.get(`/orders/${user._id}`);
-            return res.data.data;
-        },
-    });
-
-    // --- CREATE ORDER
-    const createOrder = useMutation({
-        mutationFn: (coupons) => axios.post("/orders", coupons),
-        onSuccess: () => {
-            queryClient.invalidateQueries(["user-orders"]);
-            toast.success("Order created!");
-        },
-    });
-
-    // --- UPDATE ORDER STATUS
-    const updateOrderStatus = useMutation({
-        mutationFn: ({ id, newStatus }) =>
-            axios.patch(`/orders/${id}/status`, { newStatus }),
-        onSuccess: () => {
-            queryClient.invalidateQueries(["user-orders"]);
-            queryClient.invalidateQueries(["orders"]);
-            toast.success("Status updated!");
-        },
-    });
-
-    // --- DELETE ORDER
-    const deleteOrder = useMutation({
-        mutationFn: (orderId) => axios.delete(`/orders/${orderId}/soft`),
-        onSuccess: () => {
-            queryClient.invalidateQueries(["user-orders"]); // FIXED KEY
-            toast.success("Order deleted");
-        },
-        onError: () => {
-            toast.error("Failed to delete order");
-        }
-    });
-   
-    // --- FETCH THE RECENT 10 ORDERS :
-    const recentOrdersQuery = useMutation({
-    queryKey: ["recent-orders"],
+  // --- FETCH ALL ORDERS (admin)
+  const allOrdersQuery = useQuery({
+    queryKey: ["orders"],
     queryFn: async () => {
-        const res = await axios.get("/orders/getlatestorder");
-        return res.data.data;
+      const res = await axios.get("/orders");
+      return res.data.data;
     },
-    enabled:false,
-    });
-    return {
-        // data
-        allOrders: allOrdersQuery.data,
-        userOrders: userOrdersQuery.data,
-        recentOrders: recentOrdersQuery.data,
+    enabled: false, // only load when admin calls it
+  });
 
-        // loading
-        isLoading: allOrdersQuery.isLoading || userOrdersQuery.isLoading,
+  // --- FETCH USER ORDERS
+  const userOrdersQuery = useQuery({
+    queryKey: ["user-orders"], // IMPORTANT: this must match invalidateQueries
+    queryFn: async () => {
+      const res = await axios.get(`/orders/${user._id}`);
+      return res.data.data;
+    },
+  });
 
-        // actions
-        fetchAllOrders: allOrdersQuery.refetch,
-        createOrder,
-        updateOrderStatus: updateOrderStatus.mutate,
-        deleteOrder: deleteOrder.mutate,
-        deleteOrderLoading: deleteOrder.isLoading,
-    };
+  // --- CREATE ORDER
+  const createOrder = useMutation({
+    mutationFn: (coupons) => axios.post("/orders", coupons),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["user-orders"]);
+      toast.success("Order created!");
+    },
+  });
+
+  // --- UPDATE ORDER STATUS
+  const updateOrderStatus = useMutation({
+    mutationFn: ({ id, newStatus }) =>
+      axios.patch(`/orders/${id}/status`, { newStatus }),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["user-orders"]);
+      queryClient.invalidateQueries(["orders"]);
+      toast.success("Status updated!");
+    },
+  });
+
+  // --- DELETE ORDER
+  const deleteOrder = useMutation({
+    mutationFn: (orderId) => axios.delete(`/orders/${orderId}/soft`),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["user-orders"]); // FIXED KEY
+      toast.success("Order deleted");
+    },
+    onError: () => {
+      toast.error("Failed to delete order");
+    },
+  });
+
+  // --- FETCH THE RECENT 10 ORDERS :
+  const recentOrdersQuery = useQuery({
+    queryKey: ["recent-orders"],
+    
+    queryFn: async () => {
+      const res = await axios.get("/orders/getlatestorder");
+      return res.data.data;
+    },
+  });
+
+  return {
+    // data
+    allOrders: allOrdersQuery.data,
+    userOrders: userOrdersQuery.data,
+    recentOrders: recentOrdersQuery.data,
+
+    // loading
+    isLoading: allOrdersQuery.isLoading || userOrdersQuery.isLoading,
+
+    // actions
+    fetchAllOrders: allOrdersQuery.refetch,
+    createOrder,
+    updateOrderStatus: updateOrderStatus.mutate,
+    deleteOrder: deleteOrder.mutate,
+    deleteOrderLoading: deleteOrder.isLoading,
+  };
 };

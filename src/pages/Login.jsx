@@ -35,7 +35,7 @@ const Login = () => {
             console.log(res.data.data.user.role);
             
             if (res.data.data.user.role === "admin")
-                navigate("/", { replace: true })
+                navigate("/dashboard", { replace: true })
             else {
                 navigate("/products", { replace: true });
             }
