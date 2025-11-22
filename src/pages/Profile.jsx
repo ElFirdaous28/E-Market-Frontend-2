@@ -45,7 +45,7 @@ export default function Profile() {
         formData.append("avatar", avatar);
 
         try {
-            await axios.patch(`users/${user.id}`, formData, {
+            await axios.patch(`users/${user._id}`, formData, {
                 headers: { "Content-type": "multipart/form-data" },
             });
             toast.success("Profile Updated");
@@ -59,7 +59,7 @@ export default function Profile() {
         if (!window.confirm("Are you sure you want to delete your account?")) return;
 
         try {
-            await axios.delete(`users/${user.id}`);
+            await axios.delete(`users/${user._id}`);
             navigate("/");
             toast.success("Account deleted successfully");
         } catch (error) {
