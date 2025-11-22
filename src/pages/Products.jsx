@@ -87,9 +87,9 @@ const Products = () => {
 
     return (
         <>
-            <div className="w-11/12 md:w-11/12 flex flex-col md:flex-row items-start mt-20 gap-10">
+            <div className="w-full flex flex-col md:flex-row items-center md:items-start">
                 {/* Search and filter aside */}
-                <aside className="w-full lg:w-1/4 xl:w-1/5">
+                <aside className="sm:w-full md:w-3/4 lg:w-1/4 ">
                     <div className="bg-brand-surface p-6 rounded-lg border border-primary space-y-6">
                         {/* Search */}
                         <div>
@@ -239,28 +239,29 @@ const Products = () => {
                     </div>
                 </aside>
 
-                {/* Products list */}
-                <ProductsComponenet products={products} />
+                <div className="flex flex-col items-center w-full">
+                    {/* Products list */}
+                    <ProductsComponenet products={products} />
+                    {/* Pagination */}
+                    <nav className="flex items-center space-x-3 mt-12">
+                        <button
+                            disabled={page === 1}
+                            onClick={() => setPage(page - 1)}
+                            className="text-textMain hover:text-textMuted transition-colors"
+                        >
+                            Previous
+                        </button>
+                        {renderPagination()}
+                        <button
+                            disabled={page === totalPages}
+                            onClick={() => setPage(page + 1)}
+                            className="text-textMain hover:text-textMuted transition-colors"
+                        >
+                            Next
+                        </button>
+                    </nav>
+                </div>
             </div>
-
-            {/* Pagination */}
-            <nav className="flex items-center space-x-3 mt-12">
-                <button
-                    disabled={page === 1}
-                    onClick={() => setPage(page - 1)}
-                    className="text-textMain hover:text-textMuted transition-colors"
-                >
-                    Previous
-                </button>
-                {renderPagination()}
-                <button
-                    disabled={page === totalPages}
-                    onClick={() => setPage(page + 1)}
-                    className="text-textMain hover:text-textMuted transition-colors"
-                >
-                    Next
-                </button>
-            </nav>
         </>
     );
 };

@@ -1,43 +1,34 @@
-import { useRef, useState } from 'react';
-import { Search, ShoppingCart, User, Menu, X } from 'lucide-react';
+import { Search, ShoppingCart, User, Menu } from 'lucide-react';
 import { Logo } from './Logo';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import LogoutButton from './LogoutButton';
 import DarkToggel from './darkToggel';
 import { useCart } from '../hooks/useCart';
+import { useRef, useState } from 'react';
 
-export default function Header() {
-    const [menuOpen, setMenuOpen] = useState(false);
+export default function Header({ toggleMobileMenu }) {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const { user } = useAuth();
-    const location = useLocation();
+    const { cartLength } = useCart();
     const dropdownRef = useRef(null);
-    const {cartLength} =useCart();
-    
-    const navItems = [
-        { name: "Home", path: "/" },
-        { name: "Products", path: "/products" },
-    ];
-
 
     return (
-        <header className="bg-background border-b border-border shadow-md fixed top-0 left-0 w-full z-50">
-            <nav className="container mx-auto px-2 md:px-4 lg:px-20 flex items-center justify-between h-20">
+        <header className="bg-background border-b border-border shadow-sm h-20 shrink-0 z-30 relative">
+            <nav className="w-full h-full px-4 lg:px-8 flex items-center justify-between">
 
-                {/* Logo */}
-                {!user && <Logo />}
-
-                {/* Mobile menu toggle */}
-                <button
-                    className="md:hidden text-textMain"
-                    onClick={() => setMenuOpen(!menuOpen)}
-                >
-                    {menuOpen ? <X size={24} /> : <Menu size={24} />}
-                </button>
+                <div className="flex items-center gap-4">
+                    <button
+                        onClick={toggleMobileMenu}
+                        className="md:hidden p-2 hover:bg-surface rounded-md"
+                    >
+                        <Menu className="h-6 w-6 text-textMain" />
+                    </button>
+                    {!user && <Logo className="hidden md:flex" />}
+                </div>
 
                 {/* Desktop Search */}
-                <div className="hidden md:block w-full max-w-md mx-6">
+                <div className="hidden md:block w-full md:max-w-[20rem] lg:max-w-md">
                     <div className="relative">
                         <Search className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-textMuted" />
                         <input
@@ -49,97 +40,54 @@ export default function Header() {
                 </div>
 
                 {/* Right section */}
-                <div className="hidden md:flex items-center space-x-6">
-                    {navItems.map(item => (
-                        <Link
-                            key={item.path}
-                            to={item.path}
-                            className={`transition-colors ${location.pathname === item.path
-                                ? "text-textMain"
-                                : "text-textMuted hover:text-textMain"
-                                }`}
-                        >
-                            {item.name}
-                        </Link>
-                    ))}
-
+                <div className="flex items-center space-x-4 md:space-x-6">
                     <DarkToggel />
-
                     <a href="#" className="relative text-textMuted hover:text-textMain">
-                        <ShoppingCart className="w-6 h-6" />
+                        <ShoppingCart className="w-5 h-5 md:w-6 md:h-6" />
                         <span className="absolute -top-2 -right-2 bg-primary text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">{cartLength}</span>
                     </a>
-                </div>
 
-                {/* User Section */}
-                <div
-                    onMouseLeave={() => setDropdownOpen(false)}
-                    ref={dropdownRef}
-                    className="relative"
-                >
-                    {user ? (
-                        <div
-                            className="flex items-center space-x-2 cursor-pointer"
-                            onClick={() => setDropdownOpen((p) => !p)}
-                        >
-                            {user.avatar ? (
-                                <img src={`${import.meta.env.VITE_API_URL}${user.avatar}`} alt="Avatar" className="w-10 h-10 rounded-full" />
-                            ) : (
-                                <User className="w-10 h-10 bg-surface rounded-full p-2" />
-                            )}
-                            <div className="hidden lg:block">
-                                <div className="text-sm font-medium text-textMain">{user.fullname}</div>
-                                <div className="text-xs text-textMain">{user.email}</div>
-                            </div>
-                        </div>
-                    ) : (
-                        <Link to="/login" className="px-4 py-2 bg-primary text-white rounded-md">Sign In</Link>
-                    )}
-
-                    {dropdownOpen && user && (
-                        <div className="absolute right-0 top-10 w-40 bg-surface rounded-md shadow-lg overflow-hidden pl-3 z-20">
-                            {/* Normal Link - will navigate */}
-                            <Link
-                                to="/profile"
-                                className="w-full block px-4 py-2 text-textMuted hover:bg-border"
-                                // optional: close after navigation in case SPA keeps dropdown open
-                                onClick={() => setDropdownOpen(false)}
+                    {/* User Section */}
+                    <div
+                        onMouseLeave={() => setDropdownOpen(false)}
+                        ref={dropdownRef}
+                        className="relative"
+                    >
+                        {user ? (
+                            <div
+                                className="flex items-center space-x-2 cursor-pointer"
+                                onClick={() => setDropdownOpen((p) => !p)}
                             >
-                                Profile
-                            </Link>
+                                {user.avatar ? (
+                                    <img src={`${import.meta.env.VITE_API_URL}${user.avatar}`} alt="Avatar" className="w-10 h-10 rounded-full object-cover" />
+                                ) : (
+                                    <User className="w-10 h-10 bg-surface rounded-full p-2" />
+                                )}
+                                <div className="hidden lg:block">
+                                    <div className="text-sm font-medium text-textMain">{user.fullname}</div>
+                                    <div className="text-xs text-textMain">{user.email}</div>
+                                </div>
+                            </div>
+                        ) : (
+                            <Link to="/login" className="px-4 py-2 bg-primary text-white rounded-md">Sign In</Link>
+                        )}
 
-                            <LogoutButton />
-                        </div>
-                    )}
+                        {dropdownOpen && user && (
+                            <div className="absolute right-0 top-10 w-32 bg-surface rounded-md shadow-lg overflow-hidden z-20">
+                                <Link
+                                    to="/profile"
+                                    className="w-full block px-4 py-2 text-textMuted hover:bg-border"
+                                    onClick={() => setDropdownOpen(false)}
+                                >
+                                    Profile
+                                </Link>
+
+                                <LogoutButton />
+                            </div>
+                        )}
+                    </div>
                 </div>
             </nav>
-
-            {/* Mobile Menu */}
-            {
-                menuOpen && (
-                    <div className="md:hidden bg-background border-t border-border shadow-md">
-                        <div className="flex flex-col space-y-3 p-4">
-                            {navItems.map((item) => (
-                                <Link
-                                    key={item.path}
-                                    to={item.path}
-                                    onClick={() => setMenuOpen(false)}
-                                    className={`${location.pathname === item.path
-                                        ? "text-textMain"
-                                        : "text-textMuted hover:text-textMain"
-                                        }`}
-                                >
-                                    {item.name}
-                                </Link>
-                            ))}
-                            <DarkToggel />
-                            <a href="#" className="flex items-center space-x-2">
-                                <ShoppingCart className="w-5 h-5" /> <span>Cart</span>
-                            </a>
-                        </div>
-                    </div>
-                )
-            }
-        </header >
+        </header>
     );
 }
