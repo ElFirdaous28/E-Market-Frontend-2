@@ -20,8 +20,7 @@ export default function DarkToggel() {
     return (
         <button
             onClick={toggelTheme}
-            className='rounded-full p-2  cursor-pointer 
-                   text-textMuted hover:text-primary transition-all ease-in-out'>
+            className='rounded-full cursor-pointer text-textMuted hover:text-primary transition-all ease-in-out'>
             {theme === "light" ? <Moon /> : <Sun />}
         </button>)
 }
