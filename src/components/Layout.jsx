@@ -1,32 +1,42 @@
-import { Outlet } from "react-router-dom";
-import Footer from "./Footer";
-import Header from "./Header";
-import Sidebar from "./Sidebar";
-import SellerSidebar from "./SellerSidebar";
-import { useAuth } from "../hooks/useAuth";
+import { useState } from 'react';
+import { Outlet } from 'react-router-dom';
+import Header from './Header';
+import Sidebar from './Sidebar';
+import Footer from './Footer';
+import { useAuth } from '../hooks/useAuth';
 
 export default function Layout() {
     const { user } = useAuth();
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     return (
-        <div className="min-h-screen w-full flex">
-            {/* Sidebar */}
-            {user && (user.role === 'seller' ? <SellerSidebar /> : <Sidebar />)}
+        // 1. Main Layout Container (Full Screen, No Body Scroll)
+        <div className="flex h-screen bg-background overflow-hidden w-full">
 
-            {/* Right side: Header + Main */}
-            <div
-                className={`flex flex-col flex-1 ${user ? (user.role === 'seller' ? 'md:ml-64' : 'md:ml-38') : ''}`}
-            >
-                {/* Header */}
-                <Header />
+            {user &&
+                <Sidebar
+                    mobileMenuOpen={mobileMenuOpen}
+                    setMobileMenuOpen={setMobileMenuOpen}
+                />
+            }
 
-                {/* Main content */}
-                <main className="p-6 mt-20 w-full flex flex-col flex-1 items-center justify-center gap-20">
-                    <Outlet />
-                </main>
+            {/* 2. Right Side Column */}
+            <div className="flex flex-col flex-1 min-w-0 transition-all duration-300">
 
-                {/* Footer */}
-                {!user && <Footer />}
+                <Header toggleMobileMenu={() => setMobileMenuOpen(!mobileMenuOpen)} />
+
+                <div className="flex-1 overflow-y-auto scroll-smooth hide-scrollbar flex flex-col">
+
+                    {/* Flex-1 pushes footer to bottom if content is short */}
+                    <main className="flex-1 p-4 md:p-8">
+                        <Outlet />
+                    </main>
+
+                    {!user &&
+                        <Footer />
+                    }
+                </div>
+
             </div>
         </div>
     );
