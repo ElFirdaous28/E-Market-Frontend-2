@@ -2,11 +2,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Eye, EyeOff } from "lucide-react";
-import { Logo } from "../components/Logo";
-import eStoreLogo from "../assets/images/e-store.png";
-import { useAuth } from "../hooks/useAuth";
+import { Logo } from "../../components/Logo";
+import eStoreLogo from "../../assets/images/e-store.png";
+import { useAuth } from "../../hooks/useAuth";
 import { Link, useNavigate } from "react-router-dom";
-import { loginSchema } from "../validations/loginSchema";
+import { loginSchema } from "../../validations/loginSchema";
 import { toast } from "react-toastify";
 
 const Login = () => {
@@ -21,6 +21,7 @@ const Login = () => {
         formState: { errors },
     } = useForm({
         resolver: yupResolver(loginSchema),
+          mode: "onBlur",
     });
 
     const onSubmit = async (data) => {
