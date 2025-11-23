@@ -4,11 +4,8 @@ import { TextEncoder, TextDecoder } from "util";
 
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
-global.importMeta = {
-    env: {
-        VITE_API_URL: 'http://localhost:3000',
-    },
-};
+
+process.env.VITE_API_URL = 'http://localhost:3000';
 
 // 1. Mock React Toastify
 jest.mock("react-toastify", () => ({

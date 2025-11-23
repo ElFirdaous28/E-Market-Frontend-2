@@ -28,7 +28,7 @@ export default function Layout() {
                 <div className="flex-1 overflow-y-auto scroll-smooth hide-scrollbar flex flex-col">
 
                     {/* Flex-1 pushes footer to bottom if content is short */}
-                    <main className="flex-1 p-4 md:p-8">
+                    <main className="flex-1 p-4 md:p-8 flex items-center justify-center flex-col">
                         <Outlet />
                     </main>
 
