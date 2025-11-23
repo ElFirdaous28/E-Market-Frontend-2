@@ -40,6 +40,7 @@ const AppRoutes = () => {
 
                     </Route>
                 </Route>
+                <Route path="/unauthorized" element="unauthorized" />
                 {/* catche not found routes */}
                 <Route path="*" element={<NotFound />}></Route>
             </Routes>

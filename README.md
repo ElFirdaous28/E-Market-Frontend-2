@@ -1,16 +1,45 @@
-# React + Vite
+# E-Market Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 🛠 Project Overview
+E-Market is a full-featured e-commerce frontend built with **React 18+**, **Vite**, and **TailwindCSS / MUI**.  
+This version includes:
 
-Currently, two official plugins are available:
+- JWT authentication with roles (`user`, `seller`, `admin`)  
+- Dynamic dashboards per role  
+- Global state management (Redux Toolkit / Context API)  
+- API data fetching with React Query  
+- Cart & checkout system  
+- Security, validation, and optimized performance  
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 📦 Installation
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 1. Clone repository
+```bash
+git clone https://github.com/<your-org>/e-market-frontend.git
+cd e-market-frontend
+```
 
-## Expanding the ESLint configuration
+### 2. Install dependencies
+```bash
+npm install
+```
+### 3. Environment variables
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```#env
+VITE_API_URL=http://localhost:5000/api
+```
+
+### 4. Run the app
+```bash
+Run the app
+```
+
+## Authentication & Roles
+| Role     | Permissions                                                            |
+| -------- | ---------------------------------------------------------------------- |
+| `user`   | Browse products, manage cart, view own orders,update profile           |
+| `seller` | CRUD own products, view orders containing own products, manage coupons |
+| `admin`  | Manage users, products, reviews, and logs                              |
+
