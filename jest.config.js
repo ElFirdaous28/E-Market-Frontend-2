@@ -14,7 +14,7 @@ export default {
     },
 
     transformIgnorePatterns: [
-        'node_modules/(?!(axios)/)',
+        'node_modules/(?!(axios|uuid)/)',
     ],
     testMatch: [
         '<rootDir>/src/**/__tests__/**/*.{js,jsx}',
