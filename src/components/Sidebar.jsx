@@ -1,16 +1,8 @@
 import { useState } from "react";
 import { Home, Package, ShoppingCart, Users, BarChart3, Settings, ChevronsRight, ChevronsLeft, User } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-// import { useAuth } from "../hooks/useAuth"; // Uncomment in your real project
+import { useAuth } from "../hooks/useAuth";
 
-// Mock useAuth for preview/compilation purposes
-const useAuth = () => ({
-  user: {
-    role: "admin",
-    fullname: "Demo User",
-    avatar: null
-  }
-});
 
 export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen }) {
   const [isExpanded, setIsExpanded] = useState(true);
@@ -44,6 +36,14 @@ export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen }) {
 
   const roleLinks = links[user?.role] || [];
   const toggleExpanded = () => setIsExpanded((prev) => !prev);
+
+  const roleStyles = {
+    admin: "bg-red-100 text-red-600 border-red-200",
+    seller: "bg-blue-100 text-blue-600 border-blue-200",
+    user: "bg-green-100 text-green-600 border-green-200"
+  };
+
+  const badgeClass = user?.role ? roleStyles[user.role] : "";
 
   return (
     <>
@@ -81,7 +81,16 @@ export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen }) {
             <span className={`text-xl font-semibold text-textMain whitespace-nowrap transition-opacity duration-200 ${isExpanded ? "opacity-100" : "opacity-0 w-0 overflow-hidden"}`}>
               E-Market
             </span>
+
+            {/* Slanted Badge */}
+            {user?.role && isExpanded && (
+              <span className={`text-xs px-2 py-0.5 rounded-full capitalize tracking-wider ${badgeClass}`}>
+                {user.role}
+              </span>
+            )}
           </div>
+
+
 
           {/* FIX: Added 'flex-1 flex flex-col min-h-0' here. 
               This forces the container to take all remaining height, ensuring the border goes to the bottom. */}

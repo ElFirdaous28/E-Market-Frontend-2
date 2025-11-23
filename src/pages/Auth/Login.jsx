@@ -2,11 +2,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Eye, EyeOff } from "lucide-react";
-import { Logo } from "../components/Logo";
-import eStoreLogo from "../assets/images/e-store.png";
-import { useAuth } from "../hooks/useAuth";
+import { Logo } from "../../components/Logo";
+import eStoreLogo from "../../assets/images/e-store.png";
+import { useAuth } from "../../hooks/useAuth";
 import { Link, useNavigate } from "react-router-dom";
-import { loginSchema } from "../validations/loginSchema";
+import { loginSchema } from "../../validations/loginSchema";
 import { toast } from "react-toastify";
 
 const Login = () => {
@@ -16,35 +16,36 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [backendError, setBackendError] = useState("");
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm({
-        resolver: yupResolver(loginSchema),
-    });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(loginSchema),
+    mode: "onBlur",
+  });
 
-    const onSubmit = async (data) => {
-        try {
-            setBackendError("");
-            const res = await login.mutateAsync({
-                email: data.email,
-                password: data.password,
-            });
-            toast.success("Logged in successfully!");
-            console.log(res.data.data.user.role);
-            
-            if (res.data.data.user.role === "admin"){ 
-              navigate("/", { replace: true })
-            }else if(res.data.user.role === "seller" ) {
-              navigate("/seller")
-            }else {
-                navigate("/products", { replace: true });
-            }
-        } catch (err) {
-            toast.error("Login failed!");
-            if (err.response) {
-                const res = err.response;
+  const onSubmit = async (data) => {
+    try {
+      setBackendError("");
+      const res = await login.mutateAsync({
+        email: data.email,
+        password: data.password,
+      });
+      toast.success("Logged in successfully!");
+
+      if (res.data.data.user.role === "admin")
+        navigate("/admin/dashboard", { replace: true });
+      else if (res.data.data.user.role === "seller") {
+        navigate("/seller/dashboard", { replace: true });
+      }
+      else {
+        navigate("/products", { replace: true });
+      }
+    } catch (err) {
+      toast.error("Login failed!");
+      if (err.response) {
+        const res = err.response;
 
         if (res.data?.errors) {
           Object.entries(res.data.errors).forEach(([field, message]) => {
@@ -58,8 +59,6 @@ const Login = () => {
       } else {
         setBackendError("Network error or server not reachable");
       }
-
-      console.error(err);
     }
   };
 
@@ -92,11 +91,10 @@ const Login = () => {
                 type="text"
                 {...register("email")}
                 placeholder="jhon@example.com"
-                className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors ${
-                  errors.email
-                    ? "border-red-500"
-                    : "border-border focus:border-primary"
-                }`}
+                className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors ${errors.email
+                  ? "border-red-500"
+                  : "border-border focus:border-primary"
+                  }`}
               />
               {errors.email && (
                 <p className="text-red-500 text-xs mt-1">
@@ -115,11 +113,10 @@ const Login = () => {
                   type={showPassword ? "text" : "password"}
                   {...register("password")}
                   placeholder="••••••••"
-                  className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors pr-12 ${
-                    errors.password
-                      ? "border-red-500"
-                      : "border-border focus:border-primary"
-                  }`}
+                  className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors pr-12 ${errors.password
+                    ? "border-red-500"
+                    : "border-border focus:border-primary"
+                    }`}
                 />
                 <button
                   type="button"
@@ -136,17 +133,17 @@ const Login = () => {
               )}
             </div>
 
-                        {backendError && (
-                            <p className="text-red-500 text-sm -mt-7">{backendError}</p>
-                        )}
-                        {/* Submit */}
-                        <button
-                            type="submit"
-                            disabled={login.isPending}
-                            className="w-full bg-primary hover:bg-emerald-600 text-textMain font-semibold py-3 rounded-lg transition-colors"
-                        >
-                            {login.isPending ? "Signing in..." : "Sign In"}
-                        </button>
+            {backendError && (
+              <p className="text-red-500 text-sm -mt-7">{backendError}</p>
+            )}
+            {/* Submit */}
+            <button
+              type="submit"
+              disabled={login.isPending}
+              className="w-full bg-primary hover:bg-emerald-600 text-textMain font-semibold py-3 rounded-lg transition-colors"
+            >
+              {login.isPending ? "Signing in..." : "Sign In"}
+            </button>
 
 
             {/* Sign up */}
