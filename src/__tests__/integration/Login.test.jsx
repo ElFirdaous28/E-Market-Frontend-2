@@ -18,6 +18,18 @@ describe("Login Integration Tests - User Role Navigation", () => {
     let queryClient;
     let store;
 
+    const renderLogin = () => {
+        return render(
+            <Provider store={store}>
+                <QueryClientProvider client={queryClient}>
+                    <BrowserRouter>
+                        <Login />
+                    </BrowserRouter>
+                </QueryClientProvider>
+            </Provider>
+        );
+    };
+
     beforeEach(() => {
         jest.clearAllMocks();
 
@@ -25,14 +37,6 @@ describe("Login Integration Tests - User Role Navigation", () => {
         navigate = jest.fn();
         // We override the default mock from setupTests for this specific test suite
         require("react-router-dom").useNavigate.mockReturnValue(navigate);
-
-        // Mock localStorage
-        const localStorageMock = {
-            getItem: jest.fn(() => 'test-session-id'),
-            setItem: jest.fn(),
-            clear: jest.fn(),
-        };
-        global.localStorage = localStorageMock;
 
         // Fresh QueryClient
         queryClient = new QueryClient({
@@ -51,19 +55,8 @@ describe("Login Integration Tests - User Role Navigation", () => {
         store = configureStore({
             reducer: { user: userReducer },
         });
+        renderLogin();
     });
-
-    const renderLogin = () => {
-        return render(
-            <Provider store={store}>
-                <QueryClientProvider client={queryClient}>
-                    <BrowserRouter>
-                        <Login />
-                    </BrowserRouter>
-                </QueryClientProvider>
-            </Provider>
-        );
-    };
 
     describe("Given un user valide, When il soumet le formulaire, Then redirection vers son dashboard", () => {
         it("Redirection vers /products pour un user avec role 'user'", async () => {
@@ -90,8 +83,6 @@ describe("Login Integration Tests - User Role Navigation", () => {
                 }
                 return Promise.reject(new Error("Unexpected API call"));
             });
-
-            renderLogin();
 
             // Fill in the form
             const emailInput = screen.getByPlaceholderText("jhon@example.com");
@@ -163,8 +154,6 @@ describe("Login Integration Tests - User Role Navigation", () => {
                 return Promise.reject(new Error("Unexpected API call"));
             });
 
-            renderLogin();
-
             const emailInput = screen.getByPlaceholderText("jhon@example.com");
             const passwordInput = screen.getByPlaceholderText("••••••••");
 
@@ -219,8 +208,6 @@ describe("Login Integration Tests - User Role Navigation", () => {
                 return Promise.reject(new Error("Unexpected API call"));
             });
 
-            renderLogin();
-
             const emailInput = screen.getByPlaceholderText("jhon@example.com");
             const passwordInput = screen.getByPlaceholderText("••••••••");
 
@@ -269,8 +256,6 @@ describe("Login Integration Tests - User Role Navigation", () => {
                 return Promise.reject(new Error("Unexpected API call"));
             });
 
-            renderLogin();
-
             const emailInput = screen.getByPlaceholderText("jhon@example.com");
             const passwordInput = screen.getByPlaceholderText("••••••••");
 
@@ -317,8 +302,6 @@ describe("Login Integration Tests - User Role Navigation", () => {
                 }
                 return Promise.reject(new Error("Unexpected API call"));
             });
-
-            renderLogin();
 
             const emailInput = screen.getByPlaceholderText("jhon@example.com");
             const passwordInput = screen.getByPlaceholderText("••••••••");
