@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useDispatch } from 'react-redux';
 import { useAxios } from './useAxios';
 import { useAuth } from './useAuth';
+import { toast } from 'react-toastify';
 import {
     setSellerProducts,
     addSellerProduct,
@@ -37,11 +38,8 @@ export function useSellerProducts() {
             fd.append('title', payload.title);
             fd.append('description', payload.description || '');
             fd.append('price', String(payload.price));
-            if (payload.ex_price != null) fd.append('ex_price', String(payload.ex_price));
             fd.append('stock', String(payload.stock));
-            const categories = Array.isArray(payload.categories)
-                ? payload.categories
-                : (payload.categories || '').split(',').map(s => s.trim()).filter(Boolean);
+            const categories = Array.isArray(payload.categories) ? payload.categories : [];
             categories.forEach(c => fd.append('categories', c));
             if (payload.primaryImage) fd.append('primaryImage', payload.primaryImage);
             (payload.secondaryImages || []).forEach(f => fd.append('secondaryImages', f));
@@ -52,6 +50,10 @@ export function useSellerProducts() {
             dispatch(addSellerProduct(data));
             queryClient.invalidateQueries({ queryKey: ['seller', 'products'] });
             dispatch(clearSelectedProduct());
+            toast.success('Produit créé');
+        },
+        onError: (err) => {
+            toast.error(err?.response?.data?.error || 'Erreur création produit');
         }
     });
 
@@ -61,12 +63,9 @@ export function useSellerProducts() {
             if (payload.title) fd.append('title', payload.title);
             if (payload.description != null) fd.append('description', payload.description);
             if (payload.price != null) fd.append('price', String(payload.price));
-            if (payload.ex_price != null) fd.append('ex_price', String(payload.ex_price));
             if (payload.stock != null) fd.append('stock', String(payload.stock));
-            if (payload.categories != null) {
-                const categories = Array.isArray(payload.categories)
-                    ? payload.categories
-                    : (payload.categories || '').split(',').map(s => s.trim()).filter(Boolean);
+            if (payload.categories) {
+                const categories = Array.isArray(payload.categories) ? payload.categories : [];
                 categories.forEach(c => fd.append('categories', c));
             }
             if (payload.primaryImage) fd.append('primaryImage', payload.primaryImage);
@@ -78,6 +77,10 @@ export function useSellerProducts() {
             dispatch(updateSellerProductAction(data));
             queryClient.invalidateQueries({ queryKey: ['seller', 'products'] });
             dispatch(clearSelectedProduct());
+            toast.success('Produit mis à jour');
+        },
+        onError: (err) => {
+            toast.error(err?.response?.data?.error || 'Erreur mise à jour produit');
         }
     });
 
@@ -89,7 +92,63 @@ export function useSellerProducts() {
         onSuccess: (id) => {
             dispatch(deleteSellerProductAction(id));
             queryClient.invalidateQueries({ queryKey: ['seller', 'products'] });
+            toast.success('Produit supprimé');
+        },
+        onError: (err) => {
+            toast.error(err?.response?.data?.error || 'Erreur suppression produit');
         }
+    });
+
+    // Publish (sets published true)
+    const publishMutation = useMutation({
+        mutationFn: async (id) => {
+            await axios.patch(`/products/${id}/publish`);
+            return id;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['seller', 'products'] });
+            toast.success('Produit publié');
+        },
+        onError: (err) => toast.error(err?.response?.data?.error || 'Erreur publication')
+    });
+
+    // Unpublish (set published false via update route)
+    const unpublishMutation = useMutation({
+        mutationFn: async (id) => {
+            await axios.patch(`/products/${id}/unpublish`);
+            return id;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['seller', 'products'] });
+            toast.success('Produit dépublié');
+        },
+        onError: (err) => toast.error(err?.response?.data?.error || 'Erreur dépublication')
+    });
+
+    // Deleted products query (soft-deleted)
+    const deletedProductsQuery = useQuery({
+        queryKey: ['seller', 'products', 'deleted'],
+        queryFn: async () => {
+            const res = await axios.get('/products/deleted');
+            const list = res.data?.products || res.data?.data || [];
+            const sellerId = user?._id || user?.id;
+            return sellerId ? list.filter(p => (p.seller_id === sellerId) || (p.seller_id?._id === sellerId)) : [];
+        },
+        enabled: Boolean(user)
+    });
+
+    // Restore soft-deleted product
+    const restoreMutation = useMutation({
+        mutationFn: async (id) => {
+            await axios.patch(`/products/${id}/restore`);
+            return id;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['seller', 'products', 'deleted'] });
+            queryClient.invalidateQueries({ queryKey: ['seller', 'products'] });
+            toast.success('Produit restauré');
+        },
+        onError: (err) => toast.error(err?.response?.data?.error || 'Erreur restauration')
     });
 
     const selectProduct = (p) => dispatch(setSelectedProduct(p));
@@ -97,9 +156,13 @@ export function useSellerProducts() {
 
     return {
         productsQuery,
+        deletedProductsQuery,
         createMutation,
         updateMutation,
         deleteMutation,
+        publishMutation,
+        unpublishMutation,
+        restoreMutation,
         selectProduct,
         clearSelection
     };
