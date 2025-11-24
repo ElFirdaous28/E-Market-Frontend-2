@@ -10,53 +10,24 @@ import {
   ShoppingCart,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import axios from "../../services/axios";
 import { useOrders } from "../../hooks/useOrders";
-// import axios from "axios";
 import { useAdminStatistics } from "../../hooks/useAdminstatistics";
 export const AdminDashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [orders, setOrders] = useState([]);
   const { recentOrders } = useOrders();
-  // const { topProducts } = useAdminStatistics();
-  // console.log("🔪🔪 top product :", topProducts);
- const [ topproducts, setTopproducts] = useState([])
-  useEffect(() => {
-    const fetchTopProduct= async () => {
-      try {
-        const res = await axios.get("/products/topproducts");
-        setTopproducts(res.data.data);
-        console.log("top products", res.data.data);
-      } catch (err) {
-        console.log("error fetching orders", err);
-      }
-    };
-    fetchTopProduct();
-  }, []);
- const [ satatics, setStatics] = useState({})
-  useEffect(() => {
-    const fetchTopProduct= async () => {
-      try {
-        const res = await axios.get("/orders/getStatics");
-        setStatics(res.data.data);
-        console.log("get Statics", res.data.data);
-      } catch (err) {
-        console.log("error fetching orders", err);
-      }
-    };
-    fetchTopProduct();
-  }, []);
+  const { topProducts, satatics } = useAdminStatistics();
 
-  const stats = [
-    {
-      label: "Total Sales",
-      value: satatics.totalSales,
-      icon: ShoppingCart,
-    },
-    { label: "Total Orders", value: satatics.totalOrders, icon: Package },
-    { label: "Total Users", value: satatics.totalUsers, icon: Users },
-    { label: "Revenue", value: satatics.totalRevenue, icon: BarChart3 },
-  ];
+const stats = [
+  {
+    label: "Total Sales",
+    value: satatics?.totalSales ?? 0,
+    icon: ShoppingCart,
+  },
+  { label: "Total Orders", value: satatics?.totalOrders ?? 0, icon: Package },
+  { label: "Total Users", value: satatics?.totalUsers ?? 0, icon: Users },
+  { label: "Revenue", value: satatics?.totalRevenue ?? 0, icon: BarChart3 },
+];
+
 
 
 
@@ -73,7 +44,7 @@ export const AdminDashboard = () => {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-4 gap-6 mb-6">
-        {stats.map((stat, index) => {
+        {stats?.map((stat, index) => {
           const Icon = stat.icon;
           return (
             <div
@@ -106,7 +77,7 @@ export const AdminDashboard = () => {
               <thead>
                 <tr className="border-b border-gray-700">
                   <th className="text-left text-sm font-medium text-gray-400 px-6 py-3">
-                    Order ID
+                    Order
                   </th>
                   <th className="text-left text-sm font-medium text-gray-400 px-6 py-3">
                     Customer
@@ -123,13 +94,13 @@ export const AdminDashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {recentOrders?.map((order) => (
+                {recentOrders?.map((order,index) => (
                   <tr
                     key={order._id}
                     className="border-b border-gray-700 hover:bg-gray-750"
                   >
                     <td className="px-6 py-4 text-sm text-white">
-                      {order._id}
+                      {index+1}
                     </td>
                     <td className="px-6 py-4 text-sm text-white">
                       {order.userId?.fullname}
@@ -169,7 +140,7 @@ export const AdminDashboard = () => {
             <h2 className="text-lg font-semibold text-white">Top Products</h2>
           </div>
           <div className="p-6 space-y-4">
-            {topproducts?.map((product, index) => (
+            {topProducts?.map((product, index) => (
               <div key={index} className="flex items-center justify-between">
                 <div className="flex-1">
                   <h4 className="text-sm font-medium text-white mb-1">
