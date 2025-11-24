@@ -106,7 +106,7 @@ const stats = [
                       {order.userId?.fullname}
                     </td>
                     <td className="px-6 py-4 text-sm text-white">
-                      {order.items.map((i) => i.productId?.title).join(", ")}
+                      {order.items.map((i) => i.productId?.title).join(", ") || "product"}
                     </td>
 
                     <td className="px-6 py-4 text-sm text-white font-medium">
