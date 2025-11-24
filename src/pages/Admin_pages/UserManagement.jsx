@@ -1,54 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Users, Trash2, Edit2, Check, X } from 'lucide-react';
-import { useAxios } from '../hooks/useAxios';
-import { useAuth } from '../hooks/useAuth';
+import { useAdminStatistics } from '../../hooks/useAdminstatistics';
 
 export const UserManagement = () => {
- const axios = useAxios();
-const { accessToken } = useAuth();
-
-  const [users, setUsers] = useState([]);
-// fetch all users :
-const [loading, setLoading] = useState(true);
-
-useEffect(() => {
-  const fetchUsers = async () => {
-    try {
-      const res = await axios.get("/users");
-      setUsers(res.data.data.users);
-      console.log(res);
-    } catch (err) {
-      console.error("Failed to fetch users:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-  fetchUsers();
-}, []);
-
-
+  const { users, isLoading, deleteUser, editUserRole } = useAdminStatistics();
   const [editingId, setEditingId] = useState(null);
   const [editRole, setEditRole] = useState('');
 
   const roles = ['admin', 'seller', 'user'];
 
-
-  const handleEdit = (user) => {
-  
+ const handleEdit = (user) => {
     setEditingId(user._id);
     setEditRole(user.role);
   };
 
-  const handleSave = async(id) => {
-    setUsers(users.map(user => 
-      user._id === id ? { ...user, role: editRole } : user
-    ));
+  const handleSave = (userId) => {
+    editUserRole({ id: userId, role: editRole });
     setEditingId(null);
-   try{
-     await axios.put(`users/${id}/${editRole}`);
-   }catch(err){
-    console.log(err);
-   }
   };
 
   const handleCancel = () => {
@@ -56,21 +24,13 @@ useEffect(() => {
     setEditRole('');
   };
 
-  const handleDelete = async(id) => {
-    setUsers(users.filter(user => user._id !== id));
-    try{
-     await axios.delete(`users/${id}/soft`);
-    }catch(err){
-      console.log("error deleting this user",err);
-    }
+  const handleDelete = (userId) => {
+    deleteUser(userId);
   };
-  if(loading){
+ 
+ if (isLoading) return <h1>Loading...</h1>;
 
-    return(
-      <h1>loading..</h1>
-    )
-  }
- else{
+  
    return (
     <main className="flex-1 p-4 md:p-6 overflow-auto w-full">
       {/* Header */}
@@ -206,4 +166,4 @@ useEffect(() => {
     </main>
   );
  }
-}
+
