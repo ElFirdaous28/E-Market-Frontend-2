@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Home, Package, ShoppingCart, Users, BarChart3, Settings, ChevronsRight, ChevronsLeft, User, Tickets} from "lucide-react";
+import { Home, Package, ShoppingCart, Users, BarChart3, Settings, ChevronsRight, ChevronsLeft, User , History , Tickets } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
@@ -26,10 +26,11 @@ export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen }) {
 
     admin: [
       { title: "Dashboard", path: "/dashboard", icon: Home },
-      { title: "Products", path: "/products", icon: Package },
-      { title: "Orders", path: "/orders", icon: ShoppingCart },
-      { title: "Users", path: "/usermanage", icon: Users },
-      { title: "Analytics", path: "/analytics", icon: BarChart3 },
+      { title: "Users", path: "/admin/usermanage", icon: Users }, 
+      { title: "Products", path: "/admin/productmanage", icon: Package },
+      { title: "Reviews", path: "#", icon: Star  },
+      { title: "Activities", path: "/admin/activities", icon: History  },
+      // { title: "Analytics", path: "/analytics", icon: BarChart3 },
       { title: "Profile", path: "/profile", icon: User },
     ],
   };

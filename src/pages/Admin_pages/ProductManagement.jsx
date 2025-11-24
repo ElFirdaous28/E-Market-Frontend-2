@@ -1,80 +1,56 @@
-import React, { useEffect, useState } from 'react';
-import { Users, Trash2, Edit2, Check, X } from 'lucide-react';
-import { useAxios } from '../hooks/useAxios';
-import { useAuth } from '../hooks/useAuth';
+import React, {useState } from "react";
+import { Users, Trash2, Edit2, Check, X } from "lucide-react";
+import { useAxios } from "../../hooks/useAxios";
+import { useAdminStatistics } from "../../hooks/useAdminstatistics";
 
 export const ProductManagement = () => {
- const axios = useAxios();
-const { accessToken } = useAuth();
-
-  const [products, setProducts] = useState([]);
-// fetch all users :
-const [loading, setLoading] = useState(true);
-
- useEffect(() => {
-    const getProducts = async () => {
-      try {
-        const res = await axios.get("/products");
-        setProducts(res.data.data || []);
-      } catch (error) {
-        console.error("Failed to fetch products:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    getProducts();
-  }, []);
-
+  const axios = useAxios();
+  const { products, deleteProduct } = useAdminStatistics();
 
   const [editingId, setEditingId] = useState(null);
-  const [editRole, setEditRole] = useState('');
-
-  const category = ['elec', 'home', 'fashion'];
-
+  const [editRole, setEditRole] = useState("");
 
   const handleEdit = (user) => {
-  
     setEditingId(user._id);
     setEditRole(user.role);
   };
 
-  const handleSave = async(id) => {
-    setUsers(users.map(user => 
-      user._id === id ? { ...user, role: editRole } : user
-    ));
+  const handleSave = async (id) => {
+    setUsers(
+      users.map((user) =>
+        user._id === id ? { ...user, role: editRole } : user
+      )
+    );
     setEditingId(null);
-   try{
-     await axios.put(`users/${id}/${editRole}`);
-   }catch(err){
-    console.log(err);
-   }
+    try {
+      await axios.put(`users/${id}/${editRole}`);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleCancel = () => {
     setEditingId(null);
-    setEditRole('');
+    setEditRole("");
   };
 
-  const handleDelete = async(id) => {
-    setProducts(products.filter(product => product._id !== id));
-    try{
-     await axios.delete(`products/${id}`);
-    }catch(err){
-      console.log("error deleting this user",err);
-    }
-  };
-//   if(loading){
+  const handleDelete = (id) => {
+  deleteProduct(id); 
+};
+  //   if(loading){
 
-//     return(
-//       <h1>loading..</h1>
-//     )
-//   }
-//  else{
-   return (
+  //     return(
+  //       <h1>loading..</h1>
+  //     )
+  //   }
+  //  else{
+  return (
     <main className="flex-1 p-4 md:p-6 overflow-auto w-full">
       {/* Header */}
       <div className="mb-4 md:mb-6 max-w-full">
-        <h1 className="text-xl md:text-2xl font-bold text-white mb-1">Products Management</h1>
+        <h1 className="text-xl md:text-2xl font-bold text-white mb-1">
+          Products Management
+        </h1>
         <p className="text-sm md:text-base text-gray-400">Manage Products</p>
       </div>
 
@@ -112,23 +88,40 @@ const [loading, setLoading] = useState(true);
       {/* Users Table */}
       <div className="bg-gray-800 border border-gray-700 rounded-lg w-full">
         <div className="p-4 md:p-6 border-b border-gray-700">
-          <h2 className="text-base md:text-lg font-semibold text-white">All Products</h2>
+          <h2 className="text-base md:text-lg font-semibold text-white">
+            All Products
+          </h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[600px]">
             <thead>
               <tr className="border-b border-gray-700">
-                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">Title</th>
-                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">Description</th>
-                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">Price</th>
-                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">Stock</th>
-                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">categories</th>
-                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">Actions</th>
+                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">
+                  Title
+                </th>
+                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">
+                  Description
+                </th>
+                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">
+                  Price
+                </th>
+                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">
+                  Stock
+                </th>
+                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">
+                  categories
+                </th>
+                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody>
-              {products.map((product) => (
-                <tr key={product._id} className="border-b border-gray-700 hover:bg-gray-750 transition-colors">
+              {products?.map((product) => (
+                <tr
+                  key={product._id}
+                  className="border-b border-gray-700 hover:bg-gray-750 transition-colors"
+                >
                   <td className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-white font-medium">
                     {product.title}
                   </td>
@@ -136,7 +129,7 @@ const [loading, setLoading] = useState(true);
                     {product.description}
                   </td>
                   <td className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-400">
-                        {product.price}
+                    {product.price}
                   </td>
                   {/* <td className="px-4 md:px-6 py-3 md:py-4">
                     {editingId === product._id ? (
@@ -162,21 +155,16 @@ const [loading, setLoading] = useState(true);
                       </span>
                     )}
                   </td> */}
-                    <td className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-400">
-                        {product.stock}
-                    </td>
-                    <td className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-400">
-                        {product.categories.length >0 ?
-                        (
-                            product.categories.map((cat) => (
-                            <span>{cat.name}</span>
-                        ))
-                        ):
-                         (
-                            <span>null</span>
-                        )
-                        }
-                    </td>
+                  <td className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-400">
+                    {product.stock}
+                  </td>
+                  <td className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-400">
+                    {product.categories.length > 0 ? (
+                      product.categories.map((cat) => <span key={cat._id}>{cat.name}</span>)
+                    ) : (
+                      <span>null</span>
+                    )}
+                  </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
                       {editingId === product._id ? (
@@ -224,5 +212,5 @@ const [loading, setLoading] = useState(true);
       </div>
     </main>
   );
-//  }
-}
+  //  }
+};

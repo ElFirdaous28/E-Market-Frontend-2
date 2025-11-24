@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "../services/axios";
 import { useAuth } from "../hooks/useAuth";
-import { AdminDashboard } from "../pages/AdminDashboard";
+import { AdminDashboard } from "./Admin_pages/AdminDashboard";
 
 export const Home = () => {
   const { user } = useAuth();
