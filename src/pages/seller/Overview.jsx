@@ -7,13 +7,17 @@ export default function SellerOverview() {
     const { productsQuery } = useSellerProducts();
     const { ordersQuery } = useSellerOrders();
 
-    const products = productsQuery.data || [];
-    const orders = ordersQuery.data || [];
+    const products = useMemo(() => productsQuery.data || [], [productsQuery.data]);
+    const orders = useMemo(() => ordersQuery.data || [], [ordersQuery.data]);
 
     const stats = useMemo(() => {
         const delivered = orders.filter(o => (o.status || '').toLowerCase() === 'delivered');
         const pending = orders.filter(o => (o.status || '').toLowerCase() === 'pending');
-        const revenue = delivered.reduce((sum, o) => sum + (Number(o.total) || Number(o.totalPrice) || 0), 0);
+        // Prefer sellerTotal (computed server side) else fallback to total or totalPrice
+        const revenue = delivered.reduce((sum, o) => {
+            const v = o.sellerTotal != null ? o.sellerTotal : (Number(o.total) || Number(o.totalPrice) || 0);
+            return sum + v;
+        }, 0);
         return {
             totalProducts: products.length,
             pendingOrders: pending.length,
@@ -86,7 +90,7 @@ export default function SellerOverview() {
                                         <td className="px-6 py-3">
                                             <StatusBadge status={o.status} />
                                         </td>
-                                        <td className="px-6 py-3">{(o.total ?? o.totalPrice ?? 0)} DH</td>
+                                        <td className="px-6 py-3">{(o.finalAmount)} DH</td>
                                         <td className="px-6 py-3 text-textMuted">{new Date(o.createdAt || o.updatedAt || Date.now()).toLocaleString()}</td>
                                     </tr>
                                 ))}
