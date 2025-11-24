@@ -12,10 +12,10 @@ export default function Products({ products }) {
     };
 
     return (
-        <section className="w-11/12 md:w-3/4 mx-auto">
+        <section className="w-11/12 mx-auto">
             <h2 className="text-3xl font-bold text-textMain mb-6">Products</h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-5">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-x-4 gap-y-5">
                 {products.length > 0 ? (
                     products.map((product) => (
                         <Link

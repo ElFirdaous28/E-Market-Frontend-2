@@ -4,6 +4,7 @@ import { useAxios } from "./useAxios";
 import { setCart, clearCart, setSummary } from "../store/cartSlice";
 import { useAuth } from "./useAuth";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 
 export const useCart = ({ couponCodes = [] } = {}) => {
     const axios = useAxios();
@@ -24,15 +25,18 @@ export const useCart = ({ couponCodes = [] } = {}) => {
     const cartQuery = useQuery({
         queryKey,
         queryFn: fetchCart,
-        onSuccess: (cart) => {
-            dispatch(setCart(cart));
-        },
         onError: (err) => {
             console.error("Fetch cart error:", err);
             toast.error("Fetching cart failed");
         },
     });
 
+    useEffect(() => {
+        if (cartQuery.data) {
+            dispatch(setCart(cartQuery.data));
+        }
+    }, [cartQuery.data, dispatch]);
+    
     const invalidateAll = () => {
         queryClient.invalidateQueries(queryKey);
         queryClient.invalidateQueries(summaryKey);
