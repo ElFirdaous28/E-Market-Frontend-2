@@ -27,7 +27,7 @@ export const useAxios = () => {
         );
 
         return instance;
-    }, [accessToken]);
+    }, [accessToken,sessionId]);
 // console.log("TOKEN SENT:", accessToken);
 
     return axiosInstance;

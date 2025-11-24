@@ -1,6 +1,8 @@
 import { Route } from "react-router-dom";
 import SellerDashboard from "../pages/seller/SellerDashboard";
 import ProductsManager from "../pages/seller/ProductsManager";
+import CreateProduct from "../pages/seller/CreateProduct";
+import EditProduct from "../pages/seller/EditProduct";
 import OrdersManager from "../pages/seller/OrdersManager";
 import CouponsManager from "../pages/seller/CouponsManager";
 
@@ -9,6 +11,8 @@ export default function SellerRoutes() {
         <>
             <Route path="/seller/dashboard" element={<SellerDashboard />} />
             <Route path="/seller/products" element={<ProductsManager />} />
+            <Route path="/seller/products/create" element={<CreateProduct />} />
+            <Route path="/seller/products/edit/:id" element={<EditProduct />} />
             <Route path="/seller/orders" element={<OrdersManager />} />
             <Route path="/seller/coupons" element={<CouponsManager />} />
         </>
