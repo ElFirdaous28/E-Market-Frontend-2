@@ -29,8 +29,6 @@ const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState(null);
   const [editRole, setEditRole] = useState('');
 
-  const category = ['elec', 'home', 'fashion'];
-
 
   const handleEdit = (user) => {
   
