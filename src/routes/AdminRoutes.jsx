@@ -8,7 +8,7 @@ import AdminActivities from "../pages/Admin_pages/logs";
 export default function AdminRoutes() {
   return (
     <>
-      <Route path="/dashboard" element={<AdminDashboard />} />
+      <Route path="/admin/dashboard" element={<AdminDashboard />} />
       <Route path="/admin/usermanage" element={<UserManagement />} />
       <Route path="/admin/activities" element={<AdminActivities />} />
 
