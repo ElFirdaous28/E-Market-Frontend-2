@@ -21,7 +21,7 @@ export const useAuth = () => {
                 });
 
                 if (profileRes.data?.user) dispatch(setUser(profileRes.data.user));
-                return profileRes.data.user;
+                return profileRes.data.user || null;
             } catch (err) {
                 dispatch(setUser(null));
                 dispatch(setAccessToken(null));

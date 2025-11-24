@@ -4,16 +4,39 @@ import { useState } from "react";
 import { useAxios } from "../hooks/useAxios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 export default function Profile() {
     const { user } = useAuth();
     const axios = useAxios();
     const navigate = useNavigate();
-
-    const [fullname, setFullname] = useState(user?.fullname || "");
-    const [email, setEmail] = useState(user?.email || "");
-    const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+
+    const schema = yup.object({
+        fullname: yup.string().required("Full name required").min(3, "Min 3 chars"),
+        email: yup.string().required("Email required").email("Invalid email"),
+        password: yup
+            .string()
+            .min(6, "Min 6 chars")
+            .notRequired()
+            .transform((v) => (v === "" ? undefined : v)), // allow empty password
+    });
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
+        resolver: yupResolver(schema),
+         mode: "onBlur", 
+        defaultValues: {
+            fullname: user?.fullname || "",
+            email: user?.email || "",
+            password: "",
+        },
+    });
 
     const [avatar, setAvatar] = useState(null); // file
     const [preview, setPreview] = useState(
@@ -36,21 +59,20 @@ export default function Profile() {
         document.getElementById("profile_image").value = "";
     };
 
-    const handleUpdate = async (e) => {
-        e.preventDefault();
+    const onSubmit = async (data) => {
         const formData = new FormData();
-        formData.append("fullname", fullname);
-        formData.append("email", email);
-        if (password) formData.append("password", password);
-        formData.append("avatar", avatar);
+        formData.append("fullname", data.fullname);
+        formData.append("email", data.email);
+        if (data.password) formData.append("password", data.password);
+        if (avatar) formData.append("avatar", avatar);
 
         try {
-            await axios.patch(`users/${user.id}`, formData, {
+            await axios.patch(`users/${user._id}`, formData, {
                 headers: { "Content-type": "multipart/form-data" },
             });
             toast.success("Profile Updated");
         } catch (error) {
-            toast.error("Somthing Went Wrong");
+            toast.error("Something went wrong");
             console.error(error);
         }
     };
@@ -59,7 +81,7 @@ export default function Profile() {
         if (!window.confirm("Are you sure you want to delete your account?")) return;
 
         try {
-            await axios.delete(`users/${user.id}`);
+            await axios.delete(`users/${user._id}`);
             navigate("/");
             toast.success("Account deleted successfully");
         } catch (error) {
@@ -68,14 +90,14 @@ export default function Profile() {
         }
     };
     return (
-        <div className="flex flex-col justify-center gap-10 min-h-[90vh]">
+        <div className="w-3/5 flex flex-col justify-center gap-10 min-h-[90vh]">
             <section>
                 <h2 className="text-2xl font-semibold text-textMain mb-4">Personal information</h2>
 
                 <div className="bg-surface rounded-lg shadow-lg p-8">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {/* Form */}
-                        <form className="md:col-span-2 space-y-6" onSubmit={handleUpdate}>
+                        <form className="md:col-span-2 space-y-6" onSubmit={handleSubmit(onSubmit)}>
                             <div>
                                 <label htmlFor="full_name" className="block mb-2 text-sm font-medium text-textMuted">
                                     Full Name
@@ -83,10 +105,10 @@ export default function Profile() {
                                 <input
                                     type="text"
                                     id="full_name"
-                                    value={fullname}
-                                    onChange={(e) => setFullname(e.target.value)}
-                                    className="bg-background border border-border text-textMain text-sm rounded-lg focus:ring-brand-green focus:border-brand-green block w-full p-2.5"
+                                    {...register("fullname")}
+                                    className="bg-background border border-border text-textMain text-sm rounded-lg block w-full p-2.5"
                                 />
+                                <p className="text-red-500 text-xs">{errors.fullname?.message}</p>
                             </div>
 
                             <div>
@@ -96,10 +118,10 @@ export default function Profile() {
                                 <input
                                     type="email"
                                     id="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className="bg-background border border-border text-textMain text-sm rounded-lg focus:ring-brand-green focus:border-brand-green block w-full p-2.5"
+                                    {...register("email")}
+                                    className="bg-background border border-border text-textMain text-sm rounded-lg block w-full p-2.5"
                                 />
+                                <p className="text-red-500 text-xs">{errors.email?.message}</p>
                             </div>
 
                             <div>
@@ -110,11 +132,10 @@ export default function Profile() {
                                     <input
                                         type={showPassword ? "text" : "password"}
                                         id="password"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        placeholder="••••••••"
-                                        className="bg-background border border-border text-textMain text-sm rounded-lg focus:ring-brand-green focus:border-brand-green block w-full p-2.5 pr-10"
+                                        {...register("password")}
+                                        className="bg-background border border-border text-textMain text-sm rounded-lg block w-full p-2.5 pr-10"
                                     />
+                                    <p className="text-red-500 text-xs">{errors.password?.message}</p>
                                     <button
                                         type="button"
                                         onClick={() => setShowPassword(!showPassword)}
@@ -144,7 +165,7 @@ export default function Profile() {
                                         <button
                                             type="button"
                                             onClick={handleClearAvatar}
-                                            className="absolute top-20 right-1 text-red-500 rounded-full flex items-center justify-center hover:text-red-600"
+                                            className="absolute top-20 right-12 text-red-500 rounded-full flex items-center justify-center hover:text-red-600"
                                         >
                                             <X />
                                         </button>
