@@ -48,7 +48,7 @@ export const ProductManagement = () => {
     <main className="flex-1 p-4 md:p-6 overflow-auto w-full">
       {/* Header */}
       <div className="mb-4 md:mb-6 max-w-full">
-        <h1 className="text-xl md:text-2xl font-bold text-white mb-1">
+        <h1 className="text-xl md:text-2xl font-bold text-color-surface mb-1">
           Products Management
         </h1>
         <p className="text-sm md:text-base text-gray-400">Manage Products</p>
@@ -86,9 +86,9 @@ export const ProductManagement = () => {
       </div> */}
 
       {/* Users Table */}
-      <div className="bg-gray-800 border border-gray-700 rounded-lg w-full">
+      <div className="bg-color-background border border-gray-700 rounded-lg w-full">
         <div className="p-4 md:p-6 border-b border-gray-700">
-          <h2 className="text-base md:text-lg font-semibold text-white">
+          <h2 className="text-base md:text-lg font-semibold text-color-surface">
             All Products
           </h2>
         </div>
@@ -122,7 +122,7 @@ export const ProductManagement = () => {
                   key={product._id}
                   className="border-b border-gray-700 hover:bg-gray-750 transition-colors"
                 >
-                  <td className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-white font-medium">
+                  <td className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-color-surface font-medium">
                     {product.title}
                   </td>
                   <td className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-400">

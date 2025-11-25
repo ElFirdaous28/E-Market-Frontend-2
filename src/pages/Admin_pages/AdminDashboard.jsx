@@ -29,9 +29,9 @@ export const AdminDashboard = () => {
   ];
 
   return (
-    <main className="flex-1 p-6 overflow-auto">
+    <main className="flex-1 p-6 overflow-auto w-full">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-white mb-1">
+        <h1 className="text-2xl font-bold text-color-surface mb-1">
           Dashboard Overview
         </h1>
         <p className="text-gray-400">
@@ -46,18 +46,18 @@ export const AdminDashboard = () => {
           return (
             <div
               key={index}
-              className="bg-gray-800 border border-gray-700 rounded-lg p-6"
+              className="bg-color-background border border-gray-700 rounded-lg p-6"
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="w-12 h-12 bg-emerald-500 bg-opacity-20 rounded-lg flex items-center justify-center">
-                  <Icon className="w-6 h-6 text-white-500" />
+                  <Icon className="w-6 h-6 text-color-surface" />
                 </div>
                 {/* <span className="text-emerald-500 text-sm font-medium">
                   {stat.change}
                 </span> */}
               </div>
               <h3 className="text-gray-400 text-sm mb-1">{stat.label}</h3>
-              <p className="text-2xl font-bold text-white">{stat.value}</p>
+              <p className="text-2xl font-bold text-color-surface">{stat.value}</p>
             </div>
           );
         })}
@@ -65,9 +65,9 @@ export const AdminDashboard = () => {
 
       <div className="grid grid-cols-3 gap-6">
         {/* Recent Orders */}
-        <div className="col-span-2 bg-gray-800 border border-gray-700 rounded-lg">
+        <div className="col-span-2 bg-color-background border border-gray-700 rounded-lg">
           <div className="p-6 border-b border-gray-700">
-            <h2 className="text-lg font-semibold text-white">Recent Orders</h2>
+            <h2 className="text-lg font-semibold text-color-surface">Recent Orders</h2>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full">
@@ -96,18 +96,18 @@ export const AdminDashboard = () => {
                     key={order._id}
                     className="border-b border-gray-700 hover:bg-gray-750"
                   >
-                    <td className="px-6 py-4 text-sm text-white">
+                    <td className="px-6 py-4 text-sm text-color-surface">
                       {index + 1}
                     </td>
-                    <td className="px-6 py-4 text-sm text-white">
+                    <td className="px-6 py-4 text-sm text-color-surface">
                       {order.userId?.fullname}
                     </td>
-                    <td className="px-6 py-4 text-sm text-white">
+                    <td className="px-6 py-4 text-sm text-color-surface">
                       {order.items.map((i) => i.productId?.title).join(", ") ||
                         "product"}
                     </td>
 
-                    <td className="px-6 py-4 text-sm text-white font-medium">
+                    <td className="px-6 py-4 text-sm text-color-surface font-medium">
                       {order.totalAmount}
                     </td>
                     <td className="px-6 py-4">
@@ -133,15 +133,15 @@ export const AdminDashboard = () => {
         </div>
 
         {/* Top Products */}
-        <div className="bg-gray-800 border border-gray-700 rounded-lg">
+        <div className="bg-color-background border border-gray-700 rounded-lg">
           <div className="p-6 border-b border-gray-700">
-            <h2 className="text-lg font-semibold text-white">Top Products</h2>
+            <h2 className="text-lg font-semibold text-color-surface">Top Products</h2>
           </div>
           <div className="p-6 space-y-4">
             {topProducts?.map((product, index) => (
               <div key={index} className="flex items-center justify-between">
                 <div className="flex-1">
-                  <h4 className="text-sm font-medium text-white mb-1">
+                  <h4 className="text-sm font-medium text-color-surface mb-1">
                     {product.title}
                   </h4>
                   <p className="text-xs text-gray-400">
