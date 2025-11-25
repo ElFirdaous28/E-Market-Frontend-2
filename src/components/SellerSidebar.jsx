@@ -29,7 +29,7 @@ export default function SellerSidebar() {
 
                 <nav className="space-y-2">
                     <NavLink
-                        to="/"
+                        to="/overview"
                         className={({ isActive }) => `${linkBase} ${isActive ? activeClasses : inactiveClasses}`}
                     >
                         <Home className="w-5 h-5" />
