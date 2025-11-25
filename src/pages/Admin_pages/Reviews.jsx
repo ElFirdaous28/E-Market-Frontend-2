@@ -144,48 +144,48 @@ export default function AdminReviews() {
   if (isLoading) return <h1 className="text-white p-6">Loading...</h1>;
 
   return (
-    <main className="flex-1 p-4 md:p-6 overflow-auto w-full bg-gray-900 min-h-screen">
+    <main className="flex-1 p-4 md:p-6 overflow-auto w-full bg-color-background min-h-screen">
       {/* Header */}
       <div className="mb-4 md:mb-6 max-w-full">
-        <h1 className="text-xl md:text-2xl font-bold text-white mb-1">Reviews Management</h1>
+        <h1 className="text-xl md:text-2xl font-bold text-color-surface mb-1">Reviews Management</h1>
         <p className="text-sm md:text-base text-gray-400">Manage customer reviews and ratings</p>
       </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6 w-full">
-        <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 md:p-6">
+        <div className="bg-color-background border border-gray-700 rounded-lg p-4 md:p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="w-10 h-10 md:w-12 md:h-12 bg-emerald-500 bg-opacity-20 rounded-lg flex items-center justify-center">
-              <MessageSquare className="w-5 h-5 md:w-6 md:h-6 text-white" />
+              <MessageSquare className="w-5 h-5 md:w-6 md:h-6 text-color-surface" />
             </div>
           </div>
           <h3 className="text-gray-400 text-xs md:text-sm mb-1">Total Reviews</h3>
-          <p className="text-xl md:text-2xl font-bold text-white">{reviews.length}</p>
+          <p className="text-xl md:text-2xl font-bold text-color-surface">{reviews.length}</p>
         </div>
-        <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 md:p-6">
+        <div className="bg-color-background border border-gray-700 rounded-lg p-4 md:p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="w-10 h-10 md:w-12 md:h-12 bg-yellow-500 bg-opacity-20 rounded-lg flex items-center justify-center">
-              <MessageSquare className="w-5 h-5 md:w-6 md:h-6 text-white" />
+              <MessageSquare className="w-5 h-5 md:w-6 md:h-6 text-color-surface" />
             </div>
           </div>
           <h3 className="text-gray-400 text-xs md:text-sm mb-1">Pending</h3>
-          <p className="text-xl md:text-2xl font-bold text-white">{reviews.filter(r => r.status === 'pending').length}</p>
+          <p className="text-xl md:text-2xl font-bold text-color-surface">{reviews.filter(r => r.status === 'pending').length}</p>
         </div>
-        <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 md:p-6">
+        <div className="bg-color-background border border-gray-700 rounded-lg p-4 md:p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="w-10 h-10 md:w-12 md:h-12 bg-green-500 bg-opacity-20 rounded-lg flex items-center justify-center">
-              <MessageSquare className="w-5 h-5 md:w-6 md:h-6 text-white" />
+              <MessageSquare className="w-5 h-5 md:w-6 md:h-6 text-color-surface" />
             </div>
           </div>
           <h3 className="text-gray-400 text-xs md:text-sm mb-1">Approved</h3>
-          <p className="text-xl md:text-2xl font-bold text-white">{reviews.filter(r => r.status === 'approved').length}</p>
+          <p className="text-xl md:text-2xl font-bold text-color-surface">{reviews.filter(r => r.status === 'approved').length}</p>
         </div>
       </div>
 
       {/* Reviews Table */}
-      <div className="bg-gray-800 border border-gray-700 rounded-lg w-full">
+      <div className="bg-color-background border border-gray-700 rounded-lg w-full">
         <div className="p-4 md:p-6 border-b border-gray-700">
-          <h2 className="text-base md:text-lg font-semibold text-white">All Reviews</h2>
+          <h2 className="text-base md:text-lg font-semibold text-color-surface">All Reviews</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[800px]">
@@ -202,7 +202,7 @@ export default function AdminReviews() {
             <tbody>
               {reviews.map((review) => (
                 <tr key={review._id} className="border-b border-gray-700 hover:bg-gray-750 transition-colors">
-                  <td className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-white font-medium">
+                  <td className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-color-surface font-medium">
                     {review.user?.fullname || 'Unknown'}
                   </td>
                   <td className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-400">
@@ -233,7 +233,7 @@ export default function AdminReviews() {
                       <select
                         value={editStatus}
                         onChange={(e) => setEditStatus(e.target.value)}
-                        className="bg-gray-700 border border-gray-600 rounded px-3 py-1.5 text-sm text-white focus:outline-none focus:border-emerald-500"
+                        className="bg-gray-700 border border-gray-600 rounded px-3 py-1.5 text-sm text-color-surface focus:outline-none focus:border-emerald-500"
                       >
                         {statuses.map(status => (
                           <option key={status} value={status}>{status}</option>
@@ -242,10 +242,10 @@ export default function AdminReviews() {
                     ) : (
                       <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                         review.status === 'approved' 
-                          ? 'bg-green-500 bg-opacity-20 text-white' 
+                          ? 'bg-green-500 bg-opacity-20 text-color-surface' 
                           : review.status === 'pending'
-                          ? 'bg-yellow-500 bg-opacity-20 text-white'
-                          : 'bg-red-500 bg-opacity-20 text-white'
+                          ? 'bg-yellow-500 bg-opacity-20 text-color-surface'
+                          : 'bg-red-500 bg-opacity-20 text-color-surface'
                       }`}>
                         {review.status}
                       </span>
