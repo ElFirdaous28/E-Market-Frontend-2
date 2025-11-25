@@ -55,6 +55,15 @@ export const useAdminStatistics = () => {
     },
     staleTime: 1000 * 60,
   });
+  // FETCH REVIEWS
+  const reviewsQuery = useQuery({
+    queryKey: ["reviews"],
+    queryFn: async () => {
+      const res = await axios.get("/reviews/");
+      return res.data.data;
+    },
+    staleTime: 1000 * 60,
+  });
 
   // DELETE USER MUTATION
   const deleteUserMutation = useMutation({
@@ -105,6 +114,8 @@ export const useAdminStatistics = () => {
     activities: activitiesQuery.data || [],
     products: productsQuery.data || [],
     users: usersQuery.data || [],
+    reviews: reviewsQuery.data || [],
+
 
     // actions
     deleteProduct: deleteProductMutation.mutate,
@@ -112,7 +123,7 @@ export const useAdminStatistics = () => {
     editUserRole: editUserRoleMutation.mutate,
 
     // states
-    isLoading: topProductsQuery.isLoading || usersQuery.isLoading,
+    isLoading: topProductsQuery.isLoading || usersQuery.isLoading || reviewsQuery.isLoading,
     isError: topProductsQuery.isError || usersQuery.isError,
     error: topProductsQuery.error || usersQuery.error,
   };
