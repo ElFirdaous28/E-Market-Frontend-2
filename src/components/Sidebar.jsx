@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Home, Package, ShoppingCart, Users, BarChart3, Settings, ChevronsRight, ChevronsLeft, User , History , Tickets } from "lucide-react";
+import { Home, Package, ShoppingCart, Users, BarChart3, Settings, ChevronsRight, ChevronsLeft, User , History , Tickets, Star } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
