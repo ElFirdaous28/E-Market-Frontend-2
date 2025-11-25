@@ -25,7 +25,7 @@ export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen }) {
     ],
 
     admin: [
-      { title: "Dashboard", path: "/dashboard", icon: Home },
+      { title: "Dashboard", path: "/admin/dashboard", icon: Home },
       { title: "Users", path: "/admin/usermanage", icon: Users }, 
       { title: "Products", path: "/admin/productmanage", icon: Package },
       { title: "Reviews", path: "#", icon: Star  },
