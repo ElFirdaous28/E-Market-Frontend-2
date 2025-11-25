@@ -1,11 +1,10 @@
 import "@testing-library/jest-dom";
-
 import { TextEncoder, TextDecoder } from "util";
+import dotenvFlow from 'dotenv-flow';
+dotenvFlow.config();
 
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
-
-process.env.VITE_API_URL = 'http://localhost:3000';
 
 // 1. Mock React Toastify
 jest.mock("react-toastify", () => ({
