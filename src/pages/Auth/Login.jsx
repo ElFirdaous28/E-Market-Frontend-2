@@ -37,7 +37,7 @@ const Login = () => {
       if (res.data.data.user.role === "admin")
         navigate("/admin/dashboard", { replace: true });
       else if (res.data.data.user.role === "seller") {
-        navigate("/seller/dashboard", { replace: true });
+        navigate("/seller/overview", { replace: true });
       }
       else {
         navigate("/products", { replace: true });
