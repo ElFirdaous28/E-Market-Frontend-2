@@ -1,4 +1,4 @@
-import React, {useState } from "react";
+import React, { useState } from "react";
 import { Users, Trash2, Edit2, Check, X } from "lucide-react";
 import { useAxios } from "../../hooks/useAxios";
 import { useAdminStatistics } from "../../hooks/useAdminstatistics";
@@ -35,8 +35,8 @@ export const ProductManagement = () => {
   };
 
   const handleDelete = (id) => {
-  deleteProduct(id); 
-};
+    deleteProduct(id);
+  };
   //   if(loading){
 
   //     return(
@@ -160,7 +160,9 @@ export const ProductManagement = () => {
                   </td>
                   <td className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-400">
                     {product.categories.length > 0 ? (
-                      product.categories.map((cat) => <span key={cat._id}>{cat.name}</span>)
+                      product.categories.map((cat) => (
+                        <span key={cat._id}>{cat.name}</span>
+                      ))
                     ) : (
                       <span>null</span>
                     )}
@@ -196,7 +198,7 @@ export const ProductManagement = () => {
                           <button
                             onClick={() => handleDelete(product._id)}
                             className="p-2 bg-red-500 hover:bg-red-600 rounded transition-colors"
-                            title="Delete User"
+                            title="Delete Product"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
