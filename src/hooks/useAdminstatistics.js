@@ -64,7 +64,16 @@ export const useAdminStatistics = () => {
     },
     staleTime: 1000 * 60,
   });
+// FETCH GENERAL STATICS
+const staticsQuery = useQuery({
+  queryKey: ["statics"],
+  queryFn: async () => {
+    const res = await axios.get("/orders/getStatics");
+    return res.data.data;
+  },
+    staleTime: 1000 * 60,
 
+});
   // DELETE USER MUTATION
   const deleteUserMutation = useMutation({
     mutationFn: async (id) => {
@@ -115,7 +124,7 @@ export const useAdminStatistics = () => {
     products: productsQuery.data || [],
     users: usersQuery.data || [],
     reviews: reviewsQuery.data || [],
-
+    statics: staticsQuery.data || [],
 
     // actions
     deleteProduct: deleteProductMutation.mutate,
@@ -123,7 +132,7 @@ export const useAdminStatistics = () => {
     editUserRole: editUserRoleMutation.mutate,
 
     // states
-    isLoading: topProductsQuery.isLoading || usersQuery.isLoading || reviewsQuery.isLoading,
+    isLoading: topProductsQuery.isLoading || usersQuery.isLoading || reviewsQuery.isLoading || staticsQuery.isLoading,
     isError: topProductsQuery.isError || usersQuery.isError,
     error: topProductsQuery.error || usersQuery.error,
   };

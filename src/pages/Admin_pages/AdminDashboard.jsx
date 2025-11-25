@@ -15,21 +15,18 @@ import { useAdminStatistics } from "../../hooks/useAdminstatistics";
 export const AdminDashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const { recentOrders } = useOrders();
-  const { topProducts, satatics } = useAdminStatistics();
+  const { topProducts, statics } = useAdminStatistics();
 
-const stats = [
-  {
-    label: "Total Sales",
-    value: satatics?.totalSales ?? 0,
-    icon: ShoppingCart,
-  },
-  { label: "Total Orders", value: satatics?.totalOrders ?? 0, icon: Package },
-  { label: "Total Users", value: satatics?.totalUsers ?? 0, icon: Users },
-  { label: "Revenue", value: satatics?.totalRevenue ?? 0, icon: BarChart3 },
-];
-
-
-
+  const stats = [
+    {
+      label: "Total Sales",
+      value: statics?.totalSales ?? 0,
+      icon: ShoppingCart,
+    },
+    { label: "Total Orders", value: statics?.totalOrders ?? 0, icon: Package },
+    { label: "Total Users", value: statics?.totalUsers ?? 0, icon: Users },
+    { label: "Revenue", value: statics?.totalRevenue ?? 0, icon: BarChart3 },
+  ];
 
   return (
     <main className="flex-1 p-6 overflow-auto">
@@ -94,19 +91,20 @@ const stats = [
                 </tr>
               </thead>
               <tbody>
-                {recentOrders?.map((order,index) => (
+                {recentOrders?.map((order, index) => (
                   <tr
                     key={order._id}
                     className="border-b border-gray-700 hover:bg-gray-750"
                   >
                     <td className="px-6 py-4 text-sm text-white">
-                      {index+1}
+                      {index + 1}
                     </td>
                     <td className="px-6 py-4 text-sm text-white">
                       {order.userId?.fullname}
                     </td>
                     <td className="px-6 py-4 text-sm text-white">
-                      {order.items.map((i) => i.productId?.title).join(", ") || "product"}
+                      {order.items.map((i) => i.productId?.title).join(", ") ||
+                        "product"}
                     </td>
 
                     <td className="px-6 py-4 text-sm text-white font-medium">
@@ -146,7 +144,9 @@ const stats = [
                   <h4 className="text-sm font-medium text-white mb-1">
                     {product.title}
                   </h4>
-                  <p className="text-xs text-gray-400">{product.totalSold} sales</p>
+                  <p className="text-xs text-gray-400">
+                    {product.totalSold} sales
+                  </p>
                 </div>
                 <div className="text-right">
                   <p className="text-sm font-semibold text-emerald-500">
