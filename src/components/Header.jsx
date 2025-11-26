@@ -10,9 +10,9 @@ import { useRef, useState } from 'react';
 export default function Header({ toggleMobileMenu }) {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const { user } = useAuth();
-    if (user?.role === "user") {
-        const { cartLength } = useCart();
-    }
+    const { cartLength } = useCart();
+    console.log(cartLength);
+    
     const dropdownRef = useRef(null);
 
     return (
