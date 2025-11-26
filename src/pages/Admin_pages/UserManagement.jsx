@@ -123,12 +123,13 @@ export default function UserManagement() {
                       </select>
                     ) : (
                       <span
-                        className={`px-3 py-1 rounded-full text-xs font-medium ${user.role === 'admin'
+                        className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          user.role === 'admin'
                             ? 'bg-purple-500 bg-opacity-20 text-color-surface'
                             : user.role === 'seller'
                               ? 'bg-blue-500 bg-opacity-20 text-color-surface'
                               : 'bg-gray-500 bg-opacity-20  text-color-surface'
-                          }`}
+                        }`}
                       >
                         {user.role}
                       </span>
@@ -181,4 +182,4 @@ export default function UserManagement() {
       </div>
     </main>
   );
-};
+}

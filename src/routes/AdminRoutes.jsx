@@ -7,7 +7,6 @@ const AdminDashboard = lazy(() => import('../pages/Admin_pages/AdminDashboard'))
 const AdminActivities = lazy(() => import('../pages/Admin_pages/logs'));
 const AdminReviews = lazy(() => import('../pages/Admin_pages/Reviews'));
 
-
 export default function AdminRoutes() {
   return (
     <>

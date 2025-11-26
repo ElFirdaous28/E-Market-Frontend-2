@@ -80,14 +80,15 @@ export default function AdminDashboard() {
                     </td>
                     <td className="px-6 py-4">
                       <span
-                        className={`px-3 py-1 rounded-full text-xs font-medium ${order.status === 'Completed'
+                        className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          order.status === 'Completed'
                             ? 'bg-emerald-500 bg-opacity-20 text-white-500'
                             : order.status === 'Pending'
                               ? 'bg-yellow-500 bg-opacity-20 text-white-500'
                               : order.status === 'Processing'
                                 ? 'bg-blue-500 bg-opacity-20 text-white-500'
                                 : 'bg-purple-500 bg-opacity-20 text-white-500'
-                          }`}
+                        }`}
                       >
                         {order.status}
                       </span>
@@ -121,4 +122,4 @@ export default function AdminDashboard() {
       </div>
     </main>
   );
-};
+}
