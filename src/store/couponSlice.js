@@ -1,18 +1,18 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const couponSlice = createSlice({
-    name: "coupon",
-    initialState: {
-        activeCoupon: null,
+  name: 'coupon',
+  initialState: {
+    activeCoupon: null,
+  },
+  reducers: {
+    setActiveCoupon: (state, action) => {
+      state.activeCoupon = action.payload;
     },
-    reducers: {
-        setActiveCoupon: (state, action) => {
-            state.activeCoupon = action.payload;
-        },
-        clearCoupon: (state) => {
-            state.activeCoupon = null;
-        }
-    }
+    clearCoupon: (state) => {
+      state.activeCoupon = null;
+    },
+  },
 });
 
 export const { setActiveCoupon, clearCoupon } = couponSlice.actions;

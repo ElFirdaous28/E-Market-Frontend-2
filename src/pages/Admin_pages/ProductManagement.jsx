@@ -1,14 +1,14 @@
-import React, {useState } from "react";
-import { Users, Trash2, Edit2, Check, X } from "lucide-react";
-import { useAxios } from "../../hooks/useAxios";
-import { useAdminStatistics } from "../../hooks/useAdminstatistics";
+import React, { useState } from 'react';
+import { Users, Trash2, Edit2, Check, X } from 'lucide-react';
+import { useAxios } from '../../hooks/useAxios';
+import { useAdminStatistics } from '../../hooks/useAdminstatistics';
 
 export const ProductManagement = () => {
   const axios = useAxios();
   const { products, deleteProduct } = useAdminStatistics();
 
   const [editingId, setEditingId] = useState(null);
-  const [editRole, setEditRole] = useState("");
+  const [editRole, setEditRole] = useState('');
 
   const handleEdit = (user) => {
     setEditingId(user._id);
@@ -16,11 +16,7 @@ export const ProductManagement = () => {
   };
 
   const handleSave = async (id) => {
-    setUsers(
-      users.map((user) =>
-        user._id === id ? { ...user, role: editRole } : user
-      )
-    );
+    setUsers(users.map((user) => (user._id === id ? { ...user, role: editRole } : user)));
     setEditingId(null);
     try {
       await axios.put(`users/${id}/${editRole}`);
@@ -31,12 +27,12 @@ export const ProductManagement = () => {
 
   const handleCancel = () => {
     setEditingId(null);
-    setEditRole("");
+    setEditRole('');
   };
 
   const handleDelete = (id) => {
-  deleteProduct(id); 
-};
+    deleteProduct(id);
+  };
   //   if(loading){
 
   //     return(
@@ -48,7 +44,7 @@ export const ProductManagement = () => {
     <main className="flex-1 p-4 md:p-6 overflow-auto w-full">
       {/* Header */}
       <div className="mb-4 md:mb-6 max-w-full">
-        <h1 className="text-xl md:text-2xl font-bold text-white mb-1">
+        <h1 className="text-xl md:text-2xl font-bold text-color-surface mb-1">
           Products Management
         </h1>
         <p className="text-sm md:text-base text-gray-400">Manage Products</p>
@@ -86,11 +82,9 @@ export const ProductManagement = () => {
       </div> */}
 
       {/* Users Table */}
-      <div className="bg-gray-800 border border-gray-700 rounded-lg w-full">
+      <div className="bg-color-background border border-gray-700 rounded-lg w-full">
         <div className="p-4 md:p-6 border-b border-gray-700">
-          <h2 className="text-base md:text-lg font-semibold text-white">
-            All Products
-          </h2>
+          <h2 className="text-base md:text-lg font-semibold text-color-surface">All Products</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[600px]">
@@ -122,7 +116,7 @@ export const ProductManagement = () => {
                   key={product._id}
                   className="border-b border-gray-700 hover:bg-gray-750 transition-colors"
                 >
-                  <td className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-white font-medium">
+                  <td className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-color-surface font-medium">
                     {product.title}
                   </td>
                   <td className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-400">
@@ -196,7 +190,7 @@ export const ProductManagement = () => {
                           <button
                             onClick={() => handleDelete(product._id)}
                             className="p-2 bg-red-500 hover:bg-red-600 rounded transition-colors"
-                            title="Delete User"
+                            title="Delete Product"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
