@@ -234,7 +234,7 @@ describe("Login Integration Tests - User Role Navigation", () => {
 
             // Verify navigation to seller dashboard
             await waitFor(() => {
-                expect(navigate).toHaveBeenCalledWith("/seller/dashboard", { replace: true });
+                expect(navigate).toHaveBeenCalledWith("/seller/overview", { replace: true });
             });
         });
 

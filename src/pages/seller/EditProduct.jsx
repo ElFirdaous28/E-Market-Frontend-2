@@ -110,7 +110,7 @@ export default function EditProduct() {
             <div className="max-w-6xl mx-auto">
                 <div className="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-lg">
                     <h3 className="font-semibold mb-1">Produit introuvable</h3>
-                    <p className="text-sm">Le produit que vous essayez de modifier n'existe pas.</p>
+                    <p className="text-sm">Le produit que vous essayez de modifier n&aposexiste pas.</p>
                     <button
                         onClick={() => navigate('/seller/products')}
                         className="mt-3 text-sm underline"
@@ -220,7 +220,7 @@ export default function EditProduct() {
                     <div className="space-y-3">
                         <label className="inline-flex items-center gap-2 px-4 py-2.5 border-2 border-dashed border-border rounded-lg cursor-pointer bg-surface hover:bg-primary/5 transition-colors">
                             <Upload className="w-5 h-5 text-textMuted" />
-                            <span className="text-sm text-textMain">Changer l'image</span>
+                            <span className="text-sm text-textMain">Changer l&aposimage</span>
                             <input hidden name="primaryImage" type="file" accept="image/*" onChange={onFilePrimary} />
                         </label>
                         {previewPrimary ? (

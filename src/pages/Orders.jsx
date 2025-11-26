@@ -5,8 +5,10 @@ import { Image, ShoppingBasket } from "lucide-react";
 
 export default function Orders() {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { userOrders, isLoading, deleteOrder, updateOrderStatus } = useOrders();
+    const [status, setStatus] = useState("");
+    const { userOrders, isLoading, deleteOrder, updateOrderStatus } = useOrders(status);
     const [selectedOrder, setSelectedOrder] = useState(null);
+
 
     const openModal = (order) => {
         setSelectedOrder(order);
@@ -27,7 +29,7 @@ export default function Orders() {
         cancelled: "ext-red-600",
     };
     return (
-        <>
+        <div className="w-3/5">
             <div className="px-4 sm:px-6 lg:px-8 py-8 bg-surface border border-border rounded-lg">
 
                 {/* Header */}
@@ -37,12 +39,18 @@ export default function Orders() {
                 </div>
 
                 {/* Filters */}
-                <div className="bg-background rounded-lg border border-border p-4 mb-6">
+                <div className="p-6">
                     <div className="flex flex-wrap gap-3">
-                        <button className="px-4 py-2 bg-primary text-textMain rounded-lg font-medium">All Orders</button>
-                        {['pending', 'shipped', 'delivered', 'cancelled'].map((status) => (
-                            <button key={status} className="px-4 py-2 border border-border text-textMain rounded-lg bg-surface capitalize">
-                                {status}
+                        {['', 'pending', 'shipped', 'delivered', 'cancelled'].map((option) => (
+                            <button
+                                key={option || 'all'}
+                                onClick={() => setStatus(option)}
+                                className={`px-4 py-2 text-sm font-medium rounded-full transition duration-150 capitalize
+                                    ${status === option
+                                        ? "bg-primary text-white shadow-md"
+                                        : "bg-background text-textMain hover:bg-background-hover border border-border"
+                                    }`}>
+                                {option === "" ? 'All Orders' : option}
                             </button>
                         ))}
                     </div>
@@ -153,7 +161,7 @@ export default function Orders() {
                                                     <img
                                                         src={`${import.meta.env.VITE_API_URL}${item?.productId?.primaryImage}`}
                                                         className="w-20 h-20 object-cover rounded-lg"
-                                                        alt={item.product.name} />
+                                                        alt={item.productId.title} />
                                                 ) : (
                                                     <Image className="w-20 h-20 text-gray-500" />
                                                 )}
@@ -194,7 +202,9 @@ export default function Orders() {
                                         ))}
                                     </div>
                                 ) : (
-                                    <p className="text-textMuted">No coupons applied</p>
+                                    <div className="p-4 bg-background rounded-lg border border-border/50">
+                                        <p className="text-textMuted text-sm">No promotional coupons were applied to this order.</p>
+                                    </div>
                                 )}
 
 
@@ -229,6 +239,6 @@ export default function Orders() {
                     </div>
                 </div>
             )}
-        </>
+        </div>
     );
 }

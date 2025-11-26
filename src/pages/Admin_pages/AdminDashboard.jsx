@@ -1,19 +1,12 @@
 import {
-  Search,
-  Bell,
-  User,
   Package,
   Users,
   BarChart3,
-  Settings,
-  Menu,
   ShoppingCart,
 } from "lucide-react";
-import { useEffect, useState } from "react";
 import { useOrders } from "../../hooks/useOrders";
 import { useAdminStatistics } from "../../hooks/useAdminstatistics";
 export const AdminDashboard = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
   const { recentOrders } = useOrders();
   const { topProducts, statics } = useAdminStatistics();
 
@@ -35,7 +28,7 @@ export const AdminDashboard = () => {
           Dashboard Overview
         </h1>
         <p className="text-gray-400">
-          Welcome back, John! Here's what's happening today.
+          Welcome back, John! Here&aposs what&aposs happening today.
         </p>
       </div>
 
@@ -112,15 +105,14 @@ export const AdminDashboard = () => {
                     </td>
                     <td className="px-6 py-4">
                       <span
-                        className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          order.status === "Completed"
+                        className={`px-3 py-1 rounded-full text-xs font-medium ${order.status === "Completed"
                             ? "bg-emerald-500 bg-opacity-20 text-white-500"
                             : order.status === "Pending"
-                            ? "bg-yellow-500 bg-opacity-20 text-white-500"
-                            : order.status === "Processing"
-                            ? "bg-blue-500 bg-opacity-20 text-white-500"
-                            : "bg-purple-500 bg-opacity-20 text-white-500"
-                        }`}
+                              ? "bg-yellow-500 bg-opacity-20 text-white-500"
+                              : order.status === "Processing"
+                                ? "bg-blue-500 bg-opacity-20 text-white-500"
+                                : "bg-purple-500 bg-opacity-20 text-white-500"
+                          }`}
                       >
                         {order.status}
                       </span>
