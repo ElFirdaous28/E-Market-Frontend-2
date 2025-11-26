@@ -1,19 +1,19 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Eye, EyeOff } from "lucide-react";
-import { Logo } from "../../components/Logo";
-import eStoreLogo from "../../assets/images/e-store.png";
-import { useAuth } from "../../hooks/useAuth";
-import { Link, useNavigate } from "react-router-dom";
-import { loginSchema } from "../../validations/loginSchema";
-import { toast } from "react-toastify";
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Eye, EyeOff } from 'lucide-react';
+import { Logo } from '../../components/Logo';
+import eStoreLogo from '../../assets/images/e-store.png';
+import { useAuth } from '../../hooks/useAuth';
+import { Link, useNavigate } from 'react-router-dom';
+import { loginSchema } from '../../validations/loginSchema';
+import { toast } from 'react-toastify';
 
 const Login = () => {
-  const {login } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [backendError, setBackendError] = useState("");
+  const [backendError, setBackendError] = useState('');
 
   const {
     register,
@@ -21,42 +21,40 @@ const Login = () => {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(loginSchema),
-    mode: "onBlur",
+    mode: 'onBlur',
   });
 
   const onSubmit = async (data) => {
     try {
-      setBackendError("");
+      setBackendError('');
       const res = await login.mutateAsync({
         email: data.email,
         password: data.password,
       });
-      toast.success("Logged in successfully!");
+      toast.success('Logged in successfully!');
 
-      if (res.data.data.user.role === "admin")
-        navigate("/admin/dashboard", { replace: true });
-      else if (res.data.data.user.role === "seller") {
-        navigate("/seller/overview", { replace: true });
-      }
-      else {
-        navigate("/products", { replace: true });
+      if (res.data.data.user.role === 'admin') navigate('/admin/dashboard', { replace: true });
+      else if (res.data.data.user.role === 'seller') {
+        navigate('/seller/overview', { replace: true });
+      } else {
+        navigate('/products', { replace: true });
       }
     } catch (err) {
-      toast.error("Login failed!");
+      toast.error('Login failed!');
       if (err.response) {
         const res = err.response;
 
         if (res.data?.errors) {
           Object.entries(res.data.errors).forEach(([field, message]) => {
-            setError(field, { type: "backend", message });
+            setError(field, { type: 'backend', message });
           });
         } else if (res.data?.message) {
           setBackendError(res.data.message);
         } else {
-          setBackendError("Something went wrong");
+          setBackendError('Something went wrong');
         }
       } else {
-        setBackendError("Network error or server not reachable");
+        setBackendError('Network error or server not reachable');
       }
     }
   };
@@ -77,45 +75,32 @@ const Login = () => {
             Sign in to your account
           </h1>
 
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="space-y-8 w-full lg:px-10"
-          >
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 w-full lg:px-10">
             {/* Email */}
             <div>
-              <label className="block text-textMain text-sm font-medium mb-2">
-                Email Address
-              </label>
+              <label className="block text-textMain text-sm font-medium mb-2">Email Address</label>
               <input
                 type="text"
-                {...register("email")}
+                {...register('email')}
                 placeholder="jhon@example.com"
-                className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors ${errors.email
-                  ? "border-red-500"
-                  : "border-border focus:border-primary"
-                  }`}
+                className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors ${
+                  errors.email ? 'border-red-500' : 'border-border focus:border-primary'
+                }`}
               />
-              {errors.email && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.email.message}
-                </p>
-              )}
+              {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
             </div>
 
             {/* Password */}
             <div>
-              <label className="block text-textMain text-sm font-medium mb-2">
-                Password
-              </label>
+              <label className="block text-textMain text-sm font-medium mb-2">Password</label>
               <div className="relative">
                 <input
-                  type={showPassword ? "text" : "password"}
-                  {...register("password")}
+                  type={showPassword ? 'text' : 'password'}
+                  {...register('password')}
                   placeholder="••••••••"
-                  className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors pr-12 ${errors.password
-                    ? "border-red-500"
-                    : "border-border focus:border-primary"
-                    }`}
+                  className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors pr-12 ${
+                    errors.password ? 'border-red-500' : 'border-border focus:border-primary'
+                  }`}
                 />
                 <button
                   type="button"
@@ -126,32 +111,24 @@ const Login = () => {
                 </button>
               </div>
               {errors.password && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.password.message}
-                </p>
+                <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
               )}
             </div>
 
-            {backendError && (
-              <p className="text-red-500 text-sm -mt-7">{backendError}</p>
-            )}
+            {backendError && <p className="text-red-500 text-sm -mt-7">{backendError}</p>}
             {/* Submit */}
             <button
               type="submit"
               disabled={login.isPending}
               className="w-full bg-primary hover:bg-emerald-600 text-textMain font-semibold py-3 rounded-lg transition-colors"
             >
-              {login.isPending ? "Signing in..." : "Sign In"}
+              {login.isPending ? 'Signing in...' : 'Sign In'}
             </button>
-
 
             {/* Sign up */}
             <div className="text-center text-sm text-textMuted">
-              Don’t have an account?{" "}
-              <Link
-                to="/register"
-                className="text-primary hover:text-emerald-400"
-              >
+              Don’t have an account?{' '}
+              <Link to="/register" className="text-primary hover:text-emerald-400">
                 Sign Up
               </Link>
             </div>

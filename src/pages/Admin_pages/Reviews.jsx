@@ -52,53 +52,52 @@ import { useAdminStatistics } from '../../hooks/useAdminstatistics';
 // ];
 
 export default function AdminReviews() {
-    
-//   const [reviews, setReviews] = useState([]);
-//   const [loading, setLoading] = useState(true);
+  //   const [reviews, setReviews] = useState([]);
+  //   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState(null);
   const [editStatus, setEditStatus] = useState('');
-    const {reviews, isLoading  } = useAdminStatistics();
+  const { reviews, isLoading } = useAdminStatistics();
 
-// console.log("🔪🔪",review)
+  // console.log("🔪🔪",review)
 
   const statuses = ['pending', 'approved', 'rejected'];
 
-//   useEffect(() => {
-//     fetchReviews();
-//   }, []);
+  //   useEffect(() => {
+  //     fetchReviews();
+  //   }, []);
 
-//  useEffect(() => {
-//   const fetchAllReviews = async () => {
-//     try {
-//       const res = await axios.get("/reviews/");
-//       setReviews(res.data.data);
-//     } catch (error) {
-//       console.error("Failed to fetch reviews:", error);
-//     } finally {
-//       setLoading(false);
-//     }
-//   }
-//   fetchAllReviews();
-// }, []);
+  //  useEffect(() => {
+  //   const fetchAllReviews = async () => {
+  //     try {
+  //       const res = await axios.get("/reviews/");
+  //       setReviews(res.data.data);
+  //     } catch (error) {
+  //       console.error("Failed to fetch reviews:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }
+  //   fetchAllReviews();
+  // }, []);
 
-//   const fetchReviews = async () => {
-//     try {
-//       setLoading(true);
-//       // Simulate API call - Replace with actual API endpoint
-//       // const res = await fetch('/api/reviews');
-//       // const data = await res.json();
-//       // setReviews(data.data || []);
-      
-//       // Using mock data for demonstration
-//       setTimeout(() => {
-//         setReviews(mockReviews);
-//         setLoading(false);
-//       }, 500);
-//     } catch (error) {
-//       console.error('Failed to fetch reviews:', error);
-//       setLoading(false);
-//     }
-//   };
+  //   const fetchReviews = async () => {
+  //     try {
+  //       setLoading(true);
+  //       // Simulate API call - Replace with actual API endpoint
+  //       // const res = await fetch('/api/reviews');
+  //       // const data = await res.json();
+  //       // setReviews(data.data || []);
+
+  //       // Using mock data for demonstration
+  //       setTimeout(() => {
+  //         setReviews(mockReviews);
+  //         setLoading(false);
+  //       }, 500);
+  //     } catch (error) {
+  //       console.error('Failed to fetch reviews:', error);
+  //       setLoading(false);
+  //     }
+  //   };
 
   const handleEdit = (review) => {
     setEditingId(review._id);
@@ -107,14 +106,16 @@ export default function AdminReviews() {
 
   const handleSave = (reviewId) => {
     // Replace with actual API call
-    // await fetch(`/api/reviews/${reviewId}`, { 
+    // await fetch(`/api/reviews/${reviewId}`, {
     //   method: 'PATCH',
     //   body: JSON.stringify({ status: editStatus })
     // });
-    
-    setReviews(reviews.map(review => 
-      review._id === reviewId ? { ...review, status: editStatus } : review
-    ));
+
+    setReviews(
+      reviews.map((review) =>
+        review._id === reviewId ? { ...review, status: editStatus } : review
+      )
+    );
     setEditingId(null);
   };
 
@@ -131,8 +132,8 @@ export default function AdminReviews() {
     try {
       // Replace with actual API call
       // await fetch(`/api/reviews/${reviewId}`, { method: 'DELETE' });
-      
-      setReviews(reviews.filter(review => review._id !== reviewId));
+
+      setReviews(reviews.filter((review) => review._id !== reviewId));
     } catch (error) {
       console.error('Failed to delete review:', error);
       alert('Failed to delete review');
@@ -145,7 +146,9 @@ export default function AdminReviews() {
     <main className="flex-1 p-4 md:p-6 overflow-auto w-full bg-color-background min-h-screen">
       {/* Header */}
       <div className="mb-4 md:mb-6 max-w-full">
-        <h1 className="text-xl md:text-2xl font-bold text-color-surface mb-1">Reviews Management</h1>
+        <h1 className="text-xl md:text-2xl font-bold text-color-surface mb-1">
+          Reviews Management
+        </h1>
         <p className="text-sm md:text-base text-gray-400">Manage customer reviews and ratings</p>
       </div>
 
@@ -167,7 +170,9 @@ export default function AdminReviews() {
             </div>
           </div>
           <h3 className="text-gray-400 text-xs md:text-sm mb-1">Pending</h3>
-          <p className="text-xl md:text-2xl font-bold text-color-surface">{reviews.filter(r => r.status === 'pending').length}</p>
+          <p className="text-xl md:text-2xl font-bold text-color-surface">
+            {reviews.filter((r) => r.status === 'pending').length}
+          </p>
         </div>
         <div className="bg-color-background border border-gray-700 rounded-lg p-4 md:p-6">
           <div className="flex items-center justify-between mb-4">
@@ -176,7 +181,9 @@ export default function AdminReviews() {
             </div>
           </div>
           <h3 className="text-gray-400 text-xs md:text-sm mb-1">Approved</h3>
-          <p className="text-xl md:text-2xl font-bold text-color-surface">{reviews.filter(r => r.status === 'approved').length}</p>
+          <p className="text-xl md:text-2xl font-bold text-color-surface">
+            {reviews.filter((r) => r.status === 'approved').length}
+          </p>
         </div>
       </div>
 
@@ -189,17 +196,32 @@ export default function AdminReviews() {
           <table className="w-full min-w-[800px]">
             <thead>
               <tr className="border-b border-gray-700">
-                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">User</th>
-                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">Product</th>
-                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">Rating</th>
-                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">Comment</th>
-                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">Status</th>
-                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">Actions</th>
+                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">
+                  User
+                </th>
+                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">
+                  Product
+                </th>
+                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">
+                  Rating
+                </th>
+                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">
+                  Comment
+                </th>
+                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">
+                  Status
+                </th>
+                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody>
               {reviews.map((review) => (
-                <tr key={review._id} className="border-b border-gray-700 hover:bg-gray-750 transition-colors">
+                <tr
+                  key={review._id}
+                  className="border-b border-gray-700 hover:bg-gray-750 transition-colors"
+                >
                   <td className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-color-surface font-medium">
                     {review.user?.fullname || 'Unknown'}
                   </td>
@@ -212,9 +234,7 @@ export default function AdminReviews() {
                         <Star
                           key={i}
                           className={`w-4 h-4 ${
-                            i < review.rating
-                              ? 'fill-yellow-500 text-yellow-500'
-                              : 'text-gray-600'
+                            i < review.rating ? 'fill-yellow-500 text-yellow-500' : 'text-gray-600'
                           }`}
                         />
                       ))}
@@ -233,18 +253,22 @@ export default function AdminReviews() {
                         onChange={(e) => setEditStatus(e.target.value)}
                         className="bg-gray-700 border border-gray-600 rounded px-3 py-1.5 text-sm text-color-surface focus:outline-none focus:border-emerald-500"
                       >
-                        {statuses.map(status => (
-                          <option key={status} value={status}>{status}</option>
+                        {statuses.map((status) => (
+                          <option key={status} value={status}>
+                            {status}
+                          </option>
                         ))}
                       </select>
                     ) : (
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        review.status === 'approved' 
-                          ? 'bg-green-500 bg-opacity-20 text-color-surface' 
-                          : review.status === 'pending'
-                          ? 'bg-yellow-500 bg-opacity-20 text-color-surface'
-                          : 'bg-red-500 bg-opacity-20 text-color-surface'
-                      }`}>
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          review.status === 'approved'
+                            ? 'bg-green-500 bg-opacity-20 text-color-surface'
+                            : review.status === 'pending'
+                              ? 'bg-yellow-500 bg-opacity-20 text-color-surface'
+                              : 'bg-red-500 bg-opacity-20 text-color-surface'
+                        }`}
+                      >
                         {review.status}
                       </span>
                     )}

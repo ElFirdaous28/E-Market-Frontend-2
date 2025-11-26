@@ -1,24 +1,24 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @variant dark (&:where(.dark, .dark *));
 
 /* Define base CSS variables that change based on theme */
 :root {
-  --color-primary: #01B765;
-  --color-background: #FFFFFF;
-  --color-surface: #F8F9FB;
-  --color-textMain: #181A1E;
-  --color-textMuted: #5F6168;
-  --color-border: #E5E7EB;
+  --color-primary: #01b765;
+  --color-background: #ffffff;
+  --color-surface: #f8f9fb;
+  --color-textMain: #181a1e;
+  --color-textMuted: #5f6168;
+  --color-border: #e5e7eb;
 }
 
 /* Override variables in dark mode */
 :root.dark {
-  --color-background: #181A1E;
-  --color-surface: #1F2125;
-  --color-textMain: #FFFFFF;
-  --color-textMuted: #B4B7BE;
-  --color-border: #2A2D32;
+  --color-background: #181a1e;
+  --color-surface: #1f2125;
+  --color-textMain: #ffffff;
+  --color-textMuted: #b4b7be;
+  --color-border: #2a2d32;
 }
 
 /* Register variables as Tailwind colors */
@@ -32,7 +32,6 @@
 }
 
 @layer base {
-
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus {
