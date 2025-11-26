@@ -75,7 +75,7 @@ export const AdminDashboard = () => {
                     </td>
 
                     <td className="px-6 py-4 text-sm text-color-surface font-medium">
-                      {order.totalAmount}
+                      {order.totalAmount.toFixed(2)}
                     </td>
                     <td className="px-6 py-4">
                       <span
