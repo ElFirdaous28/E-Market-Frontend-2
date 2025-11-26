@@ -1,6 +1,6 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAxios } from "./useAxios";
-import { toast } from "react-toastify";
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useAxios } from './useAxios';
+import { toast } from 'react-toastify';
 
 export const useAdminStatistics = () => {
   const axios = useAxios();
@@ -8,9 +8,9 @@ export const useAdminStatistics = () => {
 
   // --- FETCH TOP PRODUCTS
   const topProductsQuery = useQuery({
-    queryKey: ["top-products"],
+    queryKey: ['top-products'],
     queryFn: async () => {
-      const res = await axios.get("/products/topproducts");
+      const res = await axios.get('/products/topproducts');
       return res.data.data;
     },
     staleTime: 1000 * 60,
@@ -18,9 +18,9 @@ export const useAdminStatistics = () => {
 
   // FETCH STATISTICS
   const statisticsQuery = useQuery({
-    queryKey: ["statistics"],
+    queryKey: ['statistics'],
     queryFn: async () => {
-      const res = await axios.get("/orders/getStatics");
+      const res = await axios.get('/orders/getStatics');
       return res.data.data;
     },
     staleTime: 1000 * 60,
@@ -28,9 +28,9 @@ export const useAdminStatistics = () => {
 
   // FETCH ACTIVITIES
   const activitiesQuery = useQuery({
-    queryKey: ["activities"],
+    queryKey: ['activities'],
     queryFn: async () => {
-      const res = await axios.get("/users/getactivitie");
+      const res = await axios.get('/users/getactivitie');
       return res.data.data;
     },
     staleTime: 1000 * 60,
@@ -38,9 +38,9 @@ export const useAdminStatistics = () => {
 
   // FETCH PRODUCTS
   const productsQuery = useQuery({
-    queryKey: ["products"],
+    queryKey: ['products'],
     queryFn: async () => {
-      const res = await axios.get("/products");
+      const res = await axios.get('/products');
       return res.data.data;
     },
     staleTime: 1000 * 60,
@@ -48,43 +48,42 @@ export const useAdminStatistics = () => {
 
   // FETCH USERS
   const usersQuery = useQuery({
-    queryKey: ["users"],
+    queryKey: ['users'],
     queryFn: async () => {
-      const res = await axios.get("/users");
+      const res = await axios.get('/users');
       return res.data.data.users;
     },
     staleTime: 1000 * 60,
   });
   // FETCH REVIEWS
   const reviewsQuery = useQuery({
-    queryKey: ["reviews"],
+    queryKey: ['reviews'],
     queryFn: async () => {
-      const res = await axios.get("/reviews/");
+      const res = await axios.get('/reviews/');
       return res.data.data;
     },
     staleTime: 1000 * 60,
   });
-// FETCH GENERAL STATICS
-const staticsQuery = useQuery({
-  queryKey: ["statics"],
-  queryFn: async () => {
-    const res = await axios.get("/orders/getStatics");
-    return res.data.data;
-  },
+  // FETCH GENERAL STATICS
+  const staticsQuery = useQuery({
+    queryKey: ['statics'],
+    queryFn: async () => {
+      const res = await axios.get('/orders/getStatics');
+      return res.data.data;
+    },
     staleTime: 1000 * 60,
-
-});
+  });
   // DELETE USER MUTATION
   const deleteUserMutation = useMutation({
     mutationFn: async (id) => {
       await axios.delete(`/users/${id}/soft`);
     },
     onSuccess: () => {
-      toast.success("User deleted successfully");
-      queryClient.invalidateQueries(["users"]);
+      toast.success('User deleted successfully');
+      queryClient.invalidateQueries(['users']);
     },
     onError: () => {
-      toast.error("Failed to delete user");
+      toast.error('Failed to delete user');
     },
   });
 
@@ -94,11 +93,11 @@ const staticsQuery = useQuery({
       await axios.put(`/users/${id}/${role}`);
     },
     onSuccess: () => {
-      toast.success("User role updated successfully");
-      queryClient.invalidateQueries(["users"]);
+      toast.success('User role updated successfully');
+      queryClient.invalidateQueries(['users']);
     },
     onError: () => {
-      toast.error("Failed to update role");
+      toast.error('Failed to update role');
     },
   });
 
@@ -108,11 +107,11 @@ const staticsQuery = useQuery({
       await axios.delete(`/products/${id}`);
     },
     onSuccess: () => {
-      toast.success("Product deleted successfully");
-      queryClient.invalidateQueries(["products"]);
+      toast.success('Product deleted successfully');
+      queryClient.invalidateQueries(['products']);
     },
     onError: () => {
-      toast.error("Failed to delete product");
+      toast.error('Failed to delete product');
     },
   });
 
@@ -132,7 +131,11 @@ const staticsQuery = useQuery({
     editUserRole: editUserRoleMutation.mutate,
 
     // states
-    isLoading: topProductsQuery.isLoading || usersQuery.isLoading || reviewsQuery.isLoading || staticsQuery.isLoading,
+    isLoading:
+      topProductsQuery.isLoading ||
+      usersQuery.isLoading ||
+      reviewsQuery.isLoading ||
+      staticsQuery.isLoading,
     isError: topProductsQuery.isError || usersQuery.isError,
     error: topProductsQuery.error || usersQuery.error,
   };
