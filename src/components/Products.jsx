@@ -7,8 +7,8 @@ export default function Products({ products }) {
 
     // Add product to cart
     const handleAddToCart = (e, productId) => {
-        e.preventDefault(); // Prevent the Link navigation
-        addToCart.mutate({ productId, quantity: 1 }); // Default 1 for now
+        e.preventDefault();
+        addToCart.mutate({ productId, quantity: 1 });
     };
 
     return (

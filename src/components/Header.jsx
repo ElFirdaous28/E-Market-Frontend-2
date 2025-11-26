@@ -42,10 +42,15 @@ export default function Header({ toggleMobileMenu }) {
                 {/* Right section */}
                 <div className="flex items-center space-x-4 md:space-x-6">
                     <DarkToggel />
-                    <a href="#" className="relative text-textMuted hover:text-textMain">
-                        <ShoppingCart className="w-5 h-5 md:w-6 md:h-6" />
-                        <span className="absolute -top-2 -right-2 bg-primary text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">{cartLength}</span>
-                    </a>
+                    {user?.role === "user" && cartLength > 0 && (
+                        <Link to="/cart" className="relative text-textMuted hover:text-textMain">
+                            <ShoppingCart className="w-5 h-5 md:w-6 md:h-6" />
+                            <span className="absolute -top-2 -right-2 bg-primary text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">
+                                {cartLength}
+                            </span>
+                        </Link>
+                    )}
+
 
                     {/* User Section */}
                     <div

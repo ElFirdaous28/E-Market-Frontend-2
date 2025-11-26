@@ -3,10 +3,10 @@ import { useAxios } from "../hooks/useAxios";
 import { toast } from "react-toastify";
 import { useAuth } from "./useAuth";
 
-export const useOrders = () => {
-  const axios = useAxios();
-  const queryClient = useQueryClient();
-  const { user } = useAuth();
+export const useOrders = (status) => {
+    const axios = useAxios();
+    const queryClient = useQueryClient();
+    const { user } = useAuth();
 
   // --- FETCH ALL ORDERS (admin)
   const allOrdersQuery = useQuery({
@@ -18,23 +18,27 @@ export const useOrders = () => {
     enabled: false, // only load when admin calls it
   });
 
-  // --- FETCH USER ORDERS
-  const userOrdersQuery = useQuery({
-    queryKey: ["user-orders"], // IMPORTANT: this must match invalidateQueries
-    queryFn: async () => {
-      const res = await axios.get(`/orders/${user._id}`);
-      return res.data.data;
-    },
-  });
+    // --- FETCH USER ORDERS
+    const userOrdersQuery = useQuery({
+        queryKey: ["user-orders", status],
+        queryFn: async () => {
+            const res = await axios.get(`/orders/${user._id}`, {
+                params: { status },
+            });
+            
+            return res.data.data;
+        },
+    });
 
-  // --- CREATE ORDER
-  const createOrder = useMutation({
-    mutationFn: (coupons) => axios.post("/orders", coupons),
-    onSuccess: () => {
-      queryClient.invalidateQueries(["user-orders"]);
-      toast.success("Order created!");
-    },
-  });
+
+    // --- CREATE ORDER
+    const createOrder = useMutation({
+        mutationFn: (coupons) => axios.post("/orders", coupons),
+        onSuccess: () => {
+            queryClient.invalidateQueries(["user-orders"]);
+            toast.success("Order created!");
+        },
+    });
 
   // --- UPDATE ORDER STATUS
   const updateOrderStatus = useMutation({
