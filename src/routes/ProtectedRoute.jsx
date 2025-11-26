@@ -5,11 +5,11 @@ const ProtectedRoute = ({ allowedRoles }) => {
   const { user, loading } = useAuth();
   const location = useLocation();
 
+  if (loading) return <div>Loading...</div>;
+
   if (!user && location.pathname === "/cart") {
     return <Outlet />;
   }
-
-  if (loading) return <div>Loading...</div>;
 
   if (!user) return <Navigate to="/login" replace />;
 
