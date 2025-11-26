@@ -79,10 +79,11 @@ const Register = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 w-full lg:px-10">
             {/* Full Name */}
             <div>
-              <label className="block text-textMain text-sm font-medium mb-2">
+              <label htmlFor="full_name" className="block text-textMain text-sm font-medium mb-2">
                 Full Name
               </label>
               <input
+                id="full_name"
                 type="text"
                 {...register("fullname")}
                 placeholder="John Doe"
@@ -96,16 +97,17 @@ const Register = () => {
 
             {/* Email */}
             <div>
-              <label className="block text-textMain text-sm font-medium mb-2">
+              <label htmlFor="email" className="block text-textMain text-sm font-medium mb-2">
                 Email Address
               </label>
               <input
+                id="email"
                 type="email"
                 {...register("email")}
                 placeholder="john@example.com"
                 className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors ${errors.email
-                    ? "border-red-500"
-                    : "border-border focus:border-primary"
+                  ? "border-red-500"
+                  : "border-border focus:border-primary"
                   }`}
               />
               {errors.email && (
@@ -117,17 +119,18 @@ const Register = () => {
 
             {/* Password */}
             <div>
-              <label className="block text-textMain text-sm font-medium mb-2">
+              <label htmlFor="password" className="block text-textMain text-sm font-medium mb-2">
                 Password
               </label>
               <div className="relative">
                 <input
+                  id="password"
                   type={showPassword ? "text" : "password"}
                   {...register("password")}
                   placeholder="••••••••"
                   className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors pr-12 ${errors.password
-                      ? "border-red-500"
-                      : "border-border focus:border-primary"
+                    ? "border-red-500"
+                    : "border-border focus:border-primary"
                     }`}
                 />
                 <button
@@ -147,17 +150,18 @@ const Register = () => {
 
             {/* Confirm Password */}
             <div>
-              <label className="block text-textMain text-sm font-medium mb-2">
+              <label htmlFor="password-confirmation" className="block text-textMain text-sm font-medium mb-2">
                 Confirm Password
               </label>
               <div className="relative">
                 <input
+                  id="password-confirmation"
                   type={showConfirmPassword ? "text" : "password"}
                   {...register("confirmPassword")}
                   placeholder="••••••••"
                   className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors pr-12 ${errors.confirmPassword
-                      ? "border-red-500"
-                      : "border-border focus:border-primary"
+                    ? "border-red-500"
+                    : "border-border focus:border-primary"
                     }`}
                 />
                 <button
@@ -191,13 +195,13 @@ const Register = () => {
                 {...register("agreedToTerms")}
                 className="mt-1 w-4 h-4 accent-primary"
               />
-              <label className="text-sm text-textMuted">
+              <label htmlFor="terms-privacy" className="text-sm text-textMuted">
                 I agree to the{" "}
-                <a href="#" className="text-primary hover:text-emerald-400">
+                <a id="terms-privacy" href="/terms" className="text-primary hover:text-emerald-400">
                   Terms of Service
                 </a>{" "}
                 and{" "}
-                <a href="#" className="text-primary hover:text-emerald-400">
+                <a id="terms-privacy" href="/privacy" className="text-primary hover:text-emerald-400">
                   Privacy Policy
                 </a>
               </label>

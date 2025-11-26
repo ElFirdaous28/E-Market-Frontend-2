@@ -39,7 +39,7 @@ export default function SellerOverview() {
         <div className="space-y-6 max-w-6xl w-full mx-auto">
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-2xl font-semibold text-textMain">Vue d'ensemble</h2>
+                    <h2 className="text-2xl font-semibold text-textMain">Vue d&aposensemble</h2>
                     <p className="text-sm text-textMuted mt-1">Aperçu rapide de vos performances</p>
                 </div>
             </div>
@@ -50,7 +50,7 @@ export default function SellerOverview() {
             )}
             {ordersQuery.isError && (
                 <div className="bg-amber-50 border border-amber-200 text-amber-700 px-4 py-3 rounded-lg">
-                    Impossible de charger les commandes vendeur (endpoint manquant). Les statistiques d'orders peuvent être incomplètes.
+                    Impossible de charger les commandes vendeur (endpoint manquant). Les statistiques d&aposorders peuvent être incomplètes.
                 </div>
             )}
 

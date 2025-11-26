@@ -29,14 +29,16 @@ describe("useCart Hook Unit Tests", () => {
             defaultOptions: { queries: { retry: false } },
             logger: { log: console.log, warn: console.warn, error: () => { } },
         });
+        return function Wrapper({ children }) {
+            return (
+                <Provider store={store}>
+                    <QueryClientProvider client={queryClient}>
+                        {children}
+                    </QueryClientProvider>
+                </Provider>
+            );
+        };
 
-        return ({ children }) => (
-            <Provider store={store}>
-                <QueryClientProvider client={queryClient}>
-                    {children}
-                </QueryClientProvider>
-            </Provider>
-        );
     };
 
     beforeEach(() => {

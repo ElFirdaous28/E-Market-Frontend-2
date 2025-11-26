@@ -22,13 +22,16 @@ describe("useAuth Hook Unit Tests", () => {
             logger: { log: console.log, warn: console.warn, error: () => { } },
         });
 
-        return ({ children }) => (
-            <Provider store={store}>
-                <QueryClientProvider client={queryClient}>
-                    {children}
-                </QueryClientProvider>
-            </Provider>
-        );
+        return function Wrapper({ children }) {
+            return (
+                <Provider store={store}>
+                    <QueryClientProvider client={queryClient}>
+                        {children}
+                    </QueryClientProvider>
+                </Provider>
+            );
+        };
+
     };
 
     it("Given a connected user in the Redux state, When useAuth() is called, Then it returns the correct information", () => {

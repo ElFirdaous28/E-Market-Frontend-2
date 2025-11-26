@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Users, Trash2, Edit2, Check, X } from 'lucide-react';
 import { useAdminStatistics } from '../../hooks/useAdminstatistics';
 
@@ -9,7 +9,7 @@ export const UserManagement = () => {
 
   const roles = ['admin', 'seller', 'user'];
 
- const handleEdit = (user) => {
+  const handleEdit = (user) => {
     setEditingId(user._id);
     setEditRole(user.role);
   };
@@ -27,11 +27,11 @@ export const UserManagement = () => {
   const handleDelete = (userId) => {
     deleteUser(userId);
   };
- 
- if (isLoading) return <h1>Loading...</h1>;
 
-  
-   return (
+  if (isLoading) return <h1>Loading...</h1>;
+
+
+  return (
     <main className="flex-1 p-4 md:p-6 overflow-auto w-full">
       {/* Header */}
       <div className="mb-4 md:mb-6 max-w-full">
@@ -106,15 +106,14 @@ export const UserManagement = () => {
                         ))}
                       </select>
                     ) : (
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        user.role === 'admin' 
-                          ? 'bg-purple-500 bg-opacity-20 text-color-surface' 
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${user.role === 'admin'
+                          ? 'bg-purple-500 bg-opacity-20 text-color-surface'
                           : user.role === 'seller'
-                          ? 'bg-blue-500 bg-opacity-20 text-color-surface'
-                          : 'bg-gray-500 bg-opacity-20  text-color-surface'
-                      }`}>
+                            ? 'bg-blue-500 bg-opacity-20 text-color-surface'
+                            : 'bg-gray-500 bg-opacity-20  text-color-surface'
+                        }`}>
                         {user.role}
-                      
+
                       </span>
                     )}
                   </td>
@@ -165,5 +164,5 @@ export const UserManagement = () => {
       </div>
     </main>
   );
- }
+}
 

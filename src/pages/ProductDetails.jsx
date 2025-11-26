@@ -7,6 +7,7 @@ import { createReviewSchema, updateReviewSchema } from "../validations/reviewSch
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAuth } from "../hooks/useAuth";
+import { useCart } from "../hooks/useCart";
 
 export const ProductDetails = () => {
   const { id } = useParams();
@@ -15,8 +16,15 @@ export const ProductDetails = () => {
   const [currentImage, setCurrentImage] = useState(null);
   const [page, setPage] = useState(1);
   const limit = 5;
-  const { getProductReviews, createReview, updateReview } = useReviews();
-  const { data } = getProductReviews(id, page, limit);
+  const { productReviews, createReview, updateReview } = useReviews(id, page, limit);
+
+  const { addToCart } = useCart();
+
+  // Add product to cart
+  const handleAddToCart = (e, productId) => {
+    e.preventDefault();
+    addToCart.mutate({ productId, quantity: 1 });
+  };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [rating, setRating] = useState(0);
@@ -101,12 +109,13 @@ export const ProductDetails = () => {
     setValue("rating", review.rating);
     setValue("comment", review.comment);
     setRating(review.rating); // for stars
+    setComment(review.comment);
     setIsModalOpen(true);
   };
 
   const renderPagination = () => {
     const pages = [];
-    for (let i = 1; i <= data?.totalPages; i++) {
+    for (let i = 1; i <= productReviews?.totalPages; i++) {
       pages.push(
         <button
           key={i}
@@ -195,7 +204,9 @@ export const ProductDetails = () => {
           </p>
 
           {/* Button */}
-          <button className="w-full bg-primary text-white py-4 px-8 rounded-xl font-bold text-lg hover:bg-green-600 active:scale-95 transition-all shadow-lg shadow-primary/25 flex items-center justify-center gap-3">
+          <button
+            onClick={(e) => handleAddToCart(e, id)}
+            className="w-full bg-primary text-white py-4 px-8 rounded-xl font-bold text-lg hover:bg-green-600 active:scale-95 transition-all shadow-lg shadow-primary/25 flex items-center justify-center gap-3">
             <ShoppingCart className="w-6 h-6" />
             Add To Cart
           </button>
@@ -213,17 +224,17 @@ export const ProductDetails = () => {
           {/* Filter Header */}
           <div className="flex flex-wrap justify-between items-center gap-4 mb-8 bg-surface p-4 rounded-lg border border-border/50">
             <div className="flex items-center gap-3">
-              <span className="text-4xl font-bold text-textMain">{data?.averageRating.toFixed(2) || 0}</span>
+              <span className="text-4xl font-bold text-textMain">{productReviews?.averageRating.toFixed(2) || 0}</span>
               <div className="flex flex-col">
                 <div className="flex text-yellow-400 gap-0.5">
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
-                      className={`w-5 h-5 ${i < Math.round(data?.averageRating || 0) ? "fill-yellow-400" : "text-gray-300"}`}
+                      className={`w-5 h-5 ${i < Math.round(productReviews?.averageRating || 0) ? "fill-yellow-400" : "text-gray-300"}`}
                     />
                   ))}
                 </div>
-                <span className="text-xs text-textMuted">Based on {data?.total} reviews</span>
+                <span className="text-xs text-textMuted">Based on {productReviews?.total} reviews</span>
               </div>
             </div>
 
@@ -236,7 +247,7 @@ export const ProductDetails = () => {
 
           {/* Reviews List */}
           <div className="space-y-6">
-            {data?.reviews?.map((review) => (
+            {productReviews?.reviews?.map((review) => (
               <div key={review._id} className="bg-surface rounded-2xl border border-border p-8 hover:shadow-md transition-shadow duration-300">
                 <div className="flex justify-between items-start mb-4">
                   <div className="flex items-center gap-4">

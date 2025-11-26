@@ -36,7 +36,7 @@ export default function OrdersManager() {
                 <h2 className="text-2xl font-semibold">Commandes liées à vos produits</h2>
                 {isLoading && <span className="text-sm text-gray-500">Mise à jour...</span>}
             </div>
-            {orders.length === 0 && <div className="text-sm text-gray-600">Aucune commande pour l'instant.</div>}
+            {orders.length === 0 && <div className="text-sm text-gray-600">Aucune commande pour l&aposinstant.</div>}
             {orders.length > 0 && (
                 <div className="overflow-x-auto border rounded-lg shadow-sm bg-white dark:bg-gray-900">
                     <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm">
