@@ -13,6 +13,7 @@ export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen }) {
     user: [
       { title: "Home", path: "/", icon: Home },
       { title: "Products", path: "/products", icon: Package },
+      { title: "Cart", path: "/cart", icon: ShoppingCart },
       { title: "Orders", path: "/orders", icon: ShoppingCart },
       { title: "Profile", path: "/profile", icon: User },
     ],

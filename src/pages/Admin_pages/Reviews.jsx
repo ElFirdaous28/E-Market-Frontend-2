@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Trash2, Star, MessageSquare, Check, X, Edit2 } from 'lucide-react';
 import { useAdminStatistics } from '../../hooks/useAdminstatistics';
-import { useAxios } from '../../hooks/useAxios';
 
 // Mock data for demonstration
 // const mockReviews = [
@@ -53,7 +52,6 @@ import { useAxios } from '../../hooks/useAxios';
 // ];
 
 export default function AdminReviews() {
-      const axios = useAxios();
     
 //   const [reviews, setReviews] = useState([]);
 //   const [loading, setLoading] = useState(true);

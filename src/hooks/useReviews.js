@@ -3,23 +3,23 @@ import { useAxios } from "../hooks/useAxios";
 import { toast } from "react-toastify";
 import { useAuth } from "./useAuth";
 
-export const useReviews = () => {
+export const useReviews = (productId = null, page = 1, limit = 10) => {
     const axios = useAxios();
     const queryClient = useQueryClient();
     const { user } = useAuth();
 
     // --- FETCH PRODUCT REVIEWS (call manually)
-    const getProductReviews = (productId, page = 1, limit = 10) =>
-        useQuery({
-            queryKey: ["product-reviews", productId, page, limit],
-            queryFn: async () => {
-                const res = await axios.get(
-                    `/reviews/product/${productId}?page=${page}&limit=${limit}`
-                );
-                return res.data;
-            },
-            enabled: !!productId,
-        });
+    const productReviewsQuery = useQuery({
+        queryKey: ["product-reviews", productId, page, limit],
+        queryFn: async () => {
+            if (!productId) return null;
+            const res = await axios.get(
+                `/reviews/product/${productId}?page=${page}&limit=${limit}`
+            );
+            return res.data;
+        },
+        enabled: !!productId, // only fetch if productId is truthy
+    });
 
     // --- FETCH MY REVIEWS (auto)
     const myReviewsQuery = useQuery({
@@ -67,7 +67,7 @@ export const useReviews = () => {
         isMyReviewsLoading: myReviewsQuery.isLoading,
 
         // Functions
-        getProductReviews,
+        productReviews: productReviewsQuery.data,
 
         // Mutations
         createReview,
