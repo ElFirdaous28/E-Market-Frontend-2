@@ -10,7 +10,7 @@ import { loginSchema } from "../../validations/loginSchema";
 import { toast } from "react-toastify";
 
 const Login = () => {
-  const { user, login } = useAuth();
+  const {login } = useAuth();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [backendError, setBackendError] = useState("");

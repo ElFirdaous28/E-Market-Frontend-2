@@ -1,4 +1,3 @@
-import axios from "../services/axios";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef } from "react";
 import { useCategories } from "../hooks/useCategories"
