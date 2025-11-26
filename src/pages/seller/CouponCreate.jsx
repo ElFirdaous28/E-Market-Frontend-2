@@ -37,6 +37,7 @@ export default function CouponCreate() {
         });
     };
 
+
     return (
         <div className="w-5xl mx-auto space-y-6 p-4 sm:p-6">
             <div className="flex items-center justify-between">

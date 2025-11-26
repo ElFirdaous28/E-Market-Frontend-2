@@ -10,6 +10,7 @@ export const useReviews = () => {
 
     // --- FETCH PRODUCT REVIEWS (call manually)
     const getProductReviews = (productId, page = 1, limit = 10) =>
+        //TODO: fix eslint warning about react-hooks/rules-of-hooks
         useQuery({
             queryKey: ["product-reviews", productId, page, limit],
             queryFn: async () => {

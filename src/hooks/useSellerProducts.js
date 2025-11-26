@@ -29,7 +29,9 @@ export function useSellerProducts() {
             dispatch(setSellerProducts(mine));
             return mine;
         },
-        enabled: Boolean(user)
+        enabled: Boolean(user),
+        staleTime: 30_000,
+        cacheTime: 300_000,
     });
 
     const createMutation = useMutation({

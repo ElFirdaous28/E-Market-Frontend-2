@@ -16,7 +16,8 @@ export const useCoupons = () => {
             toast.success("Coupon applied!");
         },
         onError: () => {
-            dispatch(setActiveCoupon(res.data.data));
+            dispatch(setActiveCoupon(null));
+            toast.error("Invalid coupon code");
         },
     });
 
