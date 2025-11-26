@@ -1,14 +1,19 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
 const ProtectedRoute = ({ allowedRoles }) => {
   const { user, loading } = useAuth();
+  const location = useLocation();
+
+  if (!user && location.pathname === "/cart") {
+    return <Outlet />;
+  }
 
   if (loading) return <div>Loading...</div>;
 
   if (!user) return <Navigate to="/login" replace />;
 
-  if (allowedRoles && !allowedRoles.includes(user.role)) {    
+  if (allowedRoles && !allowedRoles.includes(user.role)) {
     return <Navigate to="/unauthorized" replace />;
   }
 

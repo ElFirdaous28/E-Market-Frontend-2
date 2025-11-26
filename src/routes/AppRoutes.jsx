@@ -9,7 +9,6 @@ import SellerRoutes from "./SellerRoutes"
 import GuestRoute from "./GuestRoute"
 import Layout from "../components/Layout"
 import Profile from "../pages/Profile"
-import Cart from "../pages/Cart"
 
 const AppRoutes = () => {
     return (
@@ -22,7 +21,6 @@ const AppRoutes = () => {
 
 
                     <Route index element={<Home />} />
-                    <Route path="/cart" element={<Cart />} />
                     <Route element={<ProtectedRoute />}>
                         <Route path="/profile" element={<Profile />} />
                     </Route>
