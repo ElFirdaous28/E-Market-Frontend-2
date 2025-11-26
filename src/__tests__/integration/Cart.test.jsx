@@ -59,15 +59,19 @@ describe("Cart Integration Tests", () => {
     };
 
     // Wrapper for renderHook
-    const createWrapper = () => ({ children }) => (
-        <Provider store={store}>
-            <QueryClientProvider client={queryClient}>
-                <BrowserRouter>
-                    {children}
-                </BrowserRouter>
-            </QueryClientProvider>
-        </Provider>
-    );
+    const createWrapper = () => {
+        const TestWrapper = ({ children }) => (
+            <Provider store={store}>
+                <QueryClientProvider client={queryClient}>
+                    <BrowserRouter>
+                        {children}
+                    </BrowserRouter>
+                </QueryClientProvider>
+            </Provider>
+        );
+
+        return TestWrapper;
+    };
 
     beforeEach(() => {
         jest.clearAllMocks();
