@@ -10,7 +10,6 @@ const CouponsManager = lazy(() => import('../pages/seller/CouponsManager'));
 const CouponCreate = lazy(() => import('../pages/seller/CouponCreate'));
 const CouponEdit = lazy(() => import('../pages/seller/CouponEdit'));
 
-
 export default function SellerRoutes() {
   return (
     <>

@@ -15,16 +15,13 @@ const Products = lazy(() => import('../pages/Products'));
 const Home = lazy(() => import('../pages/Home'));
 const ProductDetails = lazy(() => import('../pages/ProductDetails'));
 
-
 const AppRoutes = () => {
   return (
     <BrowserRouter>
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           {/* guest routes- not loged in! */}
-          <Route element={<GuestRoute />}>
-            {AuthRoutes()}
-          </Route>
+          <Route element={<GuestRoute />}>{AuthRoutes()}</Route>
 
           {/* routes any one can acces  */}
           <Route path="/" element={<Layout />}>
@@ -37,14 +34,10 @@ const AppRoutes = () => {
             {UserRoutes()}
 
             {/* Seller protected routes */}
-            <Route element={<ProtectedRoute allowedRoles={['seller']} />}>
-              {SellerRoutes()}
-            </Route>
+            <Route element={<ProtectedRoute allowedRoles={['seller']} />}>{SellerRoutes()}</Route>
 
             {/* Protect all admin routes */}
-            <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
-              {AdminRoutes()}
-            </Route>
+            <Route element={<ProtectedRoute allowedRoles={['admin']} />}>{AdminRoutes()}</Route>
           </Route>
 
           <Route path="/unauthorized" element="unauthorized" />
