@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "../services/axios";
 import { useDispatch, useSelector } from "react-redux";
-import { setAccessToken, setUser, setLoading, logoutUser } from "../store/userSlice";
+import { setAccessToken, setUser, logoutUser } from "../store/userSlice";
 import { useMutation } from "@tanstack/react-query";
 
 export const useAuth = () => {
@@ -23,6 +23,7 @@ export const useAuth = () => {
                 if (profileRes.data?.user) dispatch(setUser(profileRes.data.user));
                 return profileRes.data.user || null;
             } catch (err) {
+                console.error("Auth initialization failed:", err);
                 dispatch(setUser(null));
                 dispatch(setAccessToken(null));
                 return null;

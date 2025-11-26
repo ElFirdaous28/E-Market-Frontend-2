@@ -27,6 +27,7 @@ export const useAxios = () => {
         );
 
         return instance;
+        /* eslint-disable-next-line react-hooks/exhaustive-deps */
     }, [accessToken]);
 // console.log("TOKEN SENT:", accessToken);
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Home, Package, ShoppingCart, Users, BarChart3, Settings, ChevronsRight, ChevronsLeft, User , History , Tickets } from "lucide-react";
+import { Home, Package, ShoppingCart, Users, Star, ChevronsRight, ChevronsLeft, User , History , Tickets } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
@@ -99,6 +99,7 @@ export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen }) {
 
             {/* Navigation: flex-1 allows it to grow/scroll within the parent */}
             <nav className="space-y-2 flex-1 p-4 overflow-y-auto">
+              /* eslint-disable no-unused-vars */
               {roleLinks.map(({ title, path, icon: Icon }) => {
                 const isActive = pathname === path;
 

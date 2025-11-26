@@ -9,7 +9,7 @@ export function useSellerOrders() {
     const dispatch = useDispatch();
     const axios = useAxios();
     const { user } = useAuth();
-
+    
     const ordersQuery = useQuery({
         queryKey: ['seller', 'orders', user?._id],
         queryFn: async () => {

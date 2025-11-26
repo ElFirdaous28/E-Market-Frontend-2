@@ -36,8 +36,9 @@ describe("Login Integration Tests - User Role Navigation", () => {
         // Setup Navigation Spy
         navigate = jest.fn();
         // We override the default mock from setupTests for this specific test suite
+        /*eslint-disable*/
         require("react-router-dom").useNavigate.mockReturnValue(navigate);
-
+        /*eslint-enable */
         // Fresh QueryClient
         queryClient = new QueryClient({
             defaultOptions: {

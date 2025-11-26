@@ -39,8 +39,9 @@ describe("Login Integration Tests - User Role Navigation", () => {
     beforeEach(() => {
         jest.clearAllMocks();
         navigate = jest.fn();
+        /*eslint-disable*/
         require("react-router-dom").useNavigate.mockReturnValue(navigate);
-
+        /*eslint-enable */
         store = configureStore({
             reducer: { user: userReducer },
         });
