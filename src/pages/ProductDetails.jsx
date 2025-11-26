@@ -19,7 +19,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useAuth } from '../hooks/useAuth';
 import { useCart } from '../hooks/useCart';
 
-export const ProductDetails = () => {
+export default function ProductDetails() {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -135,9 +135,8 @@ export const ProductDetails = () => {
         <button
           key={i}
           onClick={() => setPage(i)}
-          className={`w-8 h-8 rounded-full flex items-center justify-center font-semibold ${
-            page === i ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-          }`}
+          className={`w-8 h-8 rounded-full flex items-center justify-center font-semibold ${page === i ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }`}
         >
           {i}
         </button>
@@ -189,11 +188,10 @@ export const ProductDetails = () => {
                 <button
                   key={index}
                   onClick={() => setCurrentImage(img)}
-                  className={`w-20 h-20 shrink-0 rounded-lg overflow-hidden border-2 transition-all ${
-                    currentImage === img
+                  className={`w-20 h-20 shrink-0 rounded-lg overflow-hidden border-2 transition-all ${currentImage === img
                       ? 'border-primary ring-2 ring-primary/20 opacity-100'
                       : 'border-transparent opacity-70 hover:opacity-100 hover:border-gray-300'
-                  }`}
+                    }`}
                 >
                   <img
                     src={`http://localhost:3000${img}`}

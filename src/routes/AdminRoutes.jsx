@@ -1,10 +1,12 @@
 import { Route } from 'react-router-dom';
-import { Home } from '../pages/Home';
-import { UserManagement } from '../pages/Admin_pages/UserManagement';
-import { ProductManagement } from '../pages/Admin_pages/ProductManagement';
-import { AdminDashboard } from '../pages/Admin_pages/AdminDashboard';
-import AdminActivities from '../pages/Admin_pages/logs';
-import AdminReviews from '../pages/Admin_pages/Reviews';
+import { lazy } from 'react';
+
+const UserManagement = lazy(() => import('../pages/Admin_pages/UserManagement'));
+const ProductManagement = lazy(() => import('../pages/Admin_pages/ProductManagement'));
+const AdminDashboard = lazy(() => import('../pages/Admin_pages/AdminDashboard'));
+const AdminActivities = lazy(() => import('../pages/Admin_pages/logs'));
+const AdminReviews = lazy(() => import('../pages/Admin_pages/Reviews'));
+
 
 export default function AdminRoutes() {
   return (
