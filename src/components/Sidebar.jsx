@@ -4,8 +4,6 @@ import {
   Package,
   ShoppingCart,
   Users,
-  BarChart3,
-  Settings,
   ChevronsRight,
   ChevronsLeft,
   User,

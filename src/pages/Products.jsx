@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { lazy, useEffect, useState } from 'react';
 import axios from '../services/axios';
-import ProductsComponenet from '../components/Products';
 import { useCategories } from '../hooks/useCategories';
+const ProductsComponenet = lazy(() => import('../components/Products'));
+
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -73,11 +74,10 @@ const Products = () => {
         <button
           key={i}
           onClick={() => setPage(i)}
-          className={`w-8 h-8 rounded-full flex items-center justify-center font-semibold ${
-            page === i
+          className={`w-8 h-8 rounded-full flex items-center justify-center font-semibold ${page === i
               ? 'bg-primary text-textMain'
               : 'bg-brand-surface text-textMain hover:bg-primary/50'
-          } transition-colors`}
+            } transition-colors`}
         >
           {i}
         </button>

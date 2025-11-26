@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Users, Trash2, Edit2, Check, X } from 'lucide-react';
+import { useState } from 'react';
+import { Trash2, Edit2, Check, X } from 'lucide-react';
 import { useAxios } from '../../hooks/useAxios';
 import { useAdminStatistics } from '../../hooks/useAdminstatistics';
 
-export const ProductManagement = () => {
+export default function ProductManagement() {
   const axios = useAxios();
   const { products, deleteProduct } = useAdminStatistics();
 

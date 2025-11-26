@@ -11,7 +11,6 @@ export default function Header({ toggleMobileMenu }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { user } = useAuth();
   const { cartLength } = useCart();
-  console.log(cartLength);
 
   const dropdownRef = useRef(null);
 

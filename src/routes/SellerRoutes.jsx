@@ -1,12 +1,15 @@
+import { lazy } from 'react';
 import { Route } from 'react-router-dom';
-import ProductsManager from '../pages/seller/ProductsManager';
-import SellerOverview from '../pages/seller/Overview';
-import CreateProduct from '../pages/seller/CreateProduct';
-import EditProduct from '../pages/seller/EditProduct';
-import OrdersManager from '../pages/seller/OrdersManager';
-import CouponsManager from '../pages/seller/CouponsManager';
-import CouponCreate from '../pages/seller/CouponCreate';
-import CouponEdit from '../pages/seller/CouponEdit';
+
+const ProductsManager = lazy(() => import('../pages/seller/ProductsManager'));
+const SellerOverview = lazy(() => import('../pages/seller/Overview'));
+const CreateProduct = lazy(() => import('../pages/seller/CreateProduct'));
+const EditProduct = lazy(() => import('../pages/seller/EditProduct'));
+const OrdersManager = lazy(() => import('../pages/seller/OrdersManager'));
+const CouponsManager = lazy(() => import('../pages/seller/CouponsManager'));
+const CouponCreate = lazy(() => import('../pages/seller/CouponCreate'));
+const CouponEdit = lazy(() => import('../pages/seller/CouponEdit'));
+
 
 export default function SellerRoutes() {
   return (

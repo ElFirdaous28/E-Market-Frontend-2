@@ -1,7 +1,8 @@
 import { Package, Users, BarChart3, ShoppingCart } from 'lucide-react';
 import { useOrders } from '../../hooks/useOrders';
 import { useAdminStatistics } from '../../hooks/useAdminstatistics';
-export const AdminDashboard = () => {
+
+export default function AdminDashboard() {
   const { recentOrders } = useOrders();
   const { topProducts, statics } = useAdminStatistics();
 
@@ -20,7 +21,7 @@ export const AdminDashboard = () => {
     <main className="flex-1 p-6 overflow-auto w-full">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-color-surface mb-1">Dashboard Overview</h1>
-        <p className="text-gray-400">Welcome back, John! Here&aposs what&aposs happening today.</p>
+        <p className="text-gray-400">{"Welcome back, John! Here's what's happening today."}</p>
       </div>
 
       {/* Stats Grid */}
@@ -79,15 +80,14 @@ export const AdminDashboard = () => {
                     </td>
                     <td className="px-6 py-4">
                       <span
-                        className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          order.status === 'Completed'
+                        className={`px-3 py-1 rounded-full text-xs font-medium ${order.status === 'Completed'
                             ? 'bg-emerald-500 bg-opacity-20 text-white-500'
                             : order.status === 'Pending'
                               ? 'bg-yellow-500 bg-opacity-20 text-white-500'
                               : order.status === 'Processing'
                                 ? 'bg-blue-500 bg-opacity-20 text-white-500'
                                 : 'bg-purple-500 bg-opacity-20 text-white-500'
-                        }`}
+                          }`}
                       >
                         {order.status}
                       </span>

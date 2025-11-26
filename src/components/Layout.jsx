@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { lazy, useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import Header from './Header';
-import Sidebar from './Sidebar';
-import Footer from './Footer';
 import { useAuth } from '../hooks/useAuth';
+
+const Sidebar = lazy(() => import('../components/Sidebar'));
+const Header = lazy(() => import('../components/Header'));
+const Footer = lazy(() => import('../components/Footer'));
 
 export default function Layout() {
   const { user } = useAuth();
