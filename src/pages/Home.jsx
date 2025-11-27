@@ -13,7 +13,7 @@ export default function Home() {
   useEffect(() => {
     const getProducts = async () => {
       try {
-        const res = await axios.get('/products');
+        const res = await axios.get('/products/search?limit=7');
         setProducts(res.data.data || []);
       } catch (error) {
         console.error('Failed to fetch products:', error);

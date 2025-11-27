@@ -1,5 +1,6 @@
 import { Facebook, Instagram, Linkedin } from 'lucide-react';
-import { Logo } from './Logo';
+import { lazy } from 'react';
+const Logo = lazy(() => import('./Logo'));
 
 export default function Footer() {
   return (
