@@ -1,32 +1,32 @@
-import { useState } from "react";
-import { Trash2, Star, MessageSquare, Check, X, Edit2 } from "lucide-react";
-import { useAdminStatistics } from "../../hooks/useAdminstatistics";
+import { useState } from 'react';
+import { Trash2, Star, MessageSquare, Check, X, Edit2 } from 'lucide-react';
+import { useAdminStatistics } from '../../hooks/useAdminstatistics';
 
 export default function AdminReviews() {
   const [editingId, setEditingId] = useState(null);
-  const [editStatus, setEditStatus] = useState("");
+  const [editStatus, setEditStatus] = useState('');
   const { reviews, isLoading, deleteReview, editReviewStatus } = useAdminStatistics();
 
-  const statuses = ["pending", "approved", "rejected"];
+  const statuses = ['pending', 'approved', 'rejected'];
 
   const handleEdit = (review) => {
     setEditingId(review._id);
     setEditStatus(review.status);
-    console.log(review.status)
+    console.log(review.status);
   };
 
   const handleSave = (reviewId) => {
-   editReviewStatus({id: reviewId, status: editStatus})
+    editReviewStatus({ id: reviewId, status: editStatus });
     setEditingId(null);
   };
 
   const handleCancel = () => {
     setEditingId(null);
-    setEditStatus("");
+    setEditStatus('');
   };
 
   const handleDelete = async (reviewId) => {
-   deleteReview(reviewId);
+    deleteReview(reviewId);
   };
 
   if (isLoading) return <h1 className="text-white p-6">Loading...</h1>;
@@ -38,9 +38,7 @@ export default function AdminReviews() {
         <h1 className="text-xl md:text-2xl font-bold text-color-surface mb-1">
           Reviews Management
         </h1>
-        <p className="text-sm md:text-base text-gray-400">
-          Manage customer reviews and ratings
-        </p>
+        <p className="text-sm md:text-base text-gray-400">Manage customer reviews and ratings</p>
       </div>
 
       {/* Stats Grid */}
@@ -51,12 +49,8 @@ export default function AdminReviews() {
               <MessageSquare className="w-5 h-5 md:w-6 md:h-6 text-color-surface" />
             </div>
           </div>
-          <h3 className="text-gray-400 text-xs md:text-sm mb-1">
-            Total Reviews
-          </h3>
-          <p className="text-xl md:text-2xl font-bold text-color-surface">
-            {reviews.length}
-          </p>
+          <h3 className="text-gray-400 text-xs md:text-sm mb-1">Total Reviews</h3>
+          <p className="text-xl md:text-2xl font-bold text-color-surface">{reviews.length}</p>
         </div>
         <div className="bg-color-background border border-gray-700 rounded-lg p-4 md:p-6">
           <div className="flex items-center justify-between mb-4">
@@ -66,7 +60,7 @@ export default function AdminReviews() {
           </div>
           <h3 className="text-gray-400 text-xs md:text-sm mb-1">Pending</h3>
           <p className="text-xl md:text-2xl font-bold text-color-surface">
-            {reviews.filter((r) => r.status === "pending").length}
+            {reviews.filter((r) => r.status === 'pending').length}
           </p>
         </div>
         <div className="bg-color-background border border-gray-700 rounded-lg p-4 md:p-6">
@@ -77,7 +71,7 @@ export default function AdminReviews() {
           </div>
           <h3 className="text-gray-400 text-xs md:text-sm mb-1">Approved</h3>
           <p className="text-xl md:text-2xl font-bold text-color-surface">
-            {reviews.filter((r) => r.status === "approved").length}
+            {reviews.filter((r) => r.status === 'approved').length}
           </p>
         </div>
       </div>
@@ -85,9 +79,7 @@ export default function AdminReviews() {
       {/* Reviews Table */}
       <div className="bg-color-background border border-gray-700 rounded-lg w-full">
         <div className="p-4 md:p-6 border-b border-gray-700">
-          <h2 className="text-base md:text-lg font-semibold text-color-surface">
-            All Reviews
-          </h2>
+          <h2 className="text-base md:text-lg font-semibold text-color-surface">All Reviews</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[800px]">
@@ -120,10 +112,10 @@ export default function AdminReviews() {
                   className="border-b border-gray-700 hover:bg-gray-750 transition-colors"
                 >
                   <td className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-color-surface font-medium">
-                    {review.user?.fullname || "Unknown"}
+                    {review.user?.fullname || 'Unknown'}
                   </td>
                   <td className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-400">
-                    {review.product?.title || "Unknown"}
+                    {review.product?.title || 'Unknown'}
                   </td>
                   <td className="px-4 md:px-6 py-3 md:py-4">
                     <div className="flex items-center gap-1">
@@ -131,15 +123,11 @@ export default function AdminReviews() {
                         <Star
                           key={i}
                           className={`w-4 h-4 ${
-                            i < review.rating
-                              ? "fill-yellow-500 text-yellow-500"
-                              : "text-gray-600"
+                            i < review.rating ? 'fill-yellow-500 text-yellow-500' : 'text-gray-600'
                           }`}
                         />
                       ))}
-                      <span className="ml-1 text-xs text-gray-400">
-                        {review.rating}/5
-                      </span>
+                      <span className="ml-1 text-xs text-gray-400">{review.rating}/5</span>
                     </div>
                   </td>
                   <td className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-400 max-w-xs">
@@ -163,11 +151,11 @@ export default function AdminReviews() {
                     ) : (
                       <span
                         className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          review.status === "approved"
-                            ? "bg-green-500 bg-opacity-20 text-color-surface"
-                            : review.status === "pending"
-                            ? "bg-yellow-500 bg-opacity-20 text-color-surface"
-                            : "bg-red-500 bg-opacity-20 text-color-surface"
+                          review.status === 'approved'
+                            ? 'bg-green-500 bg-opacity-20 text-color-surface'
+                            : review.status === 'pending'
+                              ? 'bg-yellow-500 bg-opacity-20 text-color-surface'
+                              : 'bg-red-500 bg-opacity-20 text-color-surface'
                         }`}
                       >
                         {review.status}

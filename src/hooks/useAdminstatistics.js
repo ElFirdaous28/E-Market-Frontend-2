@@ -103,14 +103,14 @@ export const useAdminStatistics = () => {
   // EDIT REVIEW STATUS MUTATION
   const reviewStatusMutation = useMutation({
     mutationFn: async ({ id, status }) => {
-     await axios.patch(`/reviews/update-status/${id}`, { status });
+      await axios.patch(`/reviews/update-status/${id}`, { status });
     },
     onSuccess: () => {
-      toast.success("review status updated successfully");
-      queryClient.invalidateQueries(["reviews"]);
+      toast.success('review status updated successfully');
+      queryClient.invalidateQueries(['reviews']);
     },
     onError: () => {
-      toast.error("Failed to update status");
+      toast.error('Failed to update status');
     },
   });
 
@@ -134,11 +134,11 @@ export const useAdminStatistics = () => {
       await axios.delete(`/reviews/${id}`);
     },
     onSuccess: () => {
-      toast.success("Review deletedd successfully");
-      queryClient.invalidateQueries(["reviews"]);
+      toast.success('Review deletedd successfully');
+      queryClient.invalidateQueries(['reviews']);
     },
     onError: () => {
-      toast.error("failed to delete review")
+      toast.error('failed to delete review');
     },
   });
 

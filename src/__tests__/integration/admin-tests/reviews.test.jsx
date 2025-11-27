@@ -1,9 +1,9 @@
-import { render, screen, within } from "@testing-library/react";
-import { BrowserRouter } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import  AdminReviews  from "../../../pages/Admin_pages/Reviews";
-import { useAdminStatistics } from "../../../hooks/useAdminstatistics";
-import userEvent from "@testing-library/user-event";
+import { render, screen, within } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import AdminReviews from '../../../pages/Admin_pages/Reviews';
+import { useAdminStatistics } from '../../../hooks/useAdminstatistics';
+import userEvent from '@testing-library/user-event';
 
 // Mock the hook
 jest.mock('../../../hooks/useAdminstatistics');
@@ -22,7 +22,7 @@ jest.mock('lucide-react', () => ({
 // Mock axios if your hook uses it
 jest.mock('../../../hooks/useAxios');
 
-describe("AdminReviews Component", () => {
+describe('AdminReviews Component', () => {
   const mockDeleteReview = jest.fn();
   const mockEditReview = jest.fn();
   const mockReviews = [
@@ -31,16 +31,16 @@ describe("AdminReviews Component", () => {
       user: { fullname: 'John Doe' },
       product: { title: 'Wireless Headphones' },
       rating: 5,
-      comment: "Excellent product!",
-      status: "pending",
+      comment: 'Excellent product!',
+      status: 'pending',
     },
     {
       _id: '2',
       user: { fullname: 'Jane Smith' },
       product: { title: 'Smart Watch' },
       rating: 4,
-      comment: "Great watch!",
-      status: "approved",
+      comment: 'Great watch!',
+      status: 'approved',
     },
   ];
 
@@ -57,8 +57,8 @@ describe("AdminReviews Component", () => {
     jest.clearAllMocks();
     useAdminStatistics.mockReturnValue({
       reviews: mockReviews,
-      deleteReview:mockDeleteReview,
-      editReviewStatus:mockEditReview,
+      deleteReview: mockDeleteReview,
+      editReviewStatus: mockEditReview,
       isLoading: false,
     });
   });
@@ -82,25 +82,23 @@ describe("AdminReviews Component", () => {
     const approvedCard = screen.getByText('Approved').closest('div');
     expect(within(approvedCard).getByText('1')).toBeInTheDocument();
   });
-  it("calls deleteReview when delete button is clicked" , async () => {
-    renderWithProviders(<AdminReviews/>);
-    
-    const user = userEvent.setup();
-    
-    await user.click(screen.getAllByTitle("Delete Review")[0]);
-    expect(mockDeleteReview).toHaveBeenCalledWith("1");
-  })
-  
-  it("editing review status", async () => {
-    renderWithProviders(<AdminReviews/>); 
-    const user = userEvent.setup(); 
-    await user.click(screen.getAllByTitle("Edit Status")[0]); 
-    const select = screen.getByDisplayValue("pending");
-    await user.selectOptions(select, "approved");
-    await user.click(screen.getByTitle("Save"));
+  it('calls deleteReview when delete button is clicked', async () => {
+    renderWithProviders(<AdminReviews />);
 
-    expect(mockEditReview).toHaveBeenCalledWith({id:"1", status:"approved"})
-    
-    
-  })
+    const user = userEvent.setup();
+
+    await user.click(screen.getAllByTitle('Delete Review')[0]);
+    expect(mockDeleteReview).toHaveBeenCalledWith('1');
+  });
+
+  it('editing review status', async () => {
+    renderWithProviders(<AdminReviews />);
+    const user = userEvent.setup();
+    await user.click(screen.getAllByTitle('Edit Status')[0]);
+    const select = screen.getByDisplayValue('pending');
+    await user.selectOptions(select, 'approved');
+    await user.click(screen.getByTitle('Save'));
+
+    expect(mockEditReview).toHaveBeenCalledWith({ id: '1', status: 'approved' });
+  });
 });

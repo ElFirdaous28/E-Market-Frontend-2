@@ -11,7 +11,12 @@ export default function CouponEdit() {
   const { id } = useParams();
   const coupon = getById(id);
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
     resolver: yupResolver(couponSchema),
     defaultValues: {
       code: '',
@@ -94,15 +99,14 @@ export default function CouponEdit() {
             </label>
             <input
               {...register('code')}
-              className={`border rounded-lg px-4 py-2.5 w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:border-transparent transition-all ${errors.code
+              className={`border rounded-lg px-4 py-2.5 w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:border-transparent transition-all ${
+                errors.code
                   ? 'border-red-500 focus:ring-red-500'
                   : 'border-gray-300 dark:border-gray-600 focus:ring-indigo-500 dark:focus:ring-indigo-400'
-                }`}
+              }`}
             />
             {errors.code && (
-              <p className="text-sm text-red-600 dark:text-red-400 mt-1">
-                {errors.code.message}
-              </p>
+              <p className="text-sm text-red-600 dark:text-red-400 mt-1">{errors.code.message}</p>
             )}
           </div>
           <div className="space-y-2">
@@ -125,15 +129,14 @@ export default function CouponEdit() {
               type="number"
               step="0.01"
               {...register('value')}
-              className={`border rounded-lg px-4 py-2.5 w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:border-transparent transition-all ${errors.value
+              className={`border rounded-lg px-4 py-2.5 w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:border-transparent transition-all ${
+                errors.value
                   ? 'border-red-500 focus:ring-red-500'
                   : 'border-gray-300 dark:border-gray-600 focus:ring-indigo-500 dark:focus:ring-indigo-400'
-                }`}
+              }`}
             />
             {errors.value && (
-              <p className="text-sm text-red-600 dark:text-red-400 mt-1">
-                {errors.value.message}
-              </p>
+              <p className="text-sm text-red-600 dark:text-red-400 mt-1">{errors.value.message}</p>
             )}
           </div>
           <div className="space-y-2">
@@ -154,10 +157,11 @@ export default function CouponEdit() {
             <input
               type="datetime-local"
               {...register('startDate')}
-              className={`border rounded-lg px-4 py-2.5 w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:border-transparent transition-all ${errors.startDate
+              className={`border rounded-lg px-4 py-2.5 w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:border-transparent transition-all ${
+                errors.startDate
                   ? 'border-red-500 focus:ring-red-500'
                   : 'border-gray-300 dark:border-gray-600 focus:ring-indigo-500 dark:focus:ring-indigo-400'
-                }`}
+              }`}
             />
             {errors.startDate && (
               <p className="text-sm text-red-600 dark:text-red-400 mt-1">
@@ -172,10 +176,11 @@ export default function CouponEdit() {
             <input
               type="datetime-local"
               {...register('expirationDate')}
-              className={`border rounded-lg px-4 py-2.5 w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:border-transparent transition-all ${errors.expirationDate
+              className={`border rounded-lg px-4 py-2.5 w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:border-transparent transition-all ${
+                errors.expirationDate
                   ? 'border-red-500 focus:ring-red-500'
                   : 'border-gray-300 dark:border-gray-600 focus:ring-indigo-500 dark:focus:ring-indigo-400'
-                }`}
+              }`}
             />
             {errors.expirationDate && (
               <p className="text-sm text-red-600 dark:text-red-400 mt-1">
@@ -201,10 +206,11 @@ export default function CouponEdit() {
             <input
               type="number"
               {...register('maxUsagePerUser')}
-              className={`border rounded-lg px-4 py-2.5 w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:border-transparent transition-all ${errors.maxUsagePerUser
+              className={`border rounded-lg px-4 py-2.5 w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:border-transparent transition-all ${
+                errors.maxUsagePerUser
                   ? 'border-red-500 focus:ring-red-500'
                   : 'border-gray-300 dark:border-gray-600 focus:ring-indigo-500 dark:focus:ring-indigo-400'
-                }`}
+              }`}
             />
             {errors.maxUsagePerUser && (
               <p className="text-sm text-red-600 dark:text-red-400 mt-1">

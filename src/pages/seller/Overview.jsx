@@ -142,7 +142,7 @@ export default function SellerOverview() {
     </div>
   );
 }
- 
+
 function StatCard({ icon: Icon, label, value, color = 'text-textMain', bg = 'bg-surface/50' }) {
   return (
     <div className="bg-surface border border-border rounded-xl p-5 shadow-sm flex items-center gap-4">
