@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
-import { Users, Trash2, Edit2, Check, X } from 'lucide-react';
-import { useAxios } from '../../hooks/useAxios';
+import { useState } from 'react';
+import { Trash2, Edit2, Check, X } from 'lucide-react';
 import { useAdminStatistics } from '../../hooks/useAdminstatistics';
 
 export const ProductManagement = () => {
-  const axios = useAxios();
   const { products, deleteProduct } = useAdminStatistics();
 
   const [editingId, setEditingId] = useState(null);
-  const [editRole, setEditRole] = useState('');
+  const [_editRole, setEditRole] = useState('');
 
   const handleEdit = (user) => {
     setEditingId(user._id);
