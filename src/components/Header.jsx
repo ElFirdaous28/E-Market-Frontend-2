@@ -2,7 +2,7 @@ import { Search, ShoppingCart, User, Menu } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import LogoutButton from './LogoutButton';
-import DarkToggel from './darkToggel';
+import DarkToggel from './DarkToggel';
 import { useCart } from '../hooks/useCart';
 import { lazy, useRef, useState } from 'react';
 const Logo = lazy(() => import('./Logo'));
