@@ -1,26 +1,28 @@
-import { Moon, Sun } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Moon, Sun } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 export default function DarkToggel() {
-    const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState('light');
 
-    const toggelTheme = () => {
-        const newTheme = theme === "light" ? "dark" : "light";
-        setTheme(newTheme);
-        document.documentElement.classList.toggle("dark", newTheme === "dark");
-        localStorage.setItem("theme", newTheme)
-    };
+  const toggelTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    document.documentElement.classList.toggle('dark', newTheme === 'dark');
+    localStorage.setItem('theme', newTheme);
+  };
 
-    useEffect(() => {
-        const storedTheme = localStorage.getItem("theme") || "light";
-        setTheme(storedTheme);
-        document.documentElement.classList.toggle("dark", storedTheme === "dark");
-    }, [])
+  useEffect(() => {
+    const storedTheme = localStorage.getItem('theme') || 'light';
+    setTheme(storedTheme);
+    document.documentElement.classList.toggle('dark', storedTheme === 'dark');
+  }, []);
 
-    return (
-        <button
-            onClick={toggelTheme}
-            className='rounded-full cursor-pointer text-textMuted hover:text-primary transition-all ease-in-out'>
-            {theme === "light" ? <Moon /> : <Sun />}
-        </button>)
+  return (
+    <button
+      onClick={toggelTheme}
+      className="rounded-full cursor-pointer text-textMuted hover:text-primary transition-all ease-in-out"
+    >
+      {theme === 'light' ? <Moon /> : <Sun />}
+    </button>
+  );
 }

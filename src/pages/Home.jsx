@@ -1,11 +1,11 @@
-import { ShoppingCart } from "lucide-react";
-import CategoriesSlider from "../components/CategoriesSlider";
-import Products from "../components/Products";
-import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import axios from "../services/axios";
-import { useAuth } from "../hooks/useAuth";
-import { AdminDashboard } from "./Admin_pages/AdminDashboard";
+import { ShoppingCart } from 'lucide-react';
+import CategoriesSlider from '../components/CategoriesSlider';
+import Products from '../components/Products';
+import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import axios from '../services/axios';
+import { useAuth } from '../hooks/useAuth';
+import { AdminDashboard } from './Admin_pages/AdminDashboard';
 
 export const Home = () => {
   const { user } = useAuth();
@@ -15,10 +15,10 @@ export const Home = () => {
   useEffect(() => {
     const getProducts = async () => {
       try {
-        const res = await axios.get("/products");
+        const res = await axios.get('/products');
         setProducts(res.data.data || []);
       } catch (error) {
-        console.error("Failed to fetch products:", error);
+        console.error('Failed to fetch products:', error);
       } finally {
         setLoading(false);
       }
@@ -28,11 +28,9 @@ export const Home = () => {
 
   if (loading) return <div>Loading products...</div>;
 
-  if (user?.role === "admin") {
+  if (user?.role === 'admin') {
     return <AdminDashboard />;
-  }
-
-  else {
+  } else {
     return (
       <>
         <section className="w-full sm:w-11/12 lg:w-3/4 bg-surface rounded-lg overflow-hidden flex flex-col md:flex-row p-6 sm:p-8 md:p-12 lg:p-16 text-center md:text-left items-center md:items-stretch mx-auto">
@@ -41,8 +39,8 @@ export const Home = () => {
               Shop the Best Products Online
             </h1>
             <p className="mt-4 text-base sm:text-lg text-textMuted max-w-md">
-              Discover amazing deals on top-quality products. Fast shipping,
-              secure payments, and excellent customer service.
+              Discover amazing deals on top-quality products. Fast shipping, secure payments, and
+              excellent customer service.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
               <Link
@@ -70,10 +68,7 @@ export const Home = () => {
           <Products products={products} />
         </div>
         <div className="w-3/4 text-primary -mt-10 text-right">
-          <Link
-            to="/products"
-            className="text-primary font-semibold hover:underline"
-          >
+          <Link to="/products" className="text-primary font-semibold hover:underline">
             View All &rarr;
           </Link>
         </div>

@@ -30,7 +30,6 @@ export const UserManagement = () => {
 
   if (isLoading) return <h1>Loading...</h1>;
 
-
   return (
     <main className="flex-1 p-4 md:p-6 overflow-auto w-full">
       {/* Header */}
@@ -57,7 +56,9 @@ export const UserManagement = () => {
             </div>
           </div>
           <h3 className="text-gray-400 text-xs md:text-sm mb-1">Admins</h3>
-          <p className="text-xl md:text-2xl font-bold text-color-surface">{users.filter(u => u.role === 'admin').length}</p>
+          <p className="text-xl md:text-2xl font-bold text-color-surface">
+            {users.filter((u) => u.role === 'admin').length}
+          </p>
         </div>
         <div className="bg-color-background border border-gray-700 rounded-lg p-4 md:p-6">
           <div className="flex items-center justify-between mb-4">
@@ -66,7 +67,9 @@ export const UserManagement = () => {
             </div>
           </div>
           <h3 className="text-gray-400 text-xs md:text-sm mb-1">Seller</h3>
-          <p className="text-xl md:text-2xl font-bold text-color-surface">{users.filter(u => u.role === 'seller').length}</p>
+          <p className="text-xl md:text-2xl font-bold text-color-surface">
+            {users.filter((u) => u.role === 'seller').length}
+          </p>
         </div>
       </div>
 
@@ -79,15 +82,26 @@ export const UserManagement = () => {
           <table className="w-full min-w-[600px]">
             <thead>
               <tr className="border-b border-gray-700">
-                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">Name</th>
-                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">Email</th>
-                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">Role</th>
-                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">Actions</th>
+                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">
+                  Name
+                </th>
+                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">
+                  Email
+                </th>
+                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">
+                  Role
+                </th>
+                <th className="text-left text-xs md:text-sm font-medium text-gray-400 px-4 md:px-6 py-3">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody>
               {users.map((user) => (
-                <tr key={user._id} className="border-b border-gray-700 hover:bg-gray-750 transition-colors">
+                <tr
+                  key={user._id}
+                  className="border-b border-gray-700 hover:bg-gray-750 transition-colors"
+                >
                   <td className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-color-surface font-medium">
                     {user.fullname}
                   </td>
@@ -101,19 +115,23 @@ export const UserManagement = () => {
                         onChange={(e) => setEditRole(e.target.value)}
                         className="bg-gray-700 border border-gray-600 rounded px-3 py-1.5 text-sm text-white focus:outline-none focus:border-emerald-500"
                       >
-                        {roles.map(role => (
-                          <option key={role} value={role}>{role}</option>
+                        {roles.map((role) => (
+                          <option key={role} value={role}>
+                            {role}
+                          </option>
                         ))}
                       </select>
                     ) : (
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${user.role === 'admin'
-                          ? 'bg-purple-500 bg-opacity-20 text-color-surface'
-                          : user.role === 'seller'
-                            ? 'bg-blue-500 bg-opacity-20 text-color-surface'
-                            : 'bg-gray-500 bg-opacity-20  text-color-surface'
-                        }`}>
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          user.role === 'admin'
+                            ? 'bg-purple-500 bg-opacity-20 text-color-surface'
+                            : user.role === 'seller'
+                              ? 'bg-blue-500 bg-opacity-20 text-color-surface'
+                              : 'bg-gray-500 bg-opacity-20  text-color-surface'
+                        }`}
+                      >
                         {user.role}
-
                       </span>
                     )}
                   </td>
@@ -164,5 +182,4 @@ export const UserManagement = () => {
       </div>
     </main>
   );
-}
-
+};
