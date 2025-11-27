@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Trash2, Edit2, Check, X } from 'lucide-react';
 import { useAdminStatistics } from '../../hooks/useAdminstatistics';
 
-export const ProductManagement = () => {
+export default function ProductManagement() {
   const { products, deleteProduct } = useAdminStatistics();
 
   const [editingId, setEditingId] = useState(null);
