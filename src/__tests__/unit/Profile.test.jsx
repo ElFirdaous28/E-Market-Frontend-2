@@ -21,7 +21,7 @@ jest.mock('react-router-dom', () => ({
 }));
 
 // Mock createObjectURL
-/*eslint-disable*/
+ 
 global.URL.createObjectURL = jest.fn();
 
 describe('Profile Component Unit Tests', () => {
