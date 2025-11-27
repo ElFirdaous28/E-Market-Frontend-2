@@ -1,28 +1,16 @@
 import { useState } from 'react';
 import { Trash2, Edit2, Check, X } from 'lucide-react';
-import { useAxios } from '../../hooks/useAxios';
 import { useAdminStatistics } from '../../hooks/useAdminstatistics';
 
-export default function ProductManagement() {
-  const axios = useAxios();
+export const ProductManagement = () => {
   const { products, deleteProduct } = useAdminStatistics();
 
   const [editingId, setEditingId] = useState(null);
-  const [editRole, setEditRole] = useState('');
+  const [_editRole, setEditRole] = useState('');
 
   const handleEdit = (user) => {
     setEditingId(user._id);
     setEditRole(user.role);
-  };
-
-  const handleSave = async (id) => {
-    setUsers(users.map((user) => (user._id === id ? { ...user, role: editRole } : user)));
-    setEditingId(null);
-    try {
-      await axios.put(`users/${id}/${editRole}`);
-    } catch (err) {
-      console.log(err);
-    }
   };
 
   const handleCancel = () => {
@@ -33,13 +21,7 @@ export default function ProductManagement() {
   const handleDelete = (id) => {
     deleteProduct(id);
   };
-  //   if(loading){
 
-  //     return(
-  //       <h1>loading..</h1>
-  //     )
-  //   }
-  //  else{
   return (
     <main className="flex-1 p-4 md:p-6 overflow-auto w-full">
       {/* Header */}

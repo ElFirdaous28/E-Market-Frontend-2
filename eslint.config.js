@@ -47,4 +47,20 @@ export default defineConfig([
       'react/prop-types': 'off',
     },
   },
+  {
+    files: [
+      '**/__tests__/**/*.{js,jsx}',
+      '**/*.test.{js,jsx}',
+      '**/*.spec.{js,jsx}',
+      './setupTests.js',
+      './services/mocks/**',
+    ],
+    languageOptions: {
+      globals: {
+        globalThis: true,
+        ...globals.browser,
+        ...globals.jest,
+      },
+    },
+  },
 ]);

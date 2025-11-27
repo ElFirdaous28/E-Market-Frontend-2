@@ -32,7 +32,7 @@ export default function AdminDashboard() {
             <div key={index} className="bg-color-background border border-gray-700 rounded-lg p-6">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-12 h-12 bg-emerald-500 bg-opacity-20 rounded-lg flex items-center justify-center">
-                  <Icon className="w-6 h-6 text-color-surface" />
+                  <Icon className="w-6 h-6 text-color-surface" aria-hidden="true" />
                 </div>
                 {/* <span className="text-emerald-500 text-sm font-medium">
                   {stat.change}
@@ -53,6 +53,7 @@ export default function AdminDashboard() {
           </div>
           <div className="overflow-x-auto">
             <table className="w-full">
+              <caption className="sr-only">Recent Orders Table</caption>
               <thead>
                 <tr className="border-b border-gray-700">
                   <th className="text-left text-sm font-medium text-gray-400 px-6 py-3">Order</th>

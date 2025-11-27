@@ -100,6 +100,19 @@ export const useAdminStatistics = () => {
       toast.error('Failed to update role');
     },
   });
+  // EDIT REVIEW STATUS MUTATION
+  const reviewStatusMutation = useMutation({
+    mutationFn: async ({ id, status }) => {
+      await axios.patch(`/reviews/update-status/${id}`, { status });
+    },
+    onSuccess: () => {
+      toast.success('review status updated successfully');
+      queryClient.invalidateQueries(['reviews']);
+    },
+    onError: () => {
+      toast.error('Failed to update status');
+    },
+  });
 
   // DELETE PRODUCT MUTATION
   const deleteProductMutation = useMutation({
@@ -112,6 +125,20 @@ export const useAdminStatistics = () => {
     },
     onError: () => {
       toast.error('Failed to delete product');
+    },
+  });
+
+  // DELETE REVIEW
+  const deleteReviewMutation = useMutation({
+    mutationFn: async (id) => {
+      await axios.delete(`/reviews/${id}`);
+    },
+    onSuccess: () => {
+      toast.success('Review deletedd successfully');
+      queryClient.invalidateQueries(['reviews']);
+    },
+    onError: () => {
+      toast.error('failed to delete review');
     },
   });
 
@@ -128,7 +155,9 @@ export const useAdminStatistics = () => {
     // actions
     deleteProduct: deleteProductMutation.mutate,
     deleteUser: deleteUserMutation.mutate,
+    deleteReview: deleteReviewMutation.mutate,
     editUserRole: editUserRoleMutation.mutate,
+    editReviewStatus: reviewStatusMutation.mutate,
 
     // states
     isLoading:

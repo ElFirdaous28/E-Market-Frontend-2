@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Register from '../../pages/Auth/Register';
 import { BrowserRouter } from 'react-router-dom';
+import { Suspense } from 'react';
 
 // Mock useAuth to avoid real API calls
 jest.mock('../../hooks/useAuth', () => ({
@@ -14,13 +15,18 @@ let user;
 
 // Helper to wrap component with BrowserRouter
 function renderWithRouter(ui) {
-  return render(<BrowserRouter>{ui}</BrowserRouter>);
+  return render(
+    <Suspense fallback={<div>Loading...</div>}>
+      <BrowserRouter>{ui}</BrowserRouter>
+    </Suspense>
+  );
 }
 
 // Setup before each test
-beforeEach(() => {
+beforeEach(async () => {
   user = userEvent.setup();
   renderWithRouter(<Register />);
+  await screen.findByPlaceholderText('John Doe');
 });
 
 // Test valid input enables submit

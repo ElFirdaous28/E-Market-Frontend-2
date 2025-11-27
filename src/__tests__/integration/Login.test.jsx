@@ -30,7 +30,7 @@ describe('Login Integration Tests - User Role Navigation', () => {
     );
   };
 
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.clearAllMocks();
 
     // Setup Navigation Spy
@@ -47,7 +47,7 @@ describe('Login Integration Tests - User Role Navigation', () => {
       logger: {
         log: console.log,
         warn: console.warn,
-        error: () => {},
+        error: () => { },
       },
     });
 
@@ -56,6 +56,7 @@ describe('Login Integration Tests - User Role Navigation', () => {
       reducer: { user: userReducer },
     });
     renderLogin();
+    await screen.findByPlaceholderText('jhon@example.com');
   });
 
   describe('Given un user valide, When il soumet le formulaire, Then redirection vers son dashboard', () => {

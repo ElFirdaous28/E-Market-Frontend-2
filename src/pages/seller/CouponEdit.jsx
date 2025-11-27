@@ -2,6 +2,8 @@ import { useSellerCoupons } from '../../hooks/useSellerCoupons';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { couponSchema } from '../../validations/couponSchema';
 
 export default function CouponEdit() {
   const { updateMutation, getById } = useSellerCoupons();
@@ -9,7 +11,13 @@ export default function CouponEdit() {
   const { id } = useParams();
   const coupon = getById(id);
 
-  const { register, handleSubmit, reset } = useForm({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(couponSchema),
     defaultValues: {
       code: '',
       type: 'percentage',
@@ -90,9 +98,16 @@ export default function CouponEdit() {
               Code
             </label>
             <input
-              {...register('code', { required: true })}
-              className="border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2.5 w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-transparent transition-all"
+              {...register('code')}
+              className={`border rounded-lg px-4 py-2.5 w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:border-transparent transition-all ${
+                errors.code
+                  ? 'border-red-500 focus:ring-red-500'
+                  : 'border-gray-300 dark:border-gray-600 focus:ring-indigo-500 dark:focus:ring-indigo-400'
+              }`}
             />
+            {errors.code && (
+              <p className="text-sm text-red-600 dark:text-red-400 mt-1">{errors.code.message}</p>
+            )}
           </div>
           <div className="space-y-2">
             <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200">
@@ -113,9 +128,16 @@ export default function CouponEdit() {
             <input
               type="number"
               step="0.01"
-              {...register('value', { required: true })}
-              className="border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2.5 w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-transparent transition-all"
+              {...register('value')}
+              className={`border rounded-lg px-4 py-2.5 w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:border-transparent transition-all ${
+                errors.value
+                  ? 'border-red-500 focus:ring-red-500'
+                  : 'border-gray-300 dark:border-gray-600 focus:ring-indigo-500 dark:focus:ring-indigo-400'
+              }`}
             />
+            {errors.value && (
+              <p className="text-sm text-red-600 dark:text-red-400 mt-1">{errors.value.message}</p>
+            )}
           </div>
           <div className="space-y-2">
             <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200">
@@ -134,9 +156,18 @@ export default function CouponEdit() {
             </label>
             <input
               type="datetime-local"
-              {...register('startDate', { required: true })}
-              className="border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2.5 w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-transparent transition-all"
+              {...register('startDate')}
+              className={`border rounded-lg px-4 py-2.5 w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:border-transparent transition-all ${
+                errors.startDate
+                  ? 'border-red-500 focus:ring-red-500'
+                  : 'border-gray-300 dark:border-gray-600 focus:ring-indigo-500 dark:focus:ring-indigo-400'
+              }`}
             />
+            {errors.startDate && (
+              <p className="text-sm text-red-600 dark:text-red-400 mt-1">
+                {errors.startDate.message}
+              </p>
+            )}
           </div>
           <div className="space-y-2">
             <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200">
@@ -144,9 +175,18 @@ export default function CouponEdit() {
             </label>
             <input
               type="datetime-local"
-              {...register('expirationDate', { required: true })}
-              className="border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2.5 w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-transparent transition-all"
+              {...register('expirationDate')}
+              className={`border rounded-lg px-4 py-2.5 w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:border-transparent transition-all ${
+                errors.expirationDate
+                  ? 'border-red-500 focus:ring-red-500'
+                  : 'border-gray-300 dark:border-gray-600 focus:ring-indigo-500 dark:focus:ring-indigo-400'
+              }`}
             />
+            {errors.expirationDate && (
+              <p className="text-sm text-red-600 dark:text-red-400 mt-1">
+                {errors.expirationDate.message}
+              </p>
+            )}
           </div>
           <div className="space-y-2">
             <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200">
@@ -165,9 +205,18 @@ export default function CouponEdit() {
             </label>
             <input
               type="number"
-              {...register('maxUsagePerUser', { required: true })}
-              className="border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2.5 w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-transparent transition-all"
+              {...register('maxUsagePerUser')}
+              className={`border rounded-lg px-4 py-2.5 w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:border-transparent transition-all ${
+                errors.maxUsagePerUser
+                  ? 'border-red-500 focus:ring-red-500'
+                  : 'border-gray-300 dark:border-gray-600 focus:ring-indigo-500 dark:focus:ring-indigo-400'
+              }`}
             />
+            {errors.maxUsagePerUser && (
+              <p className="text-sm text-red-600 dark:text-red-400 mt-1">
+                {errors.maxUsagePerUser.message}
+              </p>
+            )}
           </div>
           <div className="space-y-2">
             <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200">
