@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { Users, Trash2, Edit2, Check, X } from "lucide-react";
-import { useAxios } from "../../hooks/useAxios";
-import { useAdminStatistics } from "../../hooks/useAdminstatistics";
+import React, { useState } from 'react';
+import { Users, Trash2, Edit2, Check, X } from 'lucide-react';
+import { useAxios } from '../../hooks/useAxios';
+import { useAdminStatistics } from '../../hooks/useAdminstatistics';
 
 export const ProductManagement = () => {
   const axios = useAxios();
   const { products, deleteProduct } = useAdminStatistics();
 
   const [editingId, setEditingId] = useState(null);
-  const [editRole, setEditRole] = useState("");
+  const [editRole, setEditRole] = useState('');
 
   const handleEdit = (user) => {
     setEditingId(user._id);
@@ -17,7 +17,7 @@ export const ProductManagement = () => {
 
   const handleCancel = () => {
     setEditingId(null);
-    setEditRole("");
+    setEditRole('');
   };
 
   const handleDelete = (id) => {
@@ -68,9 +68,7 @@ export const ProductManagement = () => {
       {/* Users Table */}
       <div className="bg-color-background border border-gray-700 rounded-lg w-full">
         <div className="p-4 md:p-6 border-b border-gray-700">
-          <h2 className="text-base md:text-lg font-semibold text-color-surface">
-            All Products
-          </h2>
+          <h2 className="text-base md:text-lg font-semibold text-color-surface">All Products</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[600px]">
@@ -140,9 +138,7 @@ export const ProductManagement = () => {
                   </td>
                   <td className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-400">
                     {product.categories.length > 0 ? (
-                      product.categories.map((cat) => (
-                        <span key={cat._id}>{cat.name}</span>
-                      ))
+                      product.categories.map((cat) => <span key={cat._id}>{cat.name}</span>)
                     ) : (
                       <span>null</span>
                     )}
