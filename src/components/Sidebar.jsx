@@ -113,7 +113,6 @@ export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen }) {
           <div className="flex-1 flex flex-col min-h-0 shadow-[4px_0_6px_-1px_rgba(0,0,0,0.4)] border-r border-border">
             {/* Navigation: flex-1 allows it to grow/scroll within the parent */}
             <nav className="space-y-2 flex-1 p-4 overflow-y-auto">
-              /* eslint-disable no-unused-vars */
               {roleLinks.map(({ title, path, icon: Icon }) => {
                 const isActive = pathname === path;
 
