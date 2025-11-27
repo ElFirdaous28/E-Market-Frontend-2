@@ -15,20 +15,6 @@ export const ProductManagement = () => {
     setEditRole(user.role);
   };
 
-  const handleSave = async (id) => {
-    setUsers(
-      users.map((user) =>
-        user._id === id ? { ...user, role: editRole } : user
-      )
-    );
-    setEditingId(null);
-    try {
-      await axios.put(`users/${id}/${editRole}`);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   const handleCancel = () => {
     setEditingId(null);
     setEditRole("");
@@ -37,13 +23,7 @@ export const ProductManagement = () => {
   const handleDelete = (id) => {
     deleteProduct(id);
   };
-  //   if(loading){
 
-  //     return(
-  //       <h1>loading..</h1>
-  //     )
-  //   }
-  //  else{
   return (
     <main className="flex-1 p-4 md:p-6 overflow-auto w-full">
       {/* Header */}
