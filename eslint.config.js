@@ -48,7 +48,13 @@ export default defineConfig([
     },
   },
   {
-    files: ['**/__tests__/**/*.{js,jsx}', '**/*.test.{js,jsx}', '**/*.spec.{js,jsx}', './setupTests.js', './services/mocks/**'],
+    files: [
+      '**/__tests__/**/*.{js,jsx}',
+      '**/*.test.{js,jsx}',
+      '**/*.spec.{js,jsx}',
+      './setupTests.js',
+      './services/mocks/**',
+    ],
     languageOptions: {
       globals: {
         globalThis: true,
@@ -57,4 +63,4 @@ export default defineConfig([
       },
     },
   },
-])
+]);
