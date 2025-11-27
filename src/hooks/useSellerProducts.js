@@ -31,6 +31,8 @@ export function useSellerProducts() {
       return mine;
     },
     enabled: Boolean(user),
+        staleTime: 30_000,
+        cacheTime: 300_000,
   });
 
   const createMutation = useMutation({

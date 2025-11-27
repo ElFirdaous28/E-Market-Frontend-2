@@ -21,6 +21,7 @@ jest.mock('react-router-dom', () => ({
 }));
 
 // Mock createObjectURL
+/*eslint-disable*/
 global.URL.createObjectURL = jest.fn();
 
 describe('Profile Component Unit Tests', () => {
@@ -39,8 +40,8 @@ describe('Profile Component Unit Tests', () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
-    // Setup Mocks
-    require('react-router-dom').useNavigate.mockReturnValue(mockNavigate);
+        // Setup Mocks
+        require("react-router-dom").useNavigate.mockReturnValue(mockNavigate);
 
     useAxios.mockReturnValue({
       patch: mockPatch,
