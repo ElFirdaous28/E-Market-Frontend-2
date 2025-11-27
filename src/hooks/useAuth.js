@@ -10,6 +10,7 @@ export const useAuth = () => {
 
   const initAuth = useQuery({
     queryKey: ['initAuth'],
+    enabled: !user || !accessToken,
     queryFn: async () => {
       try {
         const refreshRes = await axios.post('/auth/refresh', {}, { withCredentials: true });
