@@ -1,11 +1,11 @@
 import { Search, ShoppingCart, User, Menu } from 'lucide-react';
-import { Logo } from './Logo';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import LogoutButton from './LogoutButton';
 import DarkToggel from './darkToggel';
 import { useCart } from '../hooks/useCart';
-import { useRef, useState } from 'react';
+import { lazy, useRef, useState } from 'react';
+const Logo = lazy(() => import('./Logo'));
 
 export default function Header({ toggleMobileMenu }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -60,6 +60,7 @@ export default function Header({ toggleMobileMenu }) {
                     src={`${import.meta.env.VITE_API_URL}${user.avatar}`}
                     alt="Avatar"
                     className="w-10 h-10 rounded-full object-cover"
+                    loading="lazy"
                   />
                 ) : (
                   <User className="w-10 h-10 bg-surface rounded-full p-2" />

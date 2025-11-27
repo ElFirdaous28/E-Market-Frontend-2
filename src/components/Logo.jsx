@@ -1,4 +1,5 @@
-export const Logo = ({ className }) => {
+
+export default function Logo({ className }) {
   return (
     <div className={`flex justify-between items-center max-w-48 ${className}`}>
       <img className="w-10" src="/logo.svg" alt="logo" />

@@ -28,6 +28,7 @@ export default function Products({ products }) {
                 {product.primaryImage ? (
                   <img
                     src={`${import.meta.env.VITE_API_URL}${product.primaryImage}`}
+                    loading="lazy"
                     alt={product.title}
                     className="w-full h-full object-cover"
                   />
