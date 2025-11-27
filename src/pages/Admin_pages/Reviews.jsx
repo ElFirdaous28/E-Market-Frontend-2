@@ -2,102 +2,12 @@ import { useState } from 'react';
 import { Trash2, Star, MessageSquare, Check, X, Edit2 } from 'lucide-react';
 import { useAdminStatistics } from '../../hooks/useAdminstatistics';
 
-// Mock data for demonstration
-// const mockReviews = [
-//   {
-//     _id: '1',
-//     user: { name: 'John Doe', _id: 'user1' },
-//     product: { name: 'Wireless Headphones', _id: 'prod1' },
-//     rating: 5,
-//     comment: 'Excellent product! The sound quality is amazing and very comfortable to wear for long periods.',
-//     status: 'approved',
-//     createdAt: new Date('2024-11-20T10:30:00')
-//   },
-//   {
-//     _id: '2',
-//     user: { name: 'Jane Smith', _id: 'user2' },
-//     product: { name: 'Smart Watch', _id: 'prod2' },
-//     rating: 4,
-//     comment: 'Great watch with many features. Battery life could be better but overall very satisfied.',
-//     status: 'pending',
-//     createdAt: new Date('2024-11-22T14:20:00')
-//   },
-//   {
-//     _id: '3',
-//     user: { name: 'Mike Johnson', _id: 'user3' },
-//     product: { name: 'Laptop Stand', _id: 'prod3' },
-//     rating: 3,
-//     comment: 'Decent stand but a bit wobbly. Does the job but expected better quality for the price.',
-//     status: 'approved',
-//     createdAt: new Date('2024-11-23T09:15:00')
-//   },
-//   {
-//     _id: '4',
-//     user: { name: 'Sarah Wilson', _id: 'user4' },
-//     product: { name: 'Mechanical Keyboard', _id: 'prod4' },
-//     rating: 5,
-//     comment: 'Best keyboard I have ever owned! The typing experience is phenomenal and the build quality is top-notch.',
-//     status: 'approved',
-//     createdAt: new Date('2024-11-24T16:45:00')
-//   },
-//   {
-//     _id: '5',
-//     user: { name: 'Tom Brown', _id: 'user5' },
-//     product: { name: 'USB-C Hub', _id: 'prod5' },
-//     rating: 2,
-//     comment: 'Disappointed with this product. Ports stopped working after a week. Not recommended.',
-//     status: 'rejected',
-//     createdAt: new Date('2024-11-21T11:00:00')
-//   }
-// ];
-
 export default function AdminReviews() {
-  //   const [reviews, setReviews] = useState([]);
-  //   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState(null);
   const [editStatus, setEditStatus] = useState('');
-  const { reviews, isLoading } = useAdminStatistics();
-
-  // console.log("🔪🔪",review)
+  const { reviews, isLoading, deleteReview, editReviewStatus } = useAdminStatistics();
 
   const statuses = ['pending', 'approved', 'rejected'];
-
-  //   useEffect(() => {
-  //     fetchReviews();
-  //   }, []);
-
-  //  useEffect(() => {
-  //   const fetchAllReviews = async () => {
-  //     try {
-  //       const res = await axios.get("/reviews/");
-  //       setReviews(res.data.data);
-  //     } catch (error) {
-  //       console.error("Failed to fetch reviews:", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-  //   fetchAllReviews();
-  // }, []);
-
-  //   const fetchReviews = async () => {
-  //     try {
-  //       setLoading(true);
-  //       // Simulate API call - Replace with actual API endpoint
-  //       // const res = await fetch('/api/reviews');
-  //       // const data = await res.json();
-  //       // setReviews(data.data || []);
-
-  //       // Using mock data for demonstration
-  //       setTimeout(() => {
-  //         setReviews(mockReviews);
-  //         setLoading(false);
-  //       }, 500);
-  //     } catch (error) {
-  //       console.error('Failed to fetch reviews:', error);
-  //       setLoading(false);
-  //     }
-  //   };
 
   const handleEdit = (review) => {
     setEditingId(review._id);
@@ -105,17 +15,7 @@ export default function AdminReviews() {
   };
 
   const handleSave = (reviewId) => {
-    // Replace with actual API call
-    // await fetch(`/api/reviews/${reviewId}`, {
-    //   method: 'PATCH',
-    //   body: JSON.stringify({ status: editStatus })
-    // });
-
-    setReviews(
-      reviews.map((review) =>
-        review._id === reviewId ? { ...review, status: editStatus } : review
-      )
-    );
+    editReviewStatus({ id: reviewId, status: editStatus });
     setEditingId(null);
   };
 
@@ -125,19 +25,7 @@ export default function AdminReviews() {
   };
 
   const handleDelete = async (reviewId) => {
-    if (!window.confirm('Are you sure you want to delete this review?')) {
-      return;
-    }
-
-    try {
-      // Replace with actual API call
-      // await fetch(`/api/reviews/${reviewId}`, { method: 'DELETE' });
-
-      setReviews(reviews.filter((review) => review._id !== reviewId));
-    } catch (error) {
-      console.error('Failed to delete review:', error);
-      alert('Failed to delete review');
-    }
+    deleteReview(reviewId);
   };
 
   if (isLoading) return <h1 className="text-white p-6">Loading...</h1>;

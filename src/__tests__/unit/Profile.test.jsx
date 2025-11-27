@@ -21,6 +21,7 @@ jest.mock('react-router-dom', () => ({
 }));
 
 // Mock createObjectURL
+
 global.URL.createObjectURL = jest.fn();
 
 describe('Profile Component Unit Tests', () => {

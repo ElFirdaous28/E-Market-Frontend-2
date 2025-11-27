@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
-import { UserManagement } from '../../../pages/Admin_pages/UserManagement';
+import UserManagement from '../../../pages/Admin_pages/UserManagement';
 import { useAdminStatistics } from '../../../hooks/useAdminstatistics';
 
 // Mock the hook
