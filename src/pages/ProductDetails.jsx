@@ -135,9 +135,8 @@ export default function ProductDetails() {
         <button
           key={i}
           onClick={() => setPage(i)}
-          className={`w-8 h-8 rounded-full flex items-center justify-center font-semibold ${
-            page === i ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-          }`}
+          className={`w-8 h-8 rounded-full flex items-center justify-center font-semibold ${page === i ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }`}
         >
           {i}
         </button>
@@ -155,7 +154,7 @@ export default function ProductDetails() {
           <div className="bg-surface rounded-2xl border border-border flex items-center justify-center aspect-square relative overflow-hidden group shadow-sm">
             {currentImage ? (
               <img
-                src={`http://localhost:3000${currentImage}`}
+                src={`${import.meta.env.VITE_API_URL}${currentImage}`}
                 alt={p.title}
                 className="object-contain w-full h-full p-6 transition-transform duration-500 group-hover:scale-105"
               />
@@ -189,14 +188,13 @@ export default function ProductDetails() {
                 <button
                   key={index}
                   onClick={() => setCurrentImage(img)}
-                  className={`w-20 h-20 shrink-0 rounded-lg overflow-hidden border-2 transition-all ${
-                    currentImage === img
+                  className={`w-20 h-20 shrink-0 rounded-lg overflow-hidden border-2 transition-all ${currentImage === img
                       ? 'border-primary ring-2 ring-primary/20 opacity-100'
                       : 'border-transparent opacity-70 hover:opacity-100 hover:border-gray-300'
-                  }`}
+                    }`}
                 >
                   <img
-                    src={`http://localhost:3000${img}`}
+                    src={`${import.meta.env.VITE_API_URL}${img}`}
                     alt={`thumb-${index}`}
                     className="w-full h-full object-cover"
                   />
