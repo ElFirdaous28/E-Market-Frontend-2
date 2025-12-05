@@ -1,12 +1,10 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
+import { useSelector } from 'react-redux';
 
 const GuestRoute = () => {
-  const { user, loading } = useAuth();
+  const { user } = useSelector((state) => state.user);
 
-  if (loading) return <div>Loading... from GuestRoute</div>;
-
-  // If user is logged in, redirect to a default protected page
+  // If user is logged in, redirect immediately
   if (user) return <Navigate to="/" replace />;
 
   // Otherwise, allow access to login/register pages
