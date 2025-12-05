@@ -18,7 +18,7 @@ const ProductDetails = lazy(() => import('../pages/ProductDetails'));
 const AppRoutes = () => {
   return (
     <BrowserRouter>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div>Loading... From lazyyyyyyyyyyyy</div>}>
         <Routes>
           {/* guest routes- not loged in! */}
           <Route element={<GuestRoute />}>{AuthRoutes()}</Route>

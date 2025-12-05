@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
 
-import { ProductManagement } from '../../../pages/Admin_pages/ProductManagement';
+import ProductManagement from '../../../pages/Admin_pages/ProductManagement';
 import { useAdminStatistics } from '../../../hooks/useAdminstatistics';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
