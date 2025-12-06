@@ -1,4 +1,4 @@
-import { lazy, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Eye, EyeOff } from 'lucide-react';
@@ -6,7 +6,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
 import { loginSchema } from '../../validations/loginSchema';
 import { toast } from 'react-toastify';
-const Logo = lazy(() => import('../../components/Logo'));
+import Logo from '../../components/Logo';
 import eStoreLogo from '../../assets/images/e-store.webp';
 
 const Login = () => {
@@ -63,7 +63,14 @@ const Login = () => {
     <main className="flex flex-col md:flex-row gap-40 items-center">
       {/* Left side */}
       <div className="hidden md:flex w-2/5 justify-center">
-        <img src={eStoreLogo} loading='lazy' alt="store" className="w-full object-contain" />
+        <img
+          src={eStoreLogo}
+          width={400}
+          height={400}
+          loading="lazy"
+          alt="store"
+          className="w-full object-contain"
+        />
       </div>
 
       {/* Right side */}
@@ -83,8 +90,9 @@ const Login = () => {
                 type="text"
                 {...register('email')}
                 placeholder="jhon@example.com"
-                className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors ${errors.email ? 'border-red-500' : 'border-border focus:border-primary'
-                  }`}
+                className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors ${
+                  errors.email ? 'border-red-500' : 'border-border focus:border-primary'
+                }`}
               />
               {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
             </div>
@@ -97,11 +105,12 @@ const Login = () => {
                   type={showPassword ? 'text' : 'password'}
                   {...register('password')}
                   placeholder="••••••••"
-                  className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors pr-12 ${errors.password ? 'border-red-500' : 'border-border focus:border-primary'
-                    }`}
+                  className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors pr-12 ${
+                    errors.password ? 'border-red-500' : 'border-border focus:border-primary'
+                  }`}
                 />
                 <button
-                  aria-label='toggel show password'
+                  aria-label="toggel show password"
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-textMuted hover:text-textMain transition-colors cursor-pointer w-10 h-10 flex justify-end items-center"

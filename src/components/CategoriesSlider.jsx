@@ -28,7 +28,7 @@ export default function CategoriesSlider() {
           onClick={scrollLeft}
           className="bg-brand-surface p-2 rounded-full shadow-lg opacity-80 hover:opacity-100 transition hidden sm:flex"
         >
-          <ChevronLeft title='swipe left' className="h-6 w-6 sm:h-8 sm:w-8 cursor-pointer" />
+          <ChevronLeft title="swipe left" className="h-6 w-6 sm:h-8 sm:w-8 cursor-pointer" />
         </button>
 
         {/* Categories container */}
@@ -52,7 +52,7 @@ export default function CategoriesSlider() {
           onClick={scrollRight}
           className="bg-brand-surface p-2 rounded-full shadow-lg opacity-80 hover:opacity-100 transition hidden sm:flex"
         >
-          <ChevronRight title='swipe right' className="h-6 w-6 sm:h-8 sm:w-8 cursor-pointer" />
+          <ChevronRight title="swipe right" className="h-6 w-6 sm:h-8 sm:w-8 cursor-pointer" />
         </button>
       </div>
     </section>

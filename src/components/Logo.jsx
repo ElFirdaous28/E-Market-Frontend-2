@@ -1,10 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 export default function Logo({ className }) {
   return (
-    <Link to='/' className={`flex justify-between items-center max-w-48 ${className}`}>
+    <Link to="/" className={`flex justify-between items-center max-w-48 ${className}`}>
       <img className="w-10" src="/logo.svg" alt="logo" />
       <h1 className="text-3xl w-44 font-bold">E-Market</h1>
     </Link>
   );
-};
+}

@@ -180,12 +180,13 @@ export default function ProductsManager() {
                     </td>
                     <td className="px-6 py-4">
                       <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${p.stock > 10
+                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                          p.stock > 10
                             ? 'bg-green-100 text-green-800'
                             : p.stock > 0
                               ? 'bg-yellow-100 text-yellow-800'
                               : 'bg-red-100 text-red-800'
-                          }`}
+                        }`}
                       >
                         {p.stock} unités
                       </span>
@@ -294,10 +295,11 @@ export default function ProductsManager() {
                       <button
                         key={i}
                         onClick={() => goToPage(pageNum)}
-                        className={`px-3 py-1.5 text-sm border rounded-lg transition-colors ${currentPage === pageNum
+                        className={`px-3 py-1.5 text-sm border rounded-lg transition-colors ${
+                          currentPage === pageNum
                             ? 'bg-primary text-white border-primary'
                             : 'border-border hover:bg-primary/10'
-                          }`}
+                        }`}
                       >
                         {pageNum}
                       </button>

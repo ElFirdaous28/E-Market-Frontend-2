@@ -79,19 +79,15 @@ export default function Cart() {
               <div key={item._id} className="p-6 border-b border-border">
                 <div className="flex flex-col sm:flex-row gap-4">
                   <div className="bg-gray-200 w-full sm:w-32 h-32 rounded-lg flex items-center justify-center shrink-0">
-                    {item.productId.primaryImage ?
-                      (
-                        <img
-                          src={`${import.meta.env.VITE_API_URL}${item.productId.primaryImage}`}
-                          alt={item.productId.title}
-                          className="w-full h-full object-contain"
-                        />
-                      )
-                      :
-                      (
-                        <Image className="w-16 h-16 text-textMuted" />
-                      )
-                    }
+                    {item.productId.primaryImage ? (
+                      <img
+                        src={`${import.meta.env.VITE_API_URL}${item.productId.primaryImage}`}
+                        alt={item.productId.title}
+                        className="w-full h-full object-contain"
+                      />
+                    ) : (
+                      <Image className="w-16 h-16 text-textMuted" />
+                    )}
                   </div>
                   <div className="flex-1">
                     <div className="flex justify-between items-start mb-2">
@@ -105,7 +101,7 @@ export default function Cart() {
                         </div>
                       </div>
                       <button
-                        aria-label='remove cart item'
+                        aria-label="remove cart item"
                         onClick={() => removeItem.mutate({ productId: item.productId._id })}
                         className="text-error-light hover:text-opacity-80"
                       >

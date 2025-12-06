@@ -63,7 +63,7 @@ const Register = () => {
     <main className="flex flex-col md:flex-row gap-40 items-center">
       {/* Left side */}
       <div className="hidden md:flex w-2/5 justify-center">
-        <img src={eStoreLogo} loading='lazy' alt="store" className="w-full object-contain" />
+        <img src={eStoreLogo} loading="lazy" alt="store" className="w-full object-contain" />
       </div>
 
       {/* Right side */}
@@ -88,8 +88,9 @@ const Register = () => {
                 type="text"
                 {...register('fullname')}
                 placeholder="John Doe"
-                className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors ${errors.fullname ? 'border-red-500' : 'border-border focus:border-primary'
-                  }`}
+                className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors ${
+                  errors.fullname ? 'border-red-500' : 'border-border focus:border-primary'
+                }`}
               />
               {errors.fullname && (
                 <p className="text-red-500 text-xs mt-1">{errors.fullname.message}</p>
@@ -106,8 +107,9 @@ const Register = () => {
                 type="email"
                 {...register('email')}
                 placeholder="john@example.com"
-                className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors ${errors.email ? 'border-red-500' : 'border-border focus:border-primary'
-                  }`}
+                className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors ${
+                  errors.email ? 'border-red-500' : 'border-border focus:border-primary'
+                }`}
               />
               {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
             </div>
@@ -123,11 +125,12 @@ const Register = () => {
                   type={showPassword ? 'text' : 'password'}
                   {...register('password')}
                   placeholder="••••••••"
-                  className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors pr-12 ${errors.password ? 'border-red-500' : 'border-border focus:border-primary'
-                    }`}
+                  className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors pr-12 ${
+                    errors.password ? 'border-red-500' : 'border-border focus:border-primary'
+                  }`}
                 />
                 <button
-                  aria-label='toggel show password'
+                  aria-label="toggel show password"
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-textMuted hover:text-textMain transition-colors cursor-pointer w-10 h-10 flex justify-end items-center"
@@ -154,12 +157,13 @@ const Register = () => {
                   type={showConfirmPassword ? 'text' : 'password'}
                   {...register('confirmPassword')}
                   placeholder="••••••••"
-                  className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors pr-12 ${errors.confirmPassword ? 'border-red-500' : 'border-border focus:border-primary'
-                    }`}
+                  className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors pr-12 ${
+                    errors.confirmPassword ? 'border-red-500' : 'border-border focus:border-primary'
+                  }`}
                 />
                 <button
                   type="button"
-                  aria-label='toggel show password'
+                  aria-label="toggel show password"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-textMuted hover:text-textMain transition-colors cursor-pointer w-10 h-10 flex justify-end items-center"
                 >
@@ -188,10 +192,7 @@ const Register = () => {
                   Terms of Service
                 </a>{' '}
                 and{' '}
-                <a
-                  href="/privacy"
-                  className="text-primary hover:text-emerald-400"
-                >
+                <a href="/privacy" className="text-primary hover:text-emerald-400">
                   Privacy Policy
                 </a>
               </label>
