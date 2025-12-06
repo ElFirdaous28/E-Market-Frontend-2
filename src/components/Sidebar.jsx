@@ -134,7 +134,7 @@ export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen }) {
             {/* Toggle Button: Added padding for spacing from bottom/sides */}
             <div className={`flex p-4 mt-auto ${isExpanded ? 'justify-end' : 'justify-center'}`}>
               <button
-                aria-label='Toggle Expand Sidebar'
+                aria-label="Toggle Expand Sidebar"
                 onClick={toggleExpanded}
                 className="flex items-center justify-center w-10 h-10 border border-primary text-primary hover:bg-primary hover:text-white rounded-lg"
               >

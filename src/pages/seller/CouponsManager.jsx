@@ -55,7 +55,7 @@ export default function CouponsManager() {
           <option value="inactive">Inactif</option>
         </select>
         <select
-        aria-label="Select type"
+          aria-label="Select type"
           value={typeFilter}
           onChange={(e) => setTypeFilter(e.target.value)}
           className="border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2.5 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-transparent transition-all"

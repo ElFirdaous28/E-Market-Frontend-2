@@ -71,7 +71,10 @@ export default function Header({ toggleMobileMenu }) {
                 </div>
               </div>
             ) : (
-              <Link to="/login" className="px-4 py-2 bg-primary text-white [text-shadow:0_0_2px_rgba(0,0,0,0.8)] rounded-md">
+              <Link
+                to="/login"
+                className="px-4 py-2 bg-primary text-white [text-shadow:0_0_2px_rgba(0,0,0,0.8)] rounded-md"
+              >
                 Sign In
               </Link>
             )}

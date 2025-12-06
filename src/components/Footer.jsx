@@ -21,22 +21,22 @@ export default function Footer() {
             </p>
             <ul className="mt-4 space-y-2">
               <li>
-                <Link to='/' className="text-textMuted hover:text-textMain text-sm">
+                <Link to="/" className="text-textMuted hover:text-textMain text-sm">
                   Home
                 </Link>
               </li>
               <li>
-                <Link to='/' className="text-textMuted hover:text-textMain text-sm">
+                <Link to="/" className="text-textMuted hover:text-textMain text-sm">
                   Products
                 </Link>
               </li>
               <li>
-                <Link to='/' className="text-textMuted hover:text-textMain text-sm">
+                <Link to="/" className="text-textMuted hover:text-textMain text-sm">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link to='/' className="text-textMuted hover:text-textMain text-sm">
+                <Link to="/" className="text-textMuted hover:text-textMain text-sm">
                   Contact
                 </Link>
               </li>
@@ -49,22 +49,22 @@ export default function Footer() {
             </p>
             <ul className="mt-4 space-y-2">
               <li>
-                <Link to='/' className="text-textMuted hover:text-textMain text-sm">
+                <Link to="/" className="text-textMuted hover:text-textMain text-sm">
                   FAQ
                 </Link>
               </li>
               <li>
-                <Link to='/' className="text-textMuted hover:text-textMain text-sm">
+                <Link to="/" className="text-textMuted hover:text-textMain text-sm">
                   Shipping Info
                 </Link>
               </li>
               <li>
-                <Link to='/' className="text-textMuted hover:text-textMain text-sm">
+                <Link to="/" className="text-textMuted hover:text-textMain text-sm">
                   Returns
                 </Link>
               </li>
               <li>
-                <Link to='/' className="text-textMuted hover:text-textMain text-sm">
+                <Link to="/" className="text-textMuted hover:text-textMain text-sm">
                   Track Order
                 </Link>
               </li>
@@ -85,13 +85,13 @@ export default function Footer() {
         <div className="mt-10 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between">
           <p className="text-sm text-gray-500">&copy; 2024 E-Market. All rights reserved.</p>
           <div className="flex space-x-4 mt-4 md:mt-0">
-            <Link to='/' aria-label="Instagram" className="text-textMuted hover:text-textMain">
+            <Link to="/" aria-label="Instagram" className="text-textMuted hover:text-textMain">
               <Instagram className="w-5 h-5" />
             </Link>
-            <Link to='/' aria-label="LinkedIn" className="text-textMuted hover:text-textMain">
+            <Link to="/" aria-label="LinkedIn" className="text-textMuted hover:text-textMain">
               <Linkedin className="w-5 h-5" />
             </Link>
-            <Link to='/' aria-label="Facebook" className="text-textMuted hover:text-textMain">
+            <Link to="/" aria-label="Facebook" className="text-textMuted hover:text-textMain">
               <Facebook className="w-5 h-5" />
             </Link>
           </div>

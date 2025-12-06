@@ -47,7 +47,7 @@ describe('Login Integration Tests - User Role Navigation', () => {
       logger: {
         log: console.log,
         warn: console.warn,
-        error: () => { },
+        error: () => {},
       },
     });
 
