@@ -8,82 +8,83 @@ export const useOrders = (status) => {
   const queryClient = useQueryClient();
   const { user } = useAuth();
 
-  // --- FETCH ALL ORDERS (admin)
+  // --- FETCH ALL ORDERS (admin) ---
   const allOrdersQuery = useQuery({
     queryKey: ['orders'],
     queryFn: async () => {
       const res = await axios.get('/orders');
       return res.data.data;
     },
-    enabled: false, // only load when admin calls it
+    enabled: user?.role === 'admin', // only for admin
+    staleTime: 1000 * 60 * 2,       // 2 min
+    cacheTime: 1000 * 60 * 10,      // 10 min
   });
 
-  // --- FETCH USER ORDERS
+  // --- FETCH USER ORDERS ---
   const userOrdersQuery = useQuery({
-    queryKey: ['user-orders', status],
+    queryKey: ['user-orders', user?._id, status],
     queryFn: async () => {
-      const res = await axios.get(`/orders/${user._id}`, {
-        params: { status },
-      });
-
+      const res = await axios.get(`/orders/${user._id}`, { params: { status } });
       return res.data.data;
     },
+    enabled: !!user,
+    staleTime: 1000 * 60 * 2,
+    cacheTime: 1000 * 60 * 10,
   });
 
-  // --- CREATE ORDER
+  // --- CREATE ORDER ---
   const createOrder = useMutation({
-    mutationFn: (coupons) => axios.post('/orders', coupons),
+    mutationFn: (data) => axios.post('/orders', data),
     onSuccess: () => {
-      queryClient.invalidateQueries(['user-orders']);
+      queryClient.invalidateQueries({ queryKey: ['user-orders', user?._id] });
       toast.success('Order created!');
     },
   });
 
-  // --- UPDATE ORDER STATUS
+  // --- UPDATE ORDER STATUS ---
   const updateOrderStatus = useMutation({
     mutationFn: ({ id, newStatus }) => axios.patch(`/orders/${id}/status`, { newStatus }),
     onSuccess: () => {
-      queryClient.invalidateQueries(['user-orders']);
-      queryClient.invalidateQueries(['orders']);
+      queryClient.invalidateQueries({ queryKey: ['user-orders', user?._id] });
+      queryClient.invalidateQueries({ queryKey: ['orders'] });
       toast.success('Status updated!');
     },
   });
 
-  // --- DELETE ORDER
+  // --- DELETE ORDER ---
   const deleteOrder = useMutation({
     mutationFn: (orderId) => axios.delete(`/orders/${orderId}/soft`),
     onSuccess: () => {
-      queryClient.invalidateQueries(['user-orders']); // FIXED KEY
+      queryClient.invalidateQueries({ queryKey: ['user-orders', user?._id] });
       toast.success('Order deleted');
     },
-    onError: () => {
-      toast.error('Failed to delete order');
-    },
+    onError: () => toast.error('Failed to delete order'),
   });
 
-  // --- FETCH THE RECENT 10 ORDERS :
+  // --- FETCH RECENT ORDERS ---
   const recentOrdersQuery = useQuery({
-    queryKey: ['recent-orders'],
-
+    queryKey: ['recent-orders', user?._id],
     queryFn: async () => {
       const res = await axios.get('/orders/getlatestorder');
       return res.data.data;
     },
-    enabled: !!user && status !== undefined,
+    enabled: !!user,
+    staleTime: 1000 * 60 * 5,
+    cacheTime: 1000 * 60 * 30,
   });
 
   return {
-    // data
+    // Data
     allOrders: allOrdersQuery.data,
     userOrders: userOrdersQuery.data,
     recentOrders: recentOrdersQuery.data,
 
-    // loading
+    // Loading
     isLoading: allOrdersQuery.isLoading || userOrdersQuery.isLoading,
 
-    // actions
+    // Actions
     fetchAllOrders: allOrdersQuery.refetch,
-    createOrder,
+    createOrder: createOrder.mutate,
     updateOrderStatus: updateOrderStatus.mutate,
     deleteOrder: deleteOrder.mutate,
     deleteOrderLoading: deleteOrder.isLoading,

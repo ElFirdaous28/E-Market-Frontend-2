@@ -4,19 +4,21 @@ import { useAxios } from './useAxios';
 import { setCart, clearCart, setSummary } from '../store/cartSlice';
 import { useAuth } from './useAuth';
 import { toast } from 'react-toastify';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 export const useCart = ({ couponCodes = [] } = {}) => {
   const axios = useAxios();
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
 
-  const queryKey = ['cart', user?._id ?? 'guest'];
-  const summaryKey = [...queryKey, 'summary', ...couponCodes];
-  const basePath = user ? '/cart' : '/guest-cart';
+  const isGuest = !user;
+  const basePath = useMemo(() => (isGuest ? '/guest-cart' : '/cart'), [isGuest]);
 
-  // --- Fetch cart ---
+  const queryKey = useMemo(() => ['cart', user?._id ?? 'guest'], [user]);
+  const summaryKey = useMemo(() => [...queryKey, 'summary', ...couponCodes], [queryKey, couponCodes]);
+
+  // --- Fetch cart only after auth is known ---
   const fetchCart = async () => {
     const res = await axios.get(basePath);
     return res.data.data;
@@ -25,6 +27,8 @@ export const useCart = ({ couponCodes = [] } = {}) => {
   const cartQuery = useQuery({
     queryKey,
     queryFn: fetchCart,
+    enabled: !authLoading, // wait until auth state is resolved
+    staleTime: 1000 * 60 * 5, // cache for 5 minutes
     onError: (err) => {
       console.error('Fetch cart error:', err);
       toast.error('Fetching cart failed');
@@ -32,9 +36,7 @@ export const useCart = ({ couponCodes = [] } = {}) => {
   });
 
   useEffect(() => {
-    if (cartQuery.data) {
-      dispatch(setCart(cartQuery.data));
-    }
+    if (cartQuery.data) dispatch(setCart(cartQuery.data));
   }, [cartQuery.data, dispatch]);
 
   const invalidateAll = () => {
@@ -42,81 +44,62 @@ export const useCart = ({ couponCodes = [] } = {}) => {
     queryClient.invalidateQueries(summaryKey);
   };
 
-  // --- Add to cart ---
+  // --- Mutations ---
   const addToCart = useMutation({
     mutationFn: ({ productId, quantity }) => axios.post(basePath, { productId, quantity }),
     onSuccess: (res) => {
+      // update cart in cache instead of full refetch
+      queryClient.setQueryData(queryKey, (old) => ({
+        ...old,
+        items: [...(old?.items || []), res.data.data],
+      }));
       invalidateAll();
       toast.success(res.data.message || 'Product added to cart!');
     },
-    onError: (err) => {
-      console.error('Add to cart error:', err);
-      toast.error('Adding to cart failed. Try again later');
-    },
+    onError: () => toast.error('Adding to cart failed'),
   });
 
-  // --- Update quantity ---
   const updateQuantity = useMutation({
     mutationFn: ({ productId, quantity }) => axios.put(basePath, { productId, quantity }),
-    onSuccess: (res) => {
-      invalidateAll();
-      toast.success(res.data.message || 'Quantity updated!');
-    },
-    onError: (err) => {
-      console.error('Update quantity error:', err);
-      toast.error('Updating quantity failed. Try again later');
-    },
+    onSuccess: invalidateAll,
+    onError: () => toast.error('Updating quantity failed'),
   });
 
-  // --- Remove item ---
   const removeItem = useMutation({
     mutationFn: ({ productId }) => axios.delete(basePath, { data: { productId } }),
-    onSuccess: (res) => {
-      invalidateAll();
-      toast.success(res.data.message || 'Item removed from cart!');
-    },
-    onError: (err) => {
-      console.error('Remove item error:', err);
-      toast.error('Removing item from cart failed. Try again later');
-    },
+    onSuccess: invalidateAll,
+    onError: () => toast.error('Removing item failed'),
   });
 
-  // --- Clear cart ---
   const clear = useMutation({
     mutationFn: () => axios.delete(`${basePath}/clear`),
-    onSuccess: (res) => {
+    onSuccess: () => {
       dispatch(clearCart());
       invalidateAll();
-      toast.success(res.data.message || 'Cart cleared!');
+      toast.success('Cart cleared!');
     },
-    onError: (err) => {
-      console.error('Clear cart error:', err);
-      toast.error('Clearing cart failed. Try again later');
-    },
+    onError: () => toast.error('Clearing cart failed'),
   });
 
-  // --- Fetch summary ---
+  // --- Fetch summary (depends on cart & coupon codes) ---
   const fetchSummary = async () => {
-    const res = await axios.post(`${basePath}/summary`, {
-      couponCodes,
-    });
+    const res = await axios.post(`${basePath}/summary`, { couponCodes });
     return res.data.data.summary;
   };
 
   const summaryQuery = useQuery({
     queryKey: summaryKey,
     queryFn: fetchSummary,
-    enabled: !!cartQuery.data && couponCodes.length >= 0,
-    onSuccess: (summary) => {
-      dispatch(setSummary(summary));
-    },
-    onError: (err) => {
-      console.error('Summary fetch error:', err);
-      toast.error('Failed to fetch summary');
-    },
+    enabled: !!cartQuery.data && !authLoading, // wait for cart & auth
+    staleTime: 1000 * 60 * 2, // cache summary for 2 minutes
+    onSuccess: (summary) => dispatch(setSummary(summary)),
+    onError: () => toast.error('Failed to fetch summary'),
   });
 
-  const cartLength = cartQuery.data?.items?.reduce((total, item) => total + item.quantity, 0) || 0;
+  const cartLength = useMemo(
+    () => cartQuery.data?.items?.reduce((total, item) => total + item.quantity, 0) || 0,
+    [cartQuery.data]
+  );
 
   return {
     cart: cartQuery.data,
