@@ -41,7 +41,6 @@ export default function Cart() {
         },
       }
     );
-    console.log(summary);
   };
 
   const handleRemoveCoupon = (index) => {

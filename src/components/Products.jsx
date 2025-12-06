@@ -1,9 +1,11 @@
 import { Image } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../hooks/useCart';
+import { useAuth } from '../hooks/useAuth';
 
 export default function Products({ products }) {
   const { addToCart } = useCart();
+  const { user } = useAuth()
 
   // Add product to cart
   const handleAddToCart = (e, productId) => {
@@ -53,17 +55,19 @@ export default function Products({ products }) {
                 </div>
 
                 {/* Price + Add to Cart at the bottom */}
-                <div className="flex items-center justify-between mt-auto">
-                  <span className="text-xl font-bold text-primary mt-4">
-                    ${product.price?.toFixed(2) ?? 'N/A'}
-                  </span>
-                  <button
-                    onClick={(e) => handleAddToCart(e, product._id)}
-                    className="mt-4 border border-primary hover:bg-primary text-textMain text-sm px-2 py-1 rounded-full font-semibold transition-colors"
-                  >
-                    Add to Cart
-                  </button>
-                </div>
+                {(!user || user.role === 'user') && (
+                  <div className="flex items-center justify-between mt-auto">
+                    <span className="text-xl font-bold text-primary mt-4">
+                      ${product.price?.toFixed(2) ?? 'N/A'}
+                    </span>
+                    <button
+                      onClick={(e) => handleAddToCart(e, product._id)}
+                      className="mt-4 border border-primary hover:bg-primary text-textMain text-sm px-2 py-1 rounded-full font-semibold transition-colors"
+                    >
+                      Add to Cart
+                    </button>
+                  </div>
+                )}
               </div>
             </Link>
           ))

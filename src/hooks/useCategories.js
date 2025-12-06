@@ -1,38 +1,25 @@
-import { useEffect, useState } from 'react';
-import axios from '../services/axios';
-
-let cache = null;
+import { useQuery } from '@tanstack/react-query';
+import { useAxios } from './useAxios';
 
 export const useCategories = ({ forceRefresh = false } = {}) => {
-  const [categories, setCategories] = useState(cache ?? []);
-  const [loading, setLoading] = useState(!cache);
-  const [error, setError] = useState(null);
+  const axios = useAxios();
 
-  useEffect(() => {
-    if (cache && !forceRefresh) {
-      setLoading(false);
-      return;
-    }
+  const query = useQuery({
+    queryKey: ['categories'],
+    queryFn: async () => {
+      const res = await axios.get('/categories/product-number');
+      return res.data.data;
+    },
+    staleTime: 1000 * 60 * 5, // cache 5 min
+    cacheTime: 1000 * 60 * 30, // keep cache 30 min
+    refetchOnWindowFocus: false,
+    enabled: !forceRefresh,
+  });
 
-    let cancelled = false;
-    setLoading(true);
-    setError(null);
-
-    (async () => {
-      try {
-        const res = await axios.get('/categories/product-number');
-        setCategories(res.data.data);
-      } catch (err) {
-        if (!cancelled) setError(err);
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    })();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [forceRefresh]);
-
-  return { categories, loading, error, refresh: () => {} };
+  return {
+    categories: query.data ?? [],
+    loading: query.isLoading,
+    error: query.isError,
+    refresh: query.refetch,
+  };
 };
