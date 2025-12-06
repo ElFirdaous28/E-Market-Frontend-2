@@ -53,7 +53,7 @@ export default function Cart() {
       return;
     }
 
-    createOrder.mutate(
+    createOrder(
       { coupons: appliedCoupons.map((c) => c.code) },
       {
         onSuccess: () => {
