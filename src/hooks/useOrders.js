@@ -16,8 +16,8 @@ export const useOrders = (status) => {
       return res.data.data;
     },
     enabled: user?.role === 'admin', // only for admin
-    staleTime: 1000 * 60 * 2,       // 2 min
-    cacheTime: 1000 * 60 * 10,      // 10 min
+    staleTime: 1000 * 60 * 2, // 2 min
+    cacheTime: 1000 * 60 * 10, // 10 min
   });
 
   // --- FETCH USER ORDERS ---
@@ -68,7 +68,7 @@ export const useOrders = (status) => {
       const res = await axios.get('/orders/getlatestorder');
       return res.data.data;
     },
-    enabled: !!user,
+    enabled: user?.role === 'admin', // only for admin
     staleTime: 1000 * 60 * 5,
     cacheTime: 1000 * 60 * 30,
   });

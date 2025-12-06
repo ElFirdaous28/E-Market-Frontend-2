@@ -21,7 +21,7 @@ export const useCoupons = () => {
       // Cache the validated coupon
       queryClient.setQueryData(['coupon', res.data.data.code], res.data.data);
     },
-    onError: (  ) => {
+    onError: () => {
       // Revert optimistic update
       dispatch(setActiveCoupon(null));
       toast.error('Coupon invalid or expired');

@@ -16,7 +16,10 @@ export const useCart = ({ couponCodes = [] } = {}) => {
   const basePath = useMemo(() => (isGuest ? '/guest-cart' : '/cart'), [isGuest]);
 
   const queryKey = useMemo(() => ['cart', user?._id ?? 'guest'], [user]);
-  const summaryKey = useMemo(() => [...queryKey, 'summary', ...couponCodes], [queryKey, couponCodes]);
+  const summaryKey = useMemo(
+    () => [...queryKey, 'summary', ...couponCodes],
+    [queryKey, couponCodes]
+  );
 
   // --- Fetch cart only after auth is known ---
   const fetchCart = async () => {

@@ -1,30 +1,18 @@
 import { ShoppingCart } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { lazy, useEffect, useState } from 'react';
-import axios from '../services/axios';
+import { lazy, useMemo } from 'react';
+import { useProducts } from '../hooks/useProduct';
 
 const Products = lazy(() => import('../components/Products'));
 const CategoriesSlider = lazy(() => import('../components/CategoriesSlider'));
 
 export default function Home() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { data, isLoading } = useProducts(7);
 
-  useEffect(() => {
-    const getProducts = async () => {
-      try {
-        const res = await axios.get('/products/search?limit=7');
-        setProducts(res.data.data || []);
-      } catch (error) {
-        console.error('Failed to fetch products:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    getProducts();
-  }, []);
+  // Memoize products and totalPages so child components won't re-render unnecessarily
+  const products = useMemo(() => data?.data || [], [data]);
 
-  if (loading) return <div>Loading products...</div>;
+  if (isLoading) return <div>Loading products...</div>;
   return (
     <>
       <section className="w-full sm:w-11/12 lg:w-3/4 bg-surface rounded-lg overflow-hidden flex flex-col md:flex-row p-6 sm:p-8 md:p-12 lg:p-16 text-center md:text-left items-center md:items-stretch mx-auto">
