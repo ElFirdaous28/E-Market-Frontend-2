@@ -1,9 +1,9 @@
 import { Facebook, Instagram, Linkedin } from 'lucide-react';
-import { lazy } from 'react';
+import React, { lazy } from 'react';
 import { Link } from 'react-router-dom';
 const Logo = lazy(() => import('./Logo'));
 
-export default function Footer() {
+function Footer() {
   return (
     <footer className="mt-20 bg-background border-t border-border shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.4)] z-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -100,3 +100,5 @@ export default function Footer() {
     </footer>
   );
 }
+
+export default React.memo(Footer);
