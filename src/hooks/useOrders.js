@@ -69,6 +69,7 @@ export const useOrders = (status) => {
       const res = await axios.get('/orders/getlatestorder');
       return res.data.data;
     },
+    enabled: !!user && status !== undefined,
   });
 
   return {

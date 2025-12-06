@@ -138,9 +138,10 @@ export default function Profile() {
                   />
                   <p className="text-red-500 text-xs">{errors.password?.message}</p>
                   <button
+                  aria-label='toggel show passsword'
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-textMuted hover:text-textMain transition-colors"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-textMuted hover:text-textMain transition-colors cursor-pointer w-10 h-10 flex justify-end items-center"
                   >
                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
@@ -168,6 +169,7 @@ export default function Profile() {
                       className="w-full h-full object-cover"
                     />
                     <button
+                    aria-label='Rmove profile photo'
                       type="button"
                       onClick={handleClearAvatar}
                       className="absolute top-20 right-12 text-red-500 rounded-full flex items-center justify-center hover:text-red-600"

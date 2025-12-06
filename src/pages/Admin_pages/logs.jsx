@@ -26,7 +26,7 @@ export default function AdminActivities() {
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className="text-color-surface font-medium">{act.details}</span>
                     </div>
-                    <span className="text-xs text-gray-500 shrink-0">
+                    <span className="text-xs text-textMuted shrink-0">
                       {new Date(act.createdAt).toLocaleDateString('en-GB', {
                         day: '2-digit',
                         month: 'short',

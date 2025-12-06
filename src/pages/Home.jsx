@@ -39,7 +39,7 @@ export default function Home() {
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
             <Link
               to="/products"
-              className="bg-primary text-textMain px-6 py-3 rounded-full font-semibold hover:bg-primary/55 transition-colors shadow-lg"
+              className="bg-primary text-white [text-shadow:0_0_2px_rgba(0,0,0,0.8)] px-6 py-3 rounded-full font-semibold hover:bg-primary/55 transition-colors shadow-lg"
             >
               Shop Now
             </Link>

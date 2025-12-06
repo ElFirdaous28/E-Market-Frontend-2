@@ -79,7 +79,19 @@ export default function Cart() {
               <div key={item._id} className="p-6 border-b border-border">
                 <div className="flex flex-col sm:flex-row gap-4">
                   <div className="bg-gray-200 w-full sm:w-32 h-32 rounded-lg flex items-center justify-center shrink-0">
-                    <Image className="w-16 h-16 text-textMuted" />
+                    {item.productId.primaryImage ?
+                      (
+                        <img
+                          src={`${import.meta.env.VITE_API_URL}${item.productId.primaryImage}`}
+                          alt={item.productId.title}
+                          className="w-full h-full object-contain"
+                        />
+                      )
+                      :
+                      (
+                        <Image className="w-16 h-16 text-textMuted" />
+                      )
+                    }
                   </div>
                   <div className="flex-1">
                     <div className="flex justify-between items-start mb-2">
@@ -93,6 +105,7 @@ export default function Cart() {
                         </div>
                       </div>
                       <button
+                        aria-label='remove cart item'
                         onClick={() => removeItem.mutate({ productId: item.productId._id })}
                         className="text-error-light hover:text-opacity-80"
                       >
@@ -175,7 +188,7 @@ export default function Cart() {
                 />
                 <button
                   onClick={handleApplyCoupon}
-                  className="w-1/3 px-4 py-2 bg-primary text-textMain rounded-lg"
+                  className="w-1/3 px-4 py-2 bg-primary text-textMain [text-shadow:0_0_2px_rgba(0,0,0,0.8)] rounded-lg"
                 >
                   Apply
                 </button>
@@ -231,7 +244,7 @@ export default function Cart() {
 
             <button
               onClick={handleCheckout}
-              className="w-full px-6 py-4 bg-primary text-textMain rounded-lg hover:bg-opacity-90 transition font-semibold mb-3"
+              className="w-full px-6 py-4 bg-primary text-textMain [text-shadow:0_0_2px_rgba(0,0,0,0.8)] rounded-lg hover:bg-opacity-90 transition font-semibold mb-3"
             >
               Checkout
             </button>
