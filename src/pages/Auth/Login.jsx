@@ -6,8 +6,8 @@ import { useAuth } from '../../hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
 import { loginSchema } from '../../validations/loginSchema';
 import { toast } from 'react-toastify';
-import Logo from '../../components/Logo';
 import eStoreLogo from '../../assets/images/e-store.webp';
+const Logo = lazy(() => import('../../components/Logo'));
 
 const Login = () => {
   const { login } = useAuth();
@@ -93,7 +93,7 @@ const Login = () => {
                 className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors ${errors.email ? 'border-red-500' : 'border-border focus:border-primary'
                   }`}
               />
-              <p className="text-red-500 text-xs mt-1 min-h-4">
+              <p className="text-red-500 text-xs mt-1 min-h-2">
                 {errors.email?.message || ' '}
               </p>
             </div>
@@ -118,12 +118,12 @@ const Login = () => {
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
-              <p className="text-red-500 text-xs mt-1 min-h-4">
+              <p className="text-red-500 text-xs mt-1 min-h-2">
                 {errors.password?.message || ' '}
               </p>
             </div>
 
-            <p className="text-red-500 text-sm -mt-7 min-h-5">
+            <p className="text-red-500 text-sm -mt-7 min-h-2">
               {backendError || ' '}
             </p>
             {/* Submit */}
