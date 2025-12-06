@@ -1,5 +1,6 @@
 import { Facebook, Instagram, Linkedin } from 'lucide-react';
 import { lazy } from 'react';
+import { Link } from 'react-router-dom';
 const Logo = lazy(() => import('./Logo'));
 
 export default function Footer() {
@@ -15,59 +16,65 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-lg font-semibold text-textMain">Quick Links</h4>
+            <p role="heading" aria-level="2" className="text-lg font-semibold text-textMain">
+              Quick Links
+            </p>
             <ul className="mt-4 space-y-2">
               <li>
-                <a href="#" className="text-textMuted hover:text-textMain text-sm">
+                <Link to='/' className="text-textMuted hover:text-textMain text-sm">
                   Home
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-textMuted hover:text-textMain text-sm">
+                <Link to='/' className="text-textMuted hover:text-textMain text-sm">
                   Products
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-textMuted hover:text-textMain text-sm">
+                <Link to='/' className="text-textMuted hover:text-textMain text-sm">
                   About Us
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-textMuted hover:text-textMain text-sm">
+                <Link to='/' className="text-textMuted hover:text-textMain text-sm">
                   Contact
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-lg font-semibold text-textMain">Customer Service</h4>
+            <p role="heading" aria-level="2" className="text-lg font-semibold text-textMain">
+              Customer Service
+            </p>
             <ul className="mt-4 space-y-2">
               <li>
-                <a href="#" className="text-textMuted hover:text-textMain text-sm">
+                <Link to='/' className="text-textMuted hover:text-textMain text-sm">
                   FAQ
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-textMuted hover:text-textMain text-sm">
+                <Link to='/' className="text-textMuted hover:text-textMain text-sm">
                   Shipping Info
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-textMuted hover:text-textMain text-sm">
+                <Link to='/' className="text-textMuted hover:text-textMain text-sm">
                   Returns
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-textMuted hover:text-textMain text-sm">
+                <Link to='/' className="text-textMuted hover:text-textMain text-sm">
                   Track Order
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
 
           <div className="col-span-2 md:col-span-1">
-            <h4 className="text-lg font-semibold text-textMain">Newsletter</h4>
+            <p role="heading" aria-level="2" className="text-lg font-semibold text-textMain">
+              Newsletter
+            </p>
             <p className="mt-4 text-textMuted text-sm">Get special offers and updates.</p>
             <button className="mt-4 bg-brand-green text-textMain px-5 py-2 rounded-lg font-semibold  border border-primary hover:bg-primary transition-colors text-sm">
               Sign Up
@@ -78,15 +85,15 @@ export default function Footer() {
         <div className="mt-10 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between">
           <p className="text-sm text-gray-500">&copy; 2024 E-Market. All rights reserved.</p>
           <div className="flex space-x-4 mt-4 md:mt-0">
-            <a href="#" className="text-textMuted hover:text-textMain">
+            <Link to='/' aria-label="Instagram" className="text-textMuted hover:text-textMain">
               <Instagram className="w-5 h-5" />
-            </a>
-            <a href="#" className="text-textMuted hover:text-textMain">
+            </Link>
+            <Link to='/' aria-label="LinkedIn" className="text-textMuted hover:text-textMain">
               <Linkedin className="w-5 h-5" />
-            </a>
-            <a href="#" className="text-textMuted hover:text-textMain">
+            </Link>
+            <Link to='/' aria-label="Facebook" className="text-textMuted hover:text-textMain">
               <Facebook className="w-5 h-5" />
-            </a>
+            </Link>
           </div>
         </div>
       </div>

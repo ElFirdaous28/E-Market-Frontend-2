@@ -19,6 +19,7 @@ export default function DarkToggel() {
 
   return (
     <button
+      aria-label="Dark Toggel"
       onClick={toggelTheme}
       className="rounded-full cursor-pointer text-textMuted hover:text-primary transition-all ease-in-out"
     >

@@ -53,7 +53,7 @@ export default function ProductsManager() {
           {!showDeleted && (
             <button
               onClick={() => navigate('/seller/products/create')}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg shadow-sm hover:brightness-110 transition-all"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white [text-shadow:0_0_2px_rgba(0,0,0,0.8)] rounded-lg shadow-sm hover:brightness-110 transition-all"
             >
               <Plus className="w-4 h-4" />
               Créer un produit
@@ -88,6 +88,7 @@ export default function ProductsManager() {
             <div className="flex items-center gap-2">
               <label className="text-sm text-textMuted whitespace-nowrap">Afficher:</label>
               <select
+                aria-label="Page Size"
                 value={pageSize}
                 onChange={(e) => {
                   setPageSize(Number(e.target.value));
@@ -179,13 +180,12 @@ export default function ProductsManager() {
                     </td>
                     <td className="px-6 py-4">
                       <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          p.stock > 10
+                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${p.stock > 10
                             ? 'bg-green-100 text-green-800'
                             : p.stock > 0
                               ? 'bg-yellow-100 text-yellow-800'
                               : 'bg-red-100 text-red-800'
-                        }`}
+                          }`}
                       >
                         {p.stock} unités
                       </span>
@@ -198,7 +198,7 @@ export default function ProductsManager() {
                           </span>
                         )}
                         {p.deletedAt && (
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-600 border border-red-200 w-fit">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-500 border border-red-200 w-fit">
                             Supprimé
                           </span>
                         )}
@@ -210,7 +210,7 @@ export default function ProductsManager() {
                           <>
                             <button
                               onClick={() => navigate(`/seller/products/edit/${p._id}`)}
-                              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-blue-600 border border-blue-200 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-500/10 transition-colors"
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-blue-500 border border-blue-200 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-500/10 transition-colors"
                               title="Éditer"
                             >
                               <Pencil className="w-4 h-4" />
@@ -294,11 +294,10 @@ export default function ProductsManager() {
                       <button
                         key={i}
                         onClick={() => goToPage(pageNum)}
-                        className={`px-3 py-1.5 text-sm border rounded-lg transition-colors ${
-                          currentPage === pageNum
+                        className={`px-3 py-1.5 text-sm border rounded-lg transition-colors ${currentPage === pageNum
                             ? 'bg-primary text-white border-primary'
                             : 'border-border hover:bg-primary/10'
-                        }`}
+                          }`}
                       >
                         {pageNum}
                       </button>

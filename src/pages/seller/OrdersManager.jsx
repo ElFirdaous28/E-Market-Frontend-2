@@ -89,6 +89,7 @@ export default function OrdersManager() {
                     <td className="px-4 py-2 whitespace-nowrap">{dateStr}</td>
                     <td className="px-4 py-2">
                       <select
+                        aria-label="Select status"
                         className="border rounded px-2 py-1 text-xs bg-white dark:bg-gray-800 dark:border-gray-700"
                         value={order.status}
                         disabled={
