@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import dotenvFlow from 'dotenv-flow';
+// import { visualizer } from "rollup-plugin-visualizer";
 
 dotenvFlow.config();
 
@@ -10,6 +11,10 @@ export default defineConfig(() => {
   console.log('VITE_ENV =', process.env.VITE_ENV);
 
   return {
-    plugins: [react(), tailwindcss()],
+    plugins: [
+      react(),
+      tailwindcss(),
+      // visualizer({ open: true }),
+    ],
   };
 });

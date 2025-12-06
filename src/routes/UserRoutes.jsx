@@ -1,8 +1,9 @@
+import { lazy } from 'react';
 import { Route } from 'react-router-dom';
-import Products from '../pages/Products';
 import ProtectedRoute from './ProtectedRoute';
 import Orders from '../pages/Orders';
 import Cart from '../pages/Cart';
+const Products = lazy(() => import('../pages/Products'));
 
 export default function UserRoutes() {
   return (
