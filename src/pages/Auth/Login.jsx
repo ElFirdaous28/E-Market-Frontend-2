@@ -93,7 +93,7 @@ const Login = () => {
                 className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors ${errors.email ? 'border-red-500' : 'border-border focus:border-primary'
                   }`}
               />
-              <p className="text-red-500 text-xs mt-1 min-h-2">
+              <p className="text-red-500 text-xs mt-1">
                 {errors.email?.message || ' '}
               </p>
             </div>
@@ -118,19 +118,19 @@ const Login = () => {
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
-              <p className="text-red-500 text-xs mt-1 min-h-2">
+              <p className="text-red-500 text-xs mt-1">
                 {errors.password?.message || ' '}
               </p>
             </div>
 
-            <p className="text-red-500 text-sm -mt-7 min-h-2">
+            <p className="text-red-500 text-sm -mt-7">
               {backendError || ' '}
             </p>
             {/* Submit */}
             <button
               type="submit"
               disabled={login.isPending}
-              className="w-full bg-primary hover:bg-emerald-600 text-textMain [text-shadow:0_0_2px_rgba(0,0,0,0.8)] font-semibold py-3 rounded-lg transition-colors"
+              className="w-full bg-primary hover:bg-emerald-600 text-textMain [text-shadow:0_0_2px_rgba(0,0,0,0.8)] font-semibold py-3 rounded-lg transition-colors mt-8"
             >
               {login.isPending ? 'Signing in...' : 'Sign In'}
             </button>

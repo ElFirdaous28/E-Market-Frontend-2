@@ -63,7 +63,14 @@ const Register = () => {
     <main className="flex flex-col md:flex-row gap-40 items-center">
       {/* Left side */}
       <div className="hidden md:flex w-2/5 justify-center">
-        <img src={eStoreLogo} loading="lazy" alt="store" className="w-full object-contain" />
+        <img
+          src={eStoreLogo}
+          width={630}
+          height={900}
+          alt="store"
+          className="w-full object-contain"
+          fetchPriority="high"
+        />
       </div>
 
       {/* Right side */}
@@ -88,12 +95,11 @@ const Register = () => {
                 type="text"
                 {...register('fullname')}
                 placeholder="John Doe"
-                className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors ${
-                  errors.fullname ? 'border-red-500' : 'border-border focus:border-primary'
-                }`}
+                className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors ${errors.fullname ? 'border-red-500' : 'border-border focus:border-primary'
+                  }`}
               />
               {errors.fullname && (
-                <p className="text-red-500 text-xs mt-1">{errors.fullname.message}</p>
+                <p className="text-red-500 text-xs mt-1">{errors.fullname.message || ' '}</p>
               )}
             </div>
 
@@ -107,11 +113,10 @@ const Register = () => {
                 type="email"
                 {...register('email')}
                 placeholder="john@example.com"
-                className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors ${
-                  errors.email ? 'border-red-500' : 'border-border focus:border-primary'
-                }`}
+                className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors ${errors.email ? 'border-red-500' : 'border-border focus:border-primary'
+                  }`}
               />
-              {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
+              {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message || ' '}</p>}
             </div>
 
             {/* Password */}
@@ -125,9 +130,8 @@ const Register = () => {
                   type={showPassword ? 'text' : 'password'}
                   {...register('password')}
                   placeholder="••••••••"
-                  className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors pr-12 ${
-                    errors.password ? 'border-red-500' : 'border-border focus:border-primary'
-                  }`}
+                  className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors pr-12 ${errors.password ? 'border-red-500' : 'border-border focus:border-primary'
+                    }`}
                 />
                 <button
                   aria-label="toggel show password"
@@ -139,7 +143,7 @@ const Register = () => {
                 </button>
               </div>
               {errors.password && (
-                <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
+                <p className="text-red-500 text-xs mt-1">{errors.password.message || ' '}</p>
               )}
             </div>
 
@@ -157,9 +161,8 @@ const Register = () => {
                   type={showConfirmPassword ? 'text' : 'password'}
                   {...register('confirmPassword')}
                   placeholder="••••••••"
-                  className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors pr-12 ${
-                    errors.confirmPassword ? 'border-red-500' : 'border-border focus:border-primary'
-                  }`}
+                  className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors pr-12 ${errors.confirmPassword ? 'border-red-500' : 'border-border focus:border-primary'
+                    }`}
                 />
                 <button
                   type="button"
@@ -171,12 +174,12 @@ const Register = () => {
                 </button>
               </div>
               {errors.confirmPassword && (
-                <p className="text-red-500 text-xs mt-1">{errors.confirmPassword.message}</p>
+                <p className="text-red-500 text-xs mt-1">{errors.confirmPassword.message || ' '}</p>
               )}
             </div>
 
             {/* Backend general error */}
-            {backendError && <p className="text-red-500 text-sm mb-2">{backendError}</p>}
+            {backendError && <p className="text-red-500 text-sm mb-2">{backendError || ' '}</p>}
 
             {/* Terms */}
             <div className="flex items-start gap-2">
