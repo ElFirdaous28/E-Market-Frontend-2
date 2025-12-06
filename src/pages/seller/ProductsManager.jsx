@@ -198,7 +198,7 @@ export default function ProductsManager() {
                           </span>
                         )}
                         {p.deletedAt && (
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-500 border border-red-200 w-fit">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-600 border border-red-200 w-fit">
                             Supprimé
                           </span>
                         )}
@@ -210,7 +210,7 @@ export default function ProductsManager() {
                           <>
                             <button
                               onClick={() => navigate(`/seller/products/edit/${p._id}`)}
-                              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-blue-500 border border-blue-200 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-500/10 transition-colors"
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-blue-600 border border-blue-200 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-500/10 transition-colors"
                               title="Éditer"
                             >
                               <Pencil className="w-4 h-4" />
