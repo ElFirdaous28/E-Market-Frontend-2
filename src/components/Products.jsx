@@ -2,10 +2,11 @@ import { Image } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../hooks/useCart';
 import { useAuth } from '../hooks/useAuth';
+import React from 'react';
 
-export default function Products({ products }) {
+function Products({ products }) {
   const { addToCart } = useCart();
-  const { user } = useAuth()
+  const { user } = useAuth();
 
   // Add product to cart
   const handleAddToCart = (e, productId) => {
@@ -17,7 +18,7 @@ export default function Products({ products }) {
     <section className="w-11/12 mx-auto">
       <h2 className="text-3xl font-bold text-textMain mb-6">Products</h2>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-x-4 gap-y-5">
+      <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-3 gap-x-4 gap-y-5">
         {products.length > 0 ? (
           products.map((product) => (
             <Link
@@ -78,3 +79,5 @@ export default function Products({ products }) {
     </section>
   );
 }
+
+export default React.memo(Products);

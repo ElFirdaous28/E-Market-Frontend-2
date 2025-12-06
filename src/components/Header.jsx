@@ -4,10 +4,10 @@ import { useAuth } from '../hooks/useAuth';
 import LogoutButton from './LogoutButton';
 import DarkToggel from './DarkToggel';
 import { useCart } from '../hooks/useCart';
-import { lazy, useRef, useState } from 'react';
+import React, { lazy, useRef, useState } from 'react';
 const Logo = lazy(() => import('./Logo'));
 
-export default function Header({ toggleMobileMenu }) {
+function Header({ toggleMobileMenu }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { user } = useAuth();
   const { cartLength } = useCart();
@@ -98,3 +98,5 @@ export default function Header({ toggleMobileMenu }) {
     </header>
   );
 }
+
+export default React.memo(Header);

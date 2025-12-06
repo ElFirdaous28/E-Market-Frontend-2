@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
   Home,
   Package,
@@ -14,7 +14,7 @@ import {
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 
-export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen }) {
+function Sidebar({ mobileMenuOpen, setMobileMenuOpen }) {
   const [isExpanded, setIsExpanded] = useState(true);
   const { user } = useAuth();
   const { pathname } = useLocation();
@@ -151,3 +151,5 @@ export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen }) {
     </>
   );
 }
+
+export default React.memo(Sidebar)

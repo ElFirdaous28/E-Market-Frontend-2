@@ -1,20 +1,39 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useRef } from 'react';
+import React, { useRef, useCallback, useMemo } from 'react';
 import { useCategories } from '../hooks/useCategories';
 
-export default function CategoriesSlider() {
+function CategoriesSlider() {
   const { categories, loading } = useCategories();
   const sliderRef = useRef(null);
 
-  const scrollLeft = () => {
-    sliderRef.current.scrollBy({ left: -300, behavior: 'smooth' });
-  };
+  // Memoize scroll functions so they are stable between renders
+  const scrollLeft = useCallback(() => {
+    if (sliderRef.current) {
+      sliderRef.current.scrollBy({ left: -300, behavior: 'smooth' });
+    }
+  }, []);
 
-  const scrollRight = () => {
-    sliderRef.current.scrollBy({ left: 300, behavior: 'smooth' });
-  };
+  const scrollRight = useCallback(() => {
+    if (sliderRef.current) {
+      sliderRef.current.scrollBy({ left: 300, behavior: 'smooth' });
+    }
+  }, []);
 
-  if (loading) return <div>Loading categories...</div>;
+  // Memoize rendered categories so they don't re-render unnecessarily
+  const renderedCategories = useMemo(() => {
+    return categories.map((cat) => (
+      <div
+        key={cat._id}
+        className="bg-brand-surface min-w-[150px] sm:min-w-[220px] p-4 sm:p-6 rounded-lg hover:shadow-lg border border-primary shrink-0 snap-start flex flex-col items-center text-center"
+      >
+        <h3 className="text-lg sm:text-xl font-semibold text-textMain mb-2">{cat.name}</h3>
+        <p className="text-sm text-textMuted mt-1">{cat.productCount ?? 0} products</p>
+      </div>
+    ));
+  }, [categories]);
+
+  if (loading)
+    return <div className="min-h-20 flex items-center justify-center">Loading categories...</div>;
 
   return (
     <section className="w-full sm:w-11/12 lg:w-3/4 mx-auto py-6">
@@ -36,15 +55,7 @@ export default function CategoriesSlider() {
           ref={sliderRef}
           className="overflow-x-auto flex gap-4 sm:gap-6 scroll-smooth flex-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] snap-x snap-mandatory"
         >
-          {categories.map((cat) => (
-            <div
-              key={cat._id}
-              className="bg-brand-surface min-w-[150px] sm:min-w-[220px] p-4 sm:p-6 rounded-lg hover:shadow-lg border border-primary shrink-0 snap-start flex flex-col items-center text-center"
-            >
-              <h3 className="text-lg sm:text-xl font-semibold text-textMain mb-2">{cat.name}</h3>
-              <p className="text-sm text-textMuted mt-1">{cat.productCount ?? 0} products</p>
-            </div>
-          ))}
+          {renderedCategories}
         </div>
 
         {/* Right button */}
@@ -58,3 +69,5 @@ export default function CategoriesSlider() {
     </section>
   );
 }
+
+export default React.memo(CategoriesSlider);
