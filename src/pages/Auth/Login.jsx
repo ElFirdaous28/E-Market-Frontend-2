@@ -65,11 +65,11 @@ const Login = () => {
       <div className="hidden md:flex w-2/5 justify-center">
         <img
           src={eStoreLogo}
-          width={400}
-          height={400}
-          loading="lazy"
+          width={630}
+          height={900}
           alt="store"
           className="w-full object-contain"
+          fetchPriority="high"
         />
       </div>
 
@@ -90,11 +90,12 @@ const Login = () => {
                 type="text"
                 {...register('email')}
                 placeholder="jhon@example.com"
-                className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors ${
-                  errors.email ? 'border-red-500' : 'border-border focus:border-primary'
-                }`}
+                className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors ${errors.email ? 'border-red-500' : 'border-border focus:border-primary'
+                  }`}
               />
-              {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
+              <p className="text-red-500 text-xs mt-1 min-h-4">
+                {errors.email?.message || ' '}
+              </p>
             </div>
 
             {/* Password */}
@@ -105,9 +106,8 @@ const Login = () => {
                   type={showPassword ? 'text' : 'password'}
                   {...register('password')}
                   placeholder="••••••••"
-                  className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors pr-12 ${
-                    errors.password ? 'border-red-500' : 'border-border focus:border-primary'
-                  }`}
+                  className={`w-full bg-surface border rounded-lg px-4 py-3 text-textMain placeholder-textMuted focus:outline-none transition-colors pr-12 ${errors.password ? 'border-red-500' : 'border-border focus:border-primary'
+                    }`}
                 />
                 <button
                   aria-label="toggel show password"
@@ -118,12 +118,14 @@ const Login = () => {
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
-              {errors.password && (
-                <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
-              )}
+              <p className="text-red-500 text-xs mt-1 min-h-4">
+                {errors.password?.message || ' '}
+              </p>
             </div>
 
-            {backendError && <p className="text-red-500 text-sm -mt-7">{backendError}</p>}
+            <p className="text-red-500 text-sm -mt-7 min-h-5">
+              {backendError || ' '}
+            </p>
             {/* Submit */}
             <button
               type="submit"
