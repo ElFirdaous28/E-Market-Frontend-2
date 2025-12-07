@@ -11,7 +11,7 @@
     "preview": "vite preview",
     "format": "prettier --write .",
     "test": "cross-env NODE_ENV=test npx jest",
-    "test:watch": "cross-env NODE_ENV=test npx jest --watch"
+    "test:coverage": "cross-env NODE_ENV=test npx jest --coverage"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
