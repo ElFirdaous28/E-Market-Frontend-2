@@ -9,6 +9,8 @@ import cartReducer from '../../store/cartSlice';
 import userReducer from '../../store/userSlice';
 import { useAuth } from '../../hooks/useAuth';
 import { useCart } from '../../hooks/useCart';
+import { waitForElementToBeRemoved } from '@testing-library/react';
+
 
 jest.mock('../../services/axios');
 import axios from '../../services/axios';
@@ -24,9 +26,12 @@ jest.mock('react-router-dom', () => ({
 }));
 
 // 3. Mock External Hooks
+const mockValidate = jest.fn();
+
+// Mock hook using mockValidate
 jest.mock('../../hooks/useCoupons', () => ({
   useCoupons: () => ({
-    validateCoupon: { mutate: jest.fn() },
+    validateCoupon: { mutate: mockValidate },
   }),
 }));
 
@@ -83,7 +88,7 @@ describe('Cart Integration Tests', () => {
 
     queryClient = new QueryClient({
       defaultOptions: { queries: { retry: false } },
-      logger: { log: console.log, warn: console.warn, error: () => {} },
+      logger: { log: console.log, warn: console.warn, error: () => { } },
     });
 
     useAuth.mockReturnValue({
@@ -232,4 +237,134 @@ describe('Cart Integration Tests', () => {
     // Verify Navigation
     expect(mockNavigate).toHaveBeenCalledWith('/orders');
   });
+
+  // ---------------------------------------------------------------
+  it('shows empty state when cart has no items', async () => {
+    axios.get.mockResolvedValue({ data: { data: { items: [] } } });
+    axios.post.mockResolvedValue({
+      data: { data: { summary: { total: 0, discount: 0, finalAmount: 0 } } },
+    });
+
+    renderCart();
+
+    expect(await screen.findByText('Cart is Empty')).toBeInTheDocument();
+  });
+
+  it('applies a coupon successfully', async () => {
+    // let the mock run the success handler
+    mockValidate.mockImplementation((_, opts) =>
+      opts.onSuccess({
+        data: {
+          data: { code: 'SAVE10', value: 10, type: 'percentage' }
+        }
+      })
+    );
+
+    axios.get.mockResolvedValue({
+      data: { data: { items: [] } }
+    });
+
+    axios.post.mockResolvedValue({
+      data: { data: { summary: { total: 100, discount: 10, finalAmount: 90 } } }
+    });
+
+    renderCart();
+
+    await waitForElementToBeRemoved(() =>
+      screen.queryByText(/Loading cart/i)
+    );
+    await waitForElementToBeRemoved(() =>
+      screen.queryByText(/Summary loading/i)
+    );
+
+    await user.type(screen.getByPlaceholderText('Enter code'), 'SAVE10');
+    await user.click(screen.getByText('Apply'));
+
+    expect(await screen.findByText('SAVE10')).toBeInTheDocument();
+  });
+
+  it('shows coupon error on failure', async () => {
+    // mock failure BEFORE render
+    mockValidate.mockImplementation((_, opts) =>
+      opts.onError({ response: { data: { message: 'Invalid coupon' } } })
+    );
+
+    axios.get.mockResolvedValue({ data: { data: { items: [] } } });
+    axios.post.mockResolvedValue({
+      data: { data: { summary: { total: 100, discount: 0, finalAmount: 100 } } },
+    });
+
+    renderCart();
+
+    await waitForElementToBeRemoved(() =>
+      screen.queryByText(/Loading cart/i)
+    );
+    await waitForElementToBeRemoved(() =>
+      screen.queryByText(/Summary loading/i)
+    );
+
+    await user.type(screen.getByPlaceholderText('Enter code'), 'BAD');
+    await user.click(screen.getByText('Apply'));
+
+    expect(
+      await screen.findByText('Invalid coupon')
+    ).toBeInTheDocument();
+  });
+
+  it('redirects guest to login on checkout', async () => {
+    useAuth.mockReturnValue({ user: null });
+
+    axios.get.mockResolvedValue({ data: { data: { items: [] } } });
+    axios.post.mockResolvedValue({ data: { data: { summary: {} } } });
+
+    renderCart();
+
+    const checkoutBtn = await screen.findByRole('button', { name: /checkout/i });
+    await user.click(checkoutBtn);
+
+    expect(mockNavigate).toHaveBeenCalledWith('/login');
+  });
+
+  it('removes a coupon', async () => {
+    // 1. Mock coupon apply success
+    mockValidate.mockImplementation((_, opts) =>
+      opts.onSuccess({
+        data: {
+          data: { code: 'SAVE10', value: 10, type: 'percentage' }
+        }
+      })
+    );
+
+    // 2. Mock cart & summary APIs
+    axios.get.mockResolvedValue({ data: { data: { items: [] } } });
+    axios.post.mockResolvedValue({
+      data: { data: { summary: { total: 100, discount: 10, finalAmount: 90 } } }
+    });
+
+    renderCart();
+
+    await waitForElementToBeRemoved(() =>
+      screen.queryByText(/Loading cart/i)
+    );
+    await waitForElementToBeRemoved(() =>
+      screen.queryByText(/Summary loading/i)
+    );
+
+    // 3. Apply coupon
+    await user.type(screen.getByPlaceholderText('Enter code'), 'SAVE10');
+    await user.click(screen.getByText('Apply'));
+
+    // 4. Coupon should appear
+    expect(await screen.findByText('SAVE10')).toBeInTheDocument();
+
+    // 5. Find and click remove button
+    const removeBtn = await screen.findByLabelText(/remove coupon/i);
+    await user.click(removeBtn);
+
+    // 6. Coupon disappears
+    await waitFor(() => {
+      expect(screen.queryByText('SAVE10')).not.toBeInTheDocument();
+    });
+  });
+
 });

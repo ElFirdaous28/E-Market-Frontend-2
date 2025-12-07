@@ -139,7 +139,7 @@ const Register = () => {
                   }`}
                 />
                 <button
-                  aria-label="toggel show password"
+                  aria-label="toggle show password"
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-textMuted hover:text-textMain transition-colors cursor-pointer w-10 h-10 flex justify-end items-center"
