@@ -41,6 +41,7 @@ export default function Cart() {
         },
       }
     );
+    console.log(summary);
   };
 
   const handleRemoveCoupon = (index) => {
@@ -53,7 +54,7 @@ export default function Cart() {
       return;
     }
 
-    createOrder(
+    createOrder.mutate(
       { coupons: appliedCoupons.map((c) => c.code) },
       {
         onSuccess: () => {
