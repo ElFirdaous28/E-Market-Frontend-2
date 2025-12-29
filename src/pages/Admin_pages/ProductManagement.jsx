@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
-import { Users, Trash2, Edit2, Check, X } from 'lucide-react';
-import { useAxios } from '../../hooks/useAxios';
+import { useState } from 'react';
+import { Trash2, Edit2, Check, X } from 'lucide-react';
 import { useAdminStatistics } from '../../hooks/useAdminstatistics';
 
-export const ProductManagement = () => {
-  const axios = useAxios();
+export default function ProductManagement() {
   const { products, deleteProduct } = useAdminStatistics();
 
   const [editingId, setEditingId] = useState(null);
-  const [editRole, setEditRole] = useState('');
+  const [_editRole, setEditRole] = useState('');
 
   const handleEdit = (user) => {
     setEditingId(user._id);
@@ -137,7 +135,7 @@ export const ProductManagement = () => {
                     {product.stock}
                   </td>
                   <td className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-400">
-                    {product.categories.length > 0 ? (
+                    {product?.categories?.length > 0 ? (
                       product.categories.map((cat) => <span key={cat._id}>{cat.name}</span>)
                     ) : (
                       <span>null</span>
@@ -191,4 +189,4 @@ export const ProductManagement = () => {
     </main>
   );
   //  }
-};
+}

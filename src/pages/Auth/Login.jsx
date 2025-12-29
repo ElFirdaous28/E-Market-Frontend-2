@@ -1,13 +1,13 @@
-import { useState } from 'react';
+import { lazy, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Eye, EyeOff } from 'lucide-react';
-import { Logo } from '../../components/Logo';
-import eStoreLogo from '../../assets/images/e-store.png';
 import { useAuth } from '../../hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
 import { loginSchema } from '../../validations/loginSchema';
 import { toast } from 'react-toastify';
+import eStoreLogo from '../../assets/images/e-store.webp';
+const Logo = lazy(() => import('../../components/Logo'));
 
 const Login = () => {
   const { login } = useAuth();
@@ -60,10 +60,17 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-40 items-center">
+    <main className="flex flex-col md:flex-row gap-40 items-center">
       {/* Left side */}
       <div className="hidden md:flex w-2/5 justify-center">
-        <img src={eStoreLogo} alt="store" className="w-full object-contain" />
+        <img
+          src={eStoreLogo}
+          width={630}
+          height={900}
+          alt="store"
+          className="w-full object-contain"
+          fetchPriority="high"
+        />
       </div>
 
       {/* Right side */}
@@ -87,7 +94,7 @@ const Login = () => {
                   errors.email ? 'border-red-500' : 'border-border focus:border-primary'
                 }`}
               />
-              {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
+              <p className="text-red-500 text-xs mt-1">{errors.email?.message || ' '}</p>
             </div>
 
             {/* Password */}
@@ -103,24 +110,23 @@ const Login = () => {
                   }`}
                 />
                 <button
+                  aria-label="toggel show password"
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-textMuted hover:text-textMain transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-textMuted hover:text-textMain transition-colors cursor-pointer w-10 h-10 flex justify-end items-center"
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
-              {errors.password && (
-                <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
-              )}
+              <p className="text-red-500 text-xs mt-1">{errors.password?.message || ' '}</p>
             </div>
 
-            {backendError && <p className="text-red-500 text-sm -mt-7">{backendError}</p>}
+            <p className="text-red-500 text-sm -mt-7">{backendError || ' '}</p>
             {/* Submit */}
             <button
               type="submit"
               disabled={login.isPending}
-              className="w-full bg-primary hover:bg-emerald-600 text-textMain font-semibold py-3 rounded-lg transition-colors"
+              className="w-full bg-primary hover:bg-emerald-600 text-textMain [text-shadow:0_0_2px_rgba(0,0,0,0.8)] font-semibold py-3 rounded-lg transition-colors mt-8"
             >
               {login.isPending ? 'Signing in...' : 'Sign In'}
             </button>
@@ -128,14 +134,14 @@ const Login = () => {
             {/* Sign up */}
             <div className="text-center text-sm text-textMuted">
               Don’t have an account?{' '}
-              <Link to="/register" className="text-primary hover:text-emerald-400">
+              <Link to="/register" className="text-primary underline hover:text-emerald-400">
                 Sign Up
               </Link>
             </div>
           </form>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 

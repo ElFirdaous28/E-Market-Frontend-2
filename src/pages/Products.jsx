@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
-import axios from '../services/axios';
-import ProductsComponenet from '../components/Products';
+import { lazy, useEffect, useState, useMemo } from 'react';
 import { useCategories } from '../hooks/useCategories';
+import { useProducts } from '../hooks/useProduct';
+
+const ProductsComponenet = lazy(() => import('../components/Products'));
 
 const Products = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
   const { categories } = useCategories();
 
   const [filters, setFilters] = useState({
@@ -18,7 +17,6 @@ const Products = () => {
   });
 
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
 
   // Debounced filters state
   const [debouncedFilters, setDebouncedFilters] = useState(filters);
@@ -28,43 +26,25 @@ const Products = () => {
     const handler = setTimeout(() => {
       setDebouncedFilters(filters);
       setPage(1); // reset page on filters change
-    }, 500); // 500ms delay
+    }, 500);
 
     return () => clearTimeout(handler);
   }, [filters]);
 
-  // Fetch products whenever debouncedFilters or page change
-  useEffect(() => {
-    const getProducts = async () => {
-      try {
-        setLoading(true);
+  // --- Use React Query hook for fetching products ---
+  const { data, isLoading, isError } = useProducts(8, page, debouncedFilters);
 
-        const params = new URLSearchParams();
-        params.append('page', page);
-        params.append('limit', 8);
+  // Memoize products and totalPages so child components won't re-render unnecessarily
+  const products = useMemo(() => data?.data || [], [data]);
+  const totalPages = useMemo(() => data?.meta?.pages || 1, [data]);
 
-        if (debouncedFilters.title) params.append('title', debouncedFilters.title);
-        if (debouncedFilters.categories.length)
-          params.append('categories', debouncedFilters.categories.join(','));
-        if (debouncedFilters.minPrice) params.append('minPrice', debouncedFilters.minPrice);
-        if (debouncedFilters.maxPrice) params.append('maxPrice', debouncedFilters.maxPrice);
-        if (debouncedFilters.sortBy) params.append('sortBy', debouncedFilters.sortBy);
-        if (debouncedFilters.sortOrder) params.append('sortOrder', debouncedFilters.sortOrder);
+  if (isLoading)
+    return <div className="min-h-screen flex items-center justify-center">Loading products...</div>;
 
-        const res = await axios.get(`/products/search?${params.toString()}`);
-        setProducts(res.data.data || []);
-        setTotalPages(res.data.meta.pages || 1);
-      } catch (error) {
-        console.error('Failed to fetch products:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getProducts();
-  }, [debouncedFilters, page]);
-
-  if (loading) return <div>Loading products...</div>;
+  if (isError)
+    return (
+      <div className="min-h-screen flex items-center justify-center">Failed to load products</div>
+    );
 
   const renderPagination = () => {
     const pages = [];

@@ -53,7 +53,7 @@ export default function ProductsManager() {
           {!showDeleted && (
             <button
               onClick={() => navigate('/seller/products/create')}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg shadow-sm hover:brightness-110 transition-all"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white [text-shadow:0_0_2px_rgba(0,0,0,0.8)] rounded-lg shadow-sm hover:brightness-110 transition-all"
             >
               <Plus className="w-4 h-4" />
               Créer un produit
@@ -88,6 +88,7 @@ export default function ProductsManager() {
             <div className="flex items-center gap-2">
               <label className="text-sm text-textMuted whitespace-nowrap">Afficher:</label>
               <select
+                aria-label="Page Size"
                 value={pageSize}
                 onChange={(e) => {
                   setPageSize(Number(e.target.value));

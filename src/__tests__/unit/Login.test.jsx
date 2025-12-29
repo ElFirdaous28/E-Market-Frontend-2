@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Login from '../../pages/Auth/Login';
 import { BrowserRouter } from 'react-router-dom';
+import { Suspense } from 'react';
 
 // Mock useAuth to avoid calling real login API
 jest.mock('../../hooks/useAuth', () => ({
@@ -13,18 +14,23 @@ jest.mock('../../hooks/useAuth', () => ({
 
 let user;
 
-beforeEach(() => {
+beforeEach(async () => {
   user = userEvent.setup();
   renderWithRouter(<Login />);
+  await screen.findByPlaceholderText('jhon@example.com');
 });
 
 function renderWithRouter(ui) {
-  return render(<BrowserRouter>{ui}</BrowserRouter>);
+  return render(
+    <Suspense fallback={<div>Loading...</div>}>
+      <BrowserRouter>{ui}</BrowserRouter>
+    </Suspense>
+  );
 }
 
 test('Validate login form befor submit', async () => {
   // Select fields
-  const emailInput = screen.getByPlaceholderText('jhon@example.com');
+  const emailInput = await screen.findByPlaceholderText('jhon@example.com');
   const passwordInput = screen.getByPlaceholderText('••••••••');
   const submitBtn = screen.getByRole('button', { name: /sign in/i });
 

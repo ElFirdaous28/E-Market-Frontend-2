@@ -1,17 +1,16 @@
 import { Search, ShoppingCart, User, Menu } from 'lucide-react';
-import { Logo } from './Logo';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import LogoutButton from './LogoutButton';
-import DarkToggel from './darkToggel';
+import DarkToggel from './DarkToggel';
 import { useCart } from '../hooks/useCart';
-import { useRef, useState } from 'react';
+import React, { lazy, useRef, useState } from 'react';
+const Logo = lazy(() => import('./Logo'));
 
-export default function Header({ toggleMobileMenu }) {
+function Header({ toggleMobileMenu }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { user } = useAuth();
   const { cartLength } = useCart();
-  console.log(cartLength);
 
   const dropdownRef = useRef(null);
 
@@ -40,7 +39,7 @@ export default function Header({ toggleMobileMenu }) {
         {/* Right section */}
         <div className="flex items-center space-x-4 md:space-x-6">
           <DarkToggel />
-          {user?.role === 'user' && cartLength > 0 && (
+          {(!user || user.role === 'user') && (
             <Link to="/cart" className="relative text-textMuted hover:text-textMain">
               <ShoppingCart className="w-5 h-5 md:w-6 md:h-6" />
               <span className="absolute -top-2 -right-2 bg-primary text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">
@@ -61,6 +60,7 @@ export default function Header({ toggleMobileMenu }) {
                     src={`${import.meta.env.VITE_API_URL}${user.avatar}`}
                     alt="Avatar"
                     className="w-10 h-10 rounded-full object-cover"
+                    loading="lazy"
                   />
                 ) : (
                   <User className="w-10 h-10 bg-surface rounded-full p-2" />
@@ -71,7 +71,10 @@ export default function Header({ toggleMobileMenu }) {
                 </div>
               </div>
             ) : (
-              <Link to="/login" className="px-4 py-2 bg-primary text-white rounded-md">
+              <Link
+                to="/login"
+                className="px-4 py-2 bg-primary text-white [text-shadow:0_0_2px_rgba(0,0,0,0.8)] rounded-md"
+              >
                 Sign In
               </Link>
             )}
@@ -95,3 +98,5 @@ export default function Header({ toggleMobileMenu }) {
     </header>
   );
 }
+
+export default React.memo(Header);

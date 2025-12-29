@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Users, Trash2, Edit2, Check, X } from 'lucide-react';
 import { useAdminStatistics } from '../../hooks/useAdminstatistics';
 
-export const UserManagement = () => {
+export default function UserManagement() {
   const { users, isLoading, deleteUser, editUserRole } = useAdminStatistics();
   const [editingId, setEditingId] = useState(null);
   const [editRole, setEditRole] = useState('');
@@ -182,4 +182,4 @@ export const UserManagement = () => {
       </div>
     </main>
   );
-};
+}

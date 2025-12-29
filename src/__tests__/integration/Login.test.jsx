@@ -30,7 +30,7 @@ describe('Login Integration Tests - User Role Navigation', () => {
     );
   };
 
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.clearAllMocks();
 
     // Setup Navigation Spy
@@ -47,7 +47,7 @@ describe('Login Integration Tests - User Role Navigation', () => {
       logger: {
         log: console.log,
         warn: console.warn,
-        error: () => {},
+        error: () => { },
       },
     });
 
@@ -56,6 +56,7 @@ describe('Login Integration Tests - User Role Navigation', () => {
       reducer: { user: userReducer },
     });
     renderLogin();
+    await screen.findByPlaceholderText('jhon@example.com');
   });
 
   describe('Given un user valide, When il soumet le formulaire, Then redirection vers son dashboard', () => {
@@ -77,12 +78,7 @@ describe('Login Integration Tests - User Role Navigation', () => {
         },
       };
 
-      axios.post.mockImplementation((url) => {
-        if (url === '/auth/login') {
-          return Promise.resolve(mockResponse);
-        }
-        return Promise.reject(new Error('Unexpected API call'));
-      });
+      axios.post.mockResolvedValueOnce(mockResponse);
 
       // Fill in the form
       const emailInput = screen.getByPlaceholderText('jhon@example.com');
@@ -95,39 +91,40 @@ describe('Login Integration Tests - User Role Navigation', () => {
       const submitButton = screen.getByRole('button', { name: /sign in/i });
       await user.click(submitButton);
 
-      // Wait for all async operations to complete
-      await waitFor(() => {
-        expect(axios.post).toHaveBeenCalledWith(
-          '/auth/login',
-          {
-            email: 'user@example.com',
-            password: 'Password123!',
-          },
-          { withCredentials: true }
-        );
-      });
+      // Wait for the mutation to complete and state to update
+      await waitFor(
+        () => {
+          const state = store.getState();
+          expect(state.user.user).not.toBeNull();
+        },
+        { timeout: 3000 }
+      );
 
-      // Wait for toast to be called
-      await waitFor(() => {
-        expect(toast.success).toHaveBeenCalledWith('Logged in successfully!');
-      });
-
-      // Verify Redux state updated
-      await waitFor(() => {
-        const state = store.getState();
-        expect(state.user.user).toEqual({
-          id: 1,
+      // Verify axios was called correctly
+      expect(axios.post).toHaveBeenCalledWith(
+        '/auth/login',
+        {
           email: 'user@example.com',
-          fullname: 'John Doe',
-          role: 'user',
-        });
-        expect(state.user.accessToken).toBe('mock-access-token');
-      });
+          password: 'Password123!',
+        },
+        { withCredentials: true }
+      );
 
-      // Verify navigation to products page (user dashboard)
-      await waitFor(() => {
-        expect(navigate).toHaveBeenCalledWith('/products', { replace: true });
+      // Verify toast was called
+      expect(toast.success).toHaveBeenCalledWith('Logged in successfully!');
+
+      // Verify Redux state
+      const state = store.getState();
+      expect(state.user.user).toEqual({
+        id: 1,
+        email: 'user@example.com',
+        fullname: 'John Doe',
+        role: 'user',
       });
+      expect(state.user.accessToken).toBe('mock-access-token');
+
+      // Verify navigation
+      expect(navigate).toHaveBeenCalledWith('/products', { replace: true });
     });
 
     it("Redirection vers /admin/dashboard pour un user avec role 'admin'", async () => {
@@ -147,12 +144,7 @@ describe('Login Integration Tests - User Role Navigation', () => {
         },
       };
 
-      axios.post.mockImplementation((url) => {
-        if (url === '/auth/login') {
-          return Promise.resolve(mockResponse);
-        }
-        return Promise.reject(new Error('Unexpected API call'));
-      });
+      axios.post.mockResolvedValueOnce(mockResponse);
 
       const emailInput = screen.getByPlaceholderText('jhon@example.com');
       const passwordInput = screen.getByPlaceholderText('••••••••');
@@ -163,28 +155,44 @@ describe('Login Integration Tests - User Role Navigation', () => {
       const submitButton = screen.getByRole('button', { name: /sign in/i });
       await user.click(submitButton);
 
-      await waitFor(() => {
-        expect(axios.post).toHaveBeenCalled();
-      });
+      // Wait for the mutation to complete and state to update
+      await waitFor(
+        () => {
+          const state = store.getState();
+          expect(state.user.user).not.toBeNull();
+          expect(state.user.user.role).toBe('admin');
+        },
+        { timeout: 3000 }
+      );
+
+      // Verify axios was called correctly
+      expect(axios.post).toHaveBeenCalledWith(
+        '/auth/login',
+        {
+          email: 'admin@example.com',
+          password: 'AdminPass123!',
+        },
+        { withCredentials: true }
+      );
 
       // Verify success toast
-      await waitFor(() => {
-        expect(toast.success).toHaveBeenCalledWith('Logged in successfully!');
-      });
+      expect(toast.success).toHaveBeenCalledWith('Logged in successfully!');
 
-      // Verify Redux state
-      await waitFor(() => {
-        const state = store.getState();
-        expect(state.user.user.role).toBe('admin');
+      // Verify complete Redux state
+      const state = store.getState();
+      expect(state.user.user).toEqual({
+        id: 2,
+        email: 'admin@example.com',
+        fullname: 'Admin User',
+        role: 'admin',
       });
+      expect(state.user.accessToken).toBe('mock-admin-token');
 
       // Verify navigation to admin dashboard
-      await waitFor(() => {
-        expect(navigate).toHaveBeenCalledWith('/admin/dashboard', { replace: true });
-      });
+      expect(navigate).toHaveBeenCalledWith('/admin/dashboard', { replace: true });
     });
 
-    it("Redirection vers /seller/dashboard pour un user avec role 'seller'", async () => {
+    it("Redirection vers /seller/overview pour un user avec role 'seller'", async () => {
       const user = userEvent.setup();
 
       const mockResponse = {
@@ -201,12 +209,7 @@ describe('Login Integration Tests - User Role Navigation', () => {
         },
       };
 
-      axios.post.mockImplementation((url) => {
-        if (url === '/auth/login') {
-          return Promise.resolve(mockResponse);
-        }
-        return Promise.reject(new Error('Unexpected API call'));
-      });
+      axios.post.mockResolvedValueOnce(mockResponse);
 
       const emailInput = screen.getByPlaceholderText('jhon@example.com');
       const passwordInput = screen.getByPlaceholderText('••••••••');
@@ -217,25 +220,41 @@ describe('Login Integration Tests - User Role Navigation', () => {
       const submitButton = screen.getByRole('button', { name: /sign in/i });
       await user.click(submitButton);
 
-      await waitFor(() => {
-        expect(axios.post).toHaveBeenCalled();
-      });
+      // Wait for the mutation to complete and state to update
+      await waitFor(
+        () => {
+          const state = store.getState();
+          expect(state.user.user).not.toBeNull();
+          expect(state.user.user.role).toBe('seller');
+        },
+        { timeout: 3000 }
+      );
+
+      // Verify axios was called correctly
+      expect(axios.post).toHaveBeenCalledWith(
+        '/auth/login',
+        {
+          email: 'seller@example.com',
+          password: 'SellerPass123!',
+        },
+        { withCredentials: true }
+      );
 
       // Verify success toast
-      await waitFor(() => {
-        expect(toast.success).toHaveBeenCalledWith('Logged in successfully!');
-      });
+      expect(toast.success).toHaveBeenCalledWith('Logged in successfully!');
 
-      // Verify Redux state
-      await waitFor(() => {
-        const state = store.getState();
-        expect(state.user.user.role).toBe('seller');
+      // Verify complete Redux state
+      const state = store.getState();
+      expect(state.user.user).toEqual({
+        id: 3,
+        email: 'seller@example.com',
+        fullname: 'Seller User',
+        role: 'seller',
       });
+      expect(state.user.accessToken).toBe('mock-seller-token');
 
-      // Verify navigation to seller dashboard
-      await waitFor(() => {
-        expect(navigate).toHaveBeenCalledWith('/seller/overview', { replace: true });
-      });
+      // Verify navigation to seller overview
+      expect(navigate).toHaveBeenCalledWith('/seller/overview', { replace: true });
     });
 
     it('Given des credentials invalides, When il soumet le formulaire, Then affiche une erreur et ne navigue pas', async () => {

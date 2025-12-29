@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Register from '../../pages/Auth/Register';
 import { BrowserRouter } from 'react-router-dom';
+import { Suspense } from 'react';
 
 // Mock useAuth to avoid real API calls
 jest.mock('../../hooks/useAuth', () => ({
@@ -14,13 +15,18 @@ let user;
 
 // Helper to wrap component with BrowserRouter
 function renderWithRouter(ui) {
-  return render(<BrowserRouter>{ui}</BrowserRouter>);
+  return render(
+    <Suspense fallback={<div>Loading...</div>}>
+      <BrowserRouter>{ui}</BrowserRouter>
+    </Suspense>
+  );
 }
 
 // Setup before each test
-beforeEach(() => {
+beforeEach(async () => {
   user = userEvent.setup();
   renderWithRouter(<Register />);
+  await screen.findByPlaceholderText('John Doe');
 });
 
 // Test valid input enables submit
@@ -82,4 +88,15 @@ test('Shows required field errors when form is empty', async () => {
   expect(await screen.findByText('Email is required')).toBeInTheDocument();
   expect(await screen.findByText('Password is required')).toBeInTheDocument();
   expect(await screen.findByText('Confirm Password is required')).toBeInTheDocument();
+});
+
+test('toggle show/hide password', async () => {
+  const pass = screen.getByLabelText(/^Password$/i);
+  const toggleBtn = screen.getAllByLabelText('toggle show password')[0];
+
+  expect(pass.type).toBe('password');
+
+  await user.click(toggleBtn);
+
+  expect(pass.type).toBe('text');
 });

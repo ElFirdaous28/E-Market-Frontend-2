@@ -1,22 +1,28 @@
 import AppRoutes from './routes/AppRoutes';
-import { ToastContainer } from 'react-toastify';
+import { lazy, Suspense } from 'react';
+
+const ToastContainer = lazy(() =>
+  import('react-toastify').then((module) => ({ default: module.ToastContainer }))
+);
 
 function App() {
   return (
     <>
       <AppRoutes />
 
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
+      <Suspense fallback={null}>
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+      </Suspense>
     </>
   );
 }
