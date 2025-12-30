@@ -2,6 +2,7 @@ import { ShoppingCart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { lazy, useMemo } from 'react';
 import { useProducts } from '../hooks/useProduct';
+import { Suspense } from 'react';
 
 const Products = lazy(() => import('../components/Products'));
 const CategoriesSlider = lazy(() => import('../components/CategoriesSlider'));
@@ -46,9 +47,9 @@ export default function Home() {
       </section>
 
       <CategoriesSlider />
-      <div className="w-4/5">
+      <Suspense fallback={<div>Loading products...</div>}>
         <Products products={products} />
-      </div>
+      </Suspense>
       <div className="w-3/4 text-primary -mt-10 text-right">
         <Link to="/products" className="text-primary font-semibold hover:underline">
           View All &rarr;
