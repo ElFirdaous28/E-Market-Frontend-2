@@ -19,7 +19,7 @@ export default function Home() {
       <section className="w-full sm:w-11/12 lg:w-3/4 bg-surface rounded-lg overflow-hidden flex flex-col md:flex-row p-6 sm:p-8 md:p-12 lg:p-16 text-center md:text-left items-center md:items-stretch mx-auto">
         <div className="w-full md:w-3/5 flex flex-col justify-center items-center md:items-start">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-textMain leading-tight">
-            Shop the Best Products Online
+            Shop the Best Products Online Update!!!!!!!!!!!!!
           </h1>
           <p className="mt-4 text-base sm:text-lg text-textMuted max-w-md">
             Discover amazing deals on top-quality products. Fast shipping, secure payments, and
