@@ -6,7 +6,7 @@ on:
     branches: ['*']
 jobs:
   Code Integration:
-    runs on: ubuntu-latest
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [18.x, 20.x, 22.x]
@@ -19,6 +19,7 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm run lint
+      - run: npm run build
       - run: npm run test:coverage
 
 
