@@ -55,7 +55,7 @@ const Register = () => {
       } else {
         setBackendError('Network error or server not reachable');
       }
-      console.error(err);
+      // console.error(err);
     }
   };
 
