@@ -11,7 +11,9 @@
     "preview": "vite preview",
     "format": "prettier --write .",
     "test": "cross-env NODE_ENV=test npx jest",
-    "test:coverage": "cross-env NODE_ENV=test npx jest --coverage"
+    "test:coverage": "cross-env NODE_ENV=test npx jest --coverage --testTimeout 20000",
+    "lh:desktop": "lighthouse http://localhost:5173 --preset=desktop --output html --output-path ./lighthouse-report.html --view",
+    "lh:dev": "lighthouse https://e-market-frontend-2-mkod.vercel.app/ --preset=desktop --output html --output-path ./lighthouse-report.html --view"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
