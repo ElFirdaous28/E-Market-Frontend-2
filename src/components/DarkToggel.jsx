@@ -2,23 +2,25 @@ import { Moon, Sun } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export default function DarkToggel() {
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState(() => {
+    const storedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return storedTheme || (prefersDark ? 'dark' : 'light');
+  });
 
   const toggelTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-    document.documentElement.classList.toggle('dark', newTheme === 'dark');
-    localStorage.setItem('theme', newTheme);
+    setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
   };
 
   useEffect(() => {
-    const storedTheme = localStorage.getItem('theme') || 'light';
-    setTheme(storedTheme);
-    document.documentElement.classList.toggle('dark', storedTheme === 'dark');
-  }, []);
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
 
   return (
     <button
+      aria-label="Dark Toggel"
       onClick={toggelTheme}
       className="rounded-full cursor-pointer text-textMuted hover:text-primary transition-all ease-in-out"
     >

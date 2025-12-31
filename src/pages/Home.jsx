@@ -1,30 +1,19 @@
 import { ShoppingCart } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { lazy, useEffect, useState } from 'react';
-import axios from '../services/axios';
+import { lazy, useMemo } from 'react';
+import { useProducts } from '../hooks/useProduct';
+import { Suspense } from 'react';
 
 const Products = lazy(() => import('../components/Products'));
 const CategoriesSlider = lazy(() => import('../components/CategoriesSlider'));
 
 export default function Home() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { data, isLoading } = useProducts(7);
 
-  useEffect(() => {
-    const getProducts = async () => {
-      try {
-        const res = await axios.get('/products/search?limit=7');
-        setProducts(res.data.data || []);
-      } catch (error) {
-        console.error('Failed to fetch products:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    getProducts();
-  }, []);
+  // Memoize products and totalPages so child components won't re-render unnecessarily
+  const products = useMemo(() => data?.data || [], [data]);
 
-  if (loading) return <div>Loading products...</div>;
+  if (isLoading) return <div>Loading products...</div>;
   return (
     <>
       <section className="w-full sm:w-11/12 lg:w-3/4 bg-surface rounded-lg overflow-hidden flex flex-col md:flex-row p-6 sm:p-8 md:p-12 lg:p-16 text-center md:text-left items-center md:items-stretch mx-auto">
@@ -39,7 +28,7 @@ export default function Home() {
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
             <Link
               to="/products"
-              className="bg-primary text-textMain px-6 py-3 rounded-full font-semibold hover:bg-primary/55 transition-colors shadow-lg"
+              className="bg-primary text-white [text-shadow:0_0_2px_rgba(0,0,0,0.8)] px-6 py-3 rounded-full font-semibold hover:bg-primary/55 transition-colors shadow-lg"
             >
               Shop Now
             </Link>
@@ -58,9 +47,9 @@ export default function Home() {
       </section>
 
       <CategoriesSlider />
-      <div className="w-4/5">
+      <Suspense fallback={<div>Loading products...</div>}>
         <Products products={products} />
-      </div>
+      </Suspense>
       <div className="w-3/4 text-primary -mt-10 text-right">
         <Link to="/products" className="text-primary font-semibold hover:underline">
           View All &rarr;

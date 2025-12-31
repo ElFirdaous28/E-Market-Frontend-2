@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
   Home,
   Package,
@@ -14,7 +14,7 @@ import {
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 
-export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen }) {
+function Sidebar({ mobileMenuOpen, setMobileMenuOpen }) {
   const [isExpanded, setIsExpanded] = useState(true);
   const { user } = useAuth();
   const { pathname } = useLocation();
@@ -50,9 +50,9 @@ export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen }) {
   const toggleExpanded = () => setIsExpanded((prev) => !prev);
 
   const roleStyles = {
-    admin: 'bg-red-100 text-red-600 border-red-200',
-    seller: 'bg-blue-100 text-blue-600 border-blue-200',
-    user: 'bg-green-100 text-green-600 border-green-200',
+    admin: 'bg-red-200 text-red-800 border-red-300',
+    seller: 'bg-blue-200 text-blue-800 border-blue-300',
+    user: 'bg-green-200 text-green-800 border-green-300',
   };
 
   const badgeClass = user?.role ? roleStyles[user.role] : '';
@@ -118,7 +118,7 @@ export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen }) {
                   <Link
                     key={path}
                     to={path}
-                    className={`flex items-center gap-3 px-3 py-3 rounded-lg ${isActive ? 'bg-primary text-white' : 'text-textMuted hover:bg-primary hover:text-white'}`}
+                    className={`flex items-center gap-3 px-3 py-3 rounded-lg ${isActive ? 'bg-primary text-white [text-shadow:0_0_2px_rgba(0,0,0,0.8)]' : 'text-textMuted hover:bg-primary hover:text-white'}`}
                   >
                     <Icon className="w-5 h-5 min-w-5" />
                     <span
@@ -134,6 +134,7 @@ export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen }) {
             {/* Toggle Button: Added padding for spacing from bottom/sides */}
             <div className={`flex p-4 mt-auto ${isExpanded ? 'justify-end' : 'justify-center'}`}>
               <button
+                aria-label="Toggle Expand Sidebar"
                 onClick={toggleExpanded}
                 className="flex items-center justify-center w-10 h-10 border border-primary text-primary hover:bg-primary hover:text-white rounded-lg"
               >
@@ -150,3 +151,5 @@ export default function Sidebar({ mobileMenuOpen, setMobileMenuOpen }) {
     </>
   );
 }
+
+export default React.memo(Sidebar)

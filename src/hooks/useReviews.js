@@ -8,7 +8,7 @@ export const useReviews = (productId = null, page = 1, limit = 10) => {
   const queryClient = useQueryClient();
   const { user } = useAuth();
 
-  // --- FETCH PRODUCT REVIEWS (call manually)
+  // --- FETCH PRODUCT REVIEWS ---
   const productReviewsQuery = useQuery({
     queryKey: ['product-reviews', productId, page, limit],
     queryFn: async () => {
@@ -16,10 +16,13 @@ export const useReviews = (productId = null, page = 1, limit = 10) => {
       const res = await axios.get(`/reviews/product/${productId}?page=${page}&limit=${limit}`);
       return res.data;
     },
-    enabled: !!productId, // only fetch if productId is truthy
+    enabled: !!productId,
+    staleTime: 1000 * 60 * 2, // 2 minutes fresh
+    cacheTime: 1000 * 60 * 10, // 10 minutes in cache
+    keepPreviousData: true, // keep old data while fetching new page
   });
 
-  // --- FETCH MY REVIEWS (auto)
+  // --- FETCH MY REVIEWS ---
   const myReviewsQuery = useQuery({
     queryKey: ['my-reviews'],
     queryFn: async () => {
@@ -27,9 +30,11 @@ export const useReviews = (productId = null, page = 1, limit = 10) => {
       return res.data.data;
     },
     enabled: !!user,
+    staleTime: 1000 * 60 * 2,
+    cacheTime: 1000 * 60 * 10,
   });
 
-  // --- CREATE REVIEW
+  // --- CREATE REVIEW ---
   const createReview = useMutation({
     mutationFn: (payload) => axios.post('/reviews', payload),
     onSuccess: (_, { productId }) => {
@@ -37,9 +42,12 @@ export const useReviews = (productId = null, page = 1, limit = 10) => {
       queryClient.invalidateQueries(['my-reviews']);
       toast.success('Review added');
     },
+    onError: () => {
+      toast.error('Failed to add review');
+    },
   });
 
-  // --- UPDATE REVIEW
+  // --- UPDATE REVIEW ---
   const updateReview = useMutation({
     mutationFn: ({ id, data }) => axios.put(`/reviews/${id}`, data),
     onSuccess: (_, { productId }) => {
@@ -47,9 +55,12 @@ export const useReviews = (productId = null, page = 1, limit = 10) => {
       queryClient.invalidateQueries(['my-reviews']);
       toast.success('Review updated');
     },
+    onError: () => {
+      toast.error('Failed to update review');
+    },
   });
 
-  // --- DELETE REVIEW
+  // --- DELETE REVIEW ---
   const deleteReview = useMutation({
     mutationFn: ({ id }) => axios.delete(`/reviews/${id}`),
     onSuccess: (_, { productId }) => {
@@ -57,17 +68,17 @@ export const useReviews = (productId = null, page = 1, limit = 10) => {
       queryClient.invalidateQueries(['my-reviews']);
       toast.success('Review deleted');
     },
+    onError: () => {
+      toast.error('Failed to delete review');
+    },
   });
 
   return {
-    // Queries
+    productReviews: productReviewsQuery.data,
     myReviews: myReviewsQuery.data,
+    isProductReviewsLoading: productReviewsQuery.isLoading,
     isMyReviewsLoading: myReviewsQuery.isLoading,
 
-    // Functions
-    productReviews: productReviewsQuery.data,
-
-    // Mutations
     createReview,
     updateReview: updateReview.mutate,
     deleteReview: deleteReview.mutate,

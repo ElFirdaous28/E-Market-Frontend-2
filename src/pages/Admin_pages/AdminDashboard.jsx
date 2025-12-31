@@ -38,7 +38,7 @@ export default function AdminDashboard() {
                   {stat.change}
                 </span> */}
               </div>
-              <h3 className="text-gray-400 text-sm mb-1">{stat.label}</h3>
+              <p className="text-gray-400 text-sm mb-1">{stat.label}</p>
               <p className="text-2xl font-bold text-color-surface">{stat.value}</p>
             </div>
           );
@@ -110,7 +110,7 @@ export default function AdminDashboard() {
             {topProducts?.map((product, index) => (
               <div key={index} className="flex items-center justify-between">
                 <div className="flex-1">
-                  <h4 className="text-sm font-medium text-color-surface mb-1">{product.title}</h4>
+                  <p className="text-sm font-medium text-color-surface mb-1">{product.title}</p>
                   <p className="text-xs text-gray-400">{product.totalSold} sales</p>
                 </div>
                 <div className="text-right">

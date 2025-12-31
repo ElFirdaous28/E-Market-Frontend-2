@@ -11,11 +11,15 @@
     "preview": "vite preview",
     "format": "prettier --write .",
     "test": "cross-env NODE_ENV=test npx jest",
-    "test:watch": "cross-env NODE_ENV=test npx jest --watch"
+    "test:coverage": "cross-env NODE_ENV=test npx jest --coverage --testTimeout 20000",
+    "lh:desktop": "lighthouse http://localhost:5173 --preset=desktop --output html --output-path ./lighthouse-report.html --view",
+    "lh:dev": "lighthouse https://e-market-frontend-2-mkod.vercel.app/ --preset=desktop --output html --output-path ./lighthouse-report.html --view"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@reduxjs/toolkit": "^2.10.1",
+    "@sentry/react": "^10.32.1",
+    "@sentry/vite-plugin": "^4.6.1",
     "@tanstack/react-query": "^5.90.8",
     "axios": "^1.13.2",
     "date-fns": "^4.1.0",
@@ -57,6 +61,7 @@
     "jest-environment-jsdom": "^30.2.0",
     "postcss": "^8.5.6",
     "prettier": "^3.6.2",
+    "rollup-plugin-visualizer": "^6.0.5",
     "tailwindcss": "^4.1.17",
     "vite": "^7.1.7"
   }

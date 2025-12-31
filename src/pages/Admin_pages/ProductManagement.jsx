@@ -135,7 +135,7 @@ export default function ProductManagement() {
                     {product.stock}
                   </td>
                   <td className="px-4 md:px-6 py-3 md:py-4 text-xs md:text-sm text-gray-400">
-                    {product.categories.length > 0 ? (
+                    {product?.categories?.length > 0 ? (
                       product.categories.map((cat) => <span key={cat._id}>{cat.name}</span>)
                     ) : (
                       <span>null</span>

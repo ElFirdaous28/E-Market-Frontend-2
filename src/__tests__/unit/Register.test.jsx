@@ -89,3 +89,14 @@ test('Shows required field errors when form is empty', async () => {
   expect(await screen.findByText('Password is required')).toBeInTheDocument();
   expect(await screen.findByText('Confirm Password is required')).toBeInTheDocument();
 });
+
+test('toggle show/hide password', async () => {
+  const pass = screen.getByLabelText(/^Password$/i);
+  const toggleBtn = screen.getAllByLabelText('toggle show password')[0];
+
+  expect(pass.type).toBe('password');
+
+  await user.click(toggleBtn);
+
+  expect(pass.type).toBe('text');
+});

@@ -1,15 +1,25 @@
 import { defineConfig } from 'vite';
+import { sentryVitePlugin } from "@sentry/vite-plugin";
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import dotenvFlow from 'dotenv-flow';
 
+
 dotenvFlow.config();
 
 // https://vite.dev/config/
-export default defineConfig(() => {
-  console.log('VITE_ENV =', process.env.VITE_ENV);
+export default defineConfig({
 
-  return {
-    plugins: [react(), tailwindcss()],
-  };
+  build: {
+    sourcemap: true,
+  },
+  plugins: [
+    react(),
+    tailwindcss(),
+    sentryVitePlugin({
+      authToken: process.env.SENTRY_AUTH_TOKEN,
+      org: "leet-initiative",
+      project: "javascript-react",
+    })
+  ],
 });

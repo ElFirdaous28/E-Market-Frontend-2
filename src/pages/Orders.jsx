@@ -46,7 +46,7 @@ export default function Orders() {
                 className={`px-4 py-2 text-sm font-medium rounded-full transition duration-150 capitalize
                                     ${
                                       status === option
-                                        ? 'bg-primary text-white shadow-md'
+                                        ? 'bg-primary text-white [text-shadow:0_0_2px_rgba(0,0,0,0.8)] shadow-md'
                                         : 'bg-background text-textMain hover:bg-background-hover border border-border'
                                     }`}
               >
@@ -110,7 +110,7 @@ export default function Orders() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <button
                     onClick={() => openModal(order)}
-                    className="px-6 py-2 bg-primary text-textMain rounded-lg hover:bg-opacity-90 transition font-normal"
+                    className="px-6 py-2 bg-primary text-textMain rounded-lg hover:bg-opacity-90 transition font-normal [text-shadow:0_0_2px_rgba(0,0,0,0.8)]"
                   >
                     View Details
                   </button>

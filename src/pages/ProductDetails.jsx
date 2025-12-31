@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from '../services/axios';
 import {
   ChevronLeft,
   ChevronRight,
@@ -18,23 +17,18 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAuth } from '../hooks/useAuth';
 import { useCart } from '../hooks/useCart';
+import { useProduct } from '../hooks/useProduct';
 
 export default function ProductDetails() {
   const { id } = useParams();
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { data: product, isLoading } = useProduct(id);
   const [currentImage, setCurrentImage] = useState(null);
   const [page, setPage] = useState(1);
   const limit = 5;
   const { productReviews, createReview, updateReview } = useReviews(id, page, limit);
 
   const { addToCart } = useCart();
-
-  // Add product to cart
-  const handleAddToCart = (e, productId) => {
-    e.preventDefault();
-    addToCart.mutate({ productId, quantity: 1 });
-  };
+  const { user } = useAuth();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [rating, setRating] = useState(0);
@@ -42,7 +36,6 @@ export default function ProductDetails() {
   const [reviewId, setReviewId] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [serverError, setServerError] = useState('');
-  const { user } = useAuth();
 
   const {
     register,
@@ -58,92 +51,103 @@ export default function ProductDetails() {
     },
   });
 
-  useEffect(() => {
-    const getProduct = async () => {
-      try {
-        const res = await axios.get(`/products/${id}`);
-        const data = res.data.data;
+  // Move all useMemo and useCallback HERE (before conditional returns)
+  const allImages = useMemo(() => {
+    if (!product?.product) return [];
+    return [product.product.primaryImage, ...(product.product.secondaryImages || [])];
+  }, [product?.product]);
 
-        setProduct(data);
-        setCurrentImage(data.product.primaryImage);
-      } catch (error) {
-        console.error('Failed to fetch product:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    getProduct();
-  }, [id]);
+  const handleAddToCart = useCallback(
+    (e, productId) => {
+      e.preventDefault();
+      addToCart.mutate({ productId, quantity: 1 });
+    },
+    [addToCart]
+  );
 
-  if (loading)
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
-  if (!product)
-    return <div className="min-h-screen flex items-center justify-center">Product not found</div>;
-
-  const { product: p } = product;
-  const allImages = [p.primaryImage, ...(p.secondaryImages || [])];
-
-  const nextImage = () => {
+  const nextImage = useCallback(() => {
     const currentIndex = allImages.indexOf(currentImage);
     const nextIndex = (currentIndex + 1) % allImages.length;
     setCurrentImage(allImages[nextIndex]);
-  };
+  }, [allImages, currentImage]);
 
-  const prevImage = () => {
+  const prevImage = useCallback(() => {
     const currentIndex = allImages.indexOf(currentImage);
     const prevIndex = (currentIndex - 1 + allImages.length) % allImages.length;
     setCurrentImage(allImages[prevIndex]);
-  };
+  }, [allImages, currentImage]);
 
-  const submitModal = async (data) => {
-    if (!editMode) {
-      try {
-        await createReview.mutateAsync(data);
-        setIsModalOpen(false);
-        setServerError('');
-      } catch (err) {
-        if (err.response?.status === 403) {
-          setServerError(err.response.data.error);
-        } else {
-          setServerError('Something went wrong');
+  const submitModal = useCallback(
+    async (data) => {
+      if (!editMode) {
+        try {
+          await createReview.mutateAsync(data);
+          setIsModalOpen(false);
+          setServerError('');
+        } catch (err) {
+          if (err.response?.status === 403) {
+            setServerError(err.response.data.error);
+          } else {
+            setServerError('Something went wrong');
+          }
         }
+      } else {
+        updateReview({
+          id: reviewId,
+          data: { rating: data.rating, comment: data.comment },
+          productId: id,
+        });
+        setIsModalOpen(false);
       }
-    } else {
-      updateReview({
-        id: reviewId,
-        data: { rating: data.rating, comment: data.comment },
-        productId: id,
-      });
-      setIsModalOpen(false);
-    }
-  };
+    },
+    [editMode, createReview, updateReview, reviewId, id]
+  );
 
-  const openEditModal = (review) => {
-    setEditMode(true);
-    setReviewId(review._id);
-    setValue('rating', review.rating);
-    setValue('comment', review.comment);
-    setRating(review.rating); // for stars
-    setComment(review.comment);
-    setIsModalOpen(true);
-  };
+  const openEditModal = useCallback(
+    (review) => {
+      setEditMode(true);
+      setReviewId(review._id);
+      setValue('rating', review.rating);
+      setValue('comment', review.comment);
+      setRating(review.rating);
+      setComment(review.comment);
+      setIsModalOpen(true);
+    },
+    [setValue]
+  );
 
-  const renderPagination = () => {
+  const renderPagination = useMemo(() => {
     const pages = [];
     for (let i = 1; i <= productReviews?.totalPages; i++) {
       pages.push(
         <button
           key={i}
           onClick={() => setPage(i)}
-          className={`w-8 h-8 rounded-full flex items-center justify-center font-semibold ${page === i ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-            }`}
+          className={`w-8 h-8 rounded-full flex items-center justify-center font-semibold ${
+            page === i ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+          }`}
         >
           {i}
         </button>
       );
     }
     return pages;
-  };
+  }, [productReviews?.totalPages, page]);
+
+  useEffect(() => {
+    if (product) {
+      setCurrentImage(product.product.primaryImage);
+    }
+  }, [product]);
+
+  // NOW you can do conditional returns AFTER all hooks
+  if (isLoading)
+    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  if (!product)
+    return <div className="min-h-screen flex items-center justify-center">Product not found</div>;
+
+  const { product: p } = product;
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-12">
       {/* Main Product Section */}
@@ -188,10 +192,11 @@ export default function ProductDetails() {
                 <button
                   key={index}
                   onClick={() => setCurrentImage(img)}
-                  className={`w-20 h-20 shrink-0 rounded-lg overflow-hidden border-2 transition-all ${currentImage === img
+                  className={`w-20 h-20 shrink-0 rounded-lg overflow-hidden border-2 transition-all ${
+                    currentImage === img
                       ? 'border-primary ring-2 ring-primary/20 opacity-100'
                       : 'border-transparent opacity-70 hover:opacity-100 hover:border-gray-300'
-                    }`}
+                  }`}
                 >
                   <img
                     src={`${import.meta.env.VITE_API_URL}${img}`}
@@ -331,7 +336,7 @@ export default function ProductDetails() {
         </div>
       </div>
 
-      <div className="flex justify-center gap-2 mt-8">{renderPagination()}</div>
+      <div className="flex justify-center gap-2 mt-8">{renderPagination}</div>
 
       {/* Add/Edit Review Modal */}
       {isModalOpen && (
